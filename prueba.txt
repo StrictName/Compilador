@@ -1,0 +1,7 @@
+program prueba;
+var 
+int x;
+float y[2];
+Perro chihuahua;
+main () {
+}
