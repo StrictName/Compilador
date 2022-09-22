@@ -1,2 +1,2 @@
 # Compilador
-Compiladro orientado a objetos
+Compilador orientado a objetos
