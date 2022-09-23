@@ -7,7 +7,12 @@ reserved = {
     'var' : 'VAR',
     'int' : 'INT',
     'float' : 'FLOAT',
-    'char' : 'CHAR'
+    'char' : 'CHAR',
+    'bool' : 'BOOL',
+    'func' : 'FUNC',
+    'void' : 'VOID',
+    'return' : 'RETURN',
+    'estatuto' : 'ESTATUTO'
 }
 
 tokens = [
@@ -17,12 +22,11 @@ tokens = [
     'PARENTESISDER',
     'LLAVEIZQ',
     'LLAVEDER',
-    'FUNCION',
-    'BLOQUE',
     'BLOQUECLASE',
     'CTEI',
     'CORCHETEIZQ',
-    'CORCHETEDER'
+    'CORCHETEDER',
+    'COMA'
 ] + list(reserved.values())
 
 t_PUNTOCOMA = r';'
@@ -32,9 +36,8 @@ t_LLAVEIZQ = r'\{'
 t_LLAVEDER = r'\}'
 t_CORCHETEIZQ = r'\['
 t_CORCHETEDER = r'\]'
+t_COMA = r'\,'
 
-t_FUNCION = r'FUNCION'
-t_BLOQUE = r'BLOQUE'
 t_BLOQUECLASE = r'BLOQUECLASE'
 
 def t_ID(t):
@@ -75,12 +78,16 @@ def p_programa(t):
     '''programa : PROGRAM ID PUNTOCOMA main
                 | PROGRAM ID PUNTOCOMA clase main
                 | PROGRAM ID PUNTOCOMA clase var main
-                | PROGRAM ID PUNTOCOMA clase var FUNCION main'''
+                | PROGRAM ID PUNTOCOMA clase var funcion main
+                | PROGRAM ID PUNTOCOMA clase funcion main
+                | PROGRAM ID PUNTOCOMA var main
+                | PROGRAM ID PUNTOCOMA var funcion main
+                | PROGRAM ID PUNTOCOMA funcion main'''
     t[0] = "Este es un programa"
 
 def p_main(t):
     '''main : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER'''
+            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER'''
 
 def p_clase(t):
     '''clase : CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
@@ -102,10 +109,40 @@ def p_varp(t):
 def p_tipo_simple(t):
     '''tipo_simple : INT
                     | FLOAT
-                    | CHAR'''
+                    | CHAR
+                    | BOOL'''
 
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
+
+def p_funcion(t):
+    '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo'''
+
+def p_dec_var(t):
+    '''dec_var : VAR dec_varp'''
+
+def p_dec_varp(t):
+    '''dec_varp : tipo_simple ID PUNTOCOMA dec_varp
+                | tipo_simple ID PUNTOCOMA
+                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
+
+def p_parametros(t):
+    '''parametros : tipo_simple ID
+                    | tipo_simple ID COMA parametros'''
+
+def p_cuerpo(t):
+    '''cuerpo : LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+                | LLAVEIZQ ESTATUTO LLAVEDER'''
+
+
+
+
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)

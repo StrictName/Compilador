@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BLOQUE BLOQUECLASE CHAR CLASS CORCHETEDER CORCHETEIZQ CTEI FLOAT FUNCION ID INT LLAVEDER LLAVEIZQ MAIN PARENTESISDER PARENTESISIZQ PROGRAM PUNTOCOMA VARprograma : PROGRAM ID PUNTOCOMA main\n                | PROGRAM ID PUNTOCOMA clase main\n                | PROGRAM ID PUNTOCOMA clase var main\n                | PROGRAM ID PUNTOCOMA clase var FUNCION mainmain : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER\n            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDERclase : CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA\n            | CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMAvar : VAR varpvarp : tipo_compuesto ID PUNTOCOMA\n            | tipo_compuesto ID PUNTOCOMA varp\n            | tipo_simple ID PUNTOCOMA\n            | tipo_simple ID PUNTOCOMA varp\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varptipo_simple : INT\n                    | FLOAT\n                    | CHARtipo_compuesto : ID'
+_lr_signature = 'BLOQUECLASE BOOL CHAR CLASS COMA CORCHETEDER CORCHETEIZQ CTEI ESTATUTO FLOAT FUNC ID INT LLAVEDER LLAVEIZQ MAIN PARENTESISDER PARENTESISIZQ PROGRAM PUNTOCOMA RETURN VAR VOIDprograma : PROGRAM ID PUNTOCOMA main\n                | PROGRAM ID PUNTOCOMA clase main\n                | PROGRAM ID PUNTOCOMA clase var main\n                | PROGRAM ID PUNTOCOMA clase var funcion main\n                | PROGRAM ID PUNTOCOMA clase funcion main\n                | PROGRAM ID PUNTOCOMA var main\n                | PROGRAM ID PUNTOCOMA var funcion main\n                | PROGRAM ID PUNTOCOMA funcion mainmain : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER\n            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDERclase : CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA\n            | CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMAvar : VAR varpvarp : tipo_compuesto ID PUNTOCOMA\n            | tipo_compuesto ID PUNTOCOMA varp\n            | tipo_simple ID PUNTOCOMA\n            | tipo_simple ID PUNTOCOMA varp\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA\n            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varptipo_simple : INT\n                    | FLOAT\n                    | CHAR\n                    | BOOLtipo_compuesto : IDfuncion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo\n                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo\n                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo\n                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpodec_var : VAR dec_varpdec_varp : tipo_simple ID PUNTOCOMA dec_varp\n                | tipo_simple ID PUNTOCOMA\n                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp\n                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA\n                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp\n                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMAparametros : tipo_simple ID\n                    | tipo_simple ID COMA parametroscuerpo : LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER\n                | LLAVEIZQ ESTATUTO LLAVEDER'
     
-_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,5,9,14,25,34,41,],[0,-1,-2,-3,-4,-5,-6,]),'ID':([2,8,11,17,18,19,20,21,22,31,32,45,49,],[3,13,18,26,-21,27,-18,-19,-20,18,18,18,18,]),'PUNTOCOMA':([3,26,27,29,37,43,48,],[4,31,32,36,42,45,49,]),'MAIN':([4,6,10,15,16,31,32,36,38,39,42,45,47,49,50,],[7,7,7,7,-9,-10,-12,-7,-11,-13,-8,-14,-15,-16,-17,]),'CLASS':([4,],[8,]),'VAR':([6,36,42,],[11,-7,-8,]),'PARENTESISIZQ':([7,],[12,]),'FUNCION':([10,16,31,32,38,39,45,47,49,50,],[15,-9,-10,-12,-11,-13,-14,-15,-16,-17,]),'INT':([11,31,32,45,49,],[20,20,20,20,20,]),'FLOAT':([11,31,32,45,49,],[21,21,21,21,21,]),'CHAR':([11,31,32,45,49,],[22,22,22,22,22,]),'PARENTESISDER':([12,],[23,]),'LLAVEIZQ':([13,23,],[24,28,]),'LLAVEDER':([24,28,30,35,],[29,34,37,41,]),'BLOQUECLASE':([24,],[30,]),'CORCHETEIZQ':([27,43,],[33,44,]),'BLOQUE':([28,],[35,]),'CTEI':([33,44,],[40,46,]),'CORCHETEDER':([40,46,],[43,48,]),}
+_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,5,13,16,18,31,33,34,41,50,60,],[0,-1,-2,-6,-8,-3,-5,-7,-4,-9,-10,]),'ID':([2,10,11,22,23,24,25,26,27,28,29,30,45,46,57,67,83,86,88,],[3,20,23,37,-26,38,-22,-23,-24,-25,39,40,23,23,63,23,87,23,93,]),'PUNTOCOMA':([3,37,38,43,53,62,64,65,80,87,93,97,103,],[4,45,46,52,61,67,69,70,86,91,96,100,104,]),'MAIN':([4,6,7,8,14,15,17,21,32,45,46,52,54,55,61,67,72,75,79,81,85,86,89,90,98,],[9,9,9,9,9,9,9,-13,9,-14,-16,-11,-15,-17,-12,-18,-19,-28,-30,-27,-29,-20,-41,-21,-40,]),'CLASS':([4,],[10,]),'VAR':([4,6,52,61,69,70,],[11,11,-11,-12,76,76,]),'FUNC':([4,6,7,14,21,45,46,52,54,55,61,67,72,86,90,],[12,12,12,12,-13,-14,-16,-11,-15,-17,-12,-18,-19,-20,-21,]),'PARENTESISIZQ':([9,39,40,],[19,48,49,]),'INT':([11,12,45,46,48,49,67,68,76,86,91,100,104,],[25,25,25,25,25,25,25,25,25,25,25,25,25,]),'FLOAT':([11,12,45,46,48,49,67,68,76,86,91,100,104,],[26,26,26,26,26,26,26,26,26,26,26,26,26,]),'CHAR':([11,12,45,46,48,49,67,68,76,86,91,100,104,],[27,27,27,27,27,27,27,27,27,27,27,27,27,]),'BOOL':([11,12,45,46,48,49,67,68,76,86,91,100,104,],[28,28,28,28,28,28,28,28,28,28,28,28,28,]),'VOID':([12,],[30,]),'PARENTESISDER':([19,58,59,63,73,],[35,64,65,-38,-39,]),'LLAVEIZQ':([20,35,69,70,74,78,82,91,94,100,102,104,105,],[36,42,77,77,77,77,-31,-33,-32,-35,-34,-37,-36,]),'LLAVEDER':([36,42,44,51,84,96,],[43,50,53,60,89,98,]),'BLOQUECLASE':([36,],[44,]),'CORCHETEIZQ':([38,62,87,97,],[47,66,92,99,]),'ESTATUTO':([42,77,],[51,84,]),'CTEI':([47,66,92,99,],[56,71,95,101,]),'CORCHETEDER':([56,71,95,101,],[62,80,97,103,]),'COMA':([63,],[68,]),'RETURN':([84,],[88,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'programa':([0,],[1,]),'main':([4,6,10,15,],[5,9,14,25,]),'clase':([4,],[6,]),'var':([6,],[10,]),'varp':([11,31,32,45,49,],[16,38,39,47,50,]),'tipo_compuesto':([11,31,32,45,49,],[17,17,17,17,17,]),'tipo_simple':([11,31,32,45,49,],[19,19,19,19,19,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'main':([4,6,7,8,14,15,17,32,],[5,13,16,18,31,33,34,41,]),'clase':([4,],[6,]),'var':([4,6,],[7,14,]),'funcion':([4,6,7,14,],[8,15,17,32,]),'varp':([11,45,46,67,86,],[21,54,55,72,90,]),'tipo_compuesto':([11,45,46,67,86,],[22,22,22,22,22,]),'tipo_simple':([11,12,45,46,48,49,67,68,76,86,91,100,104,],[24,29,24,24,57,57,24,57,83,24,83,83,83,]),'parametros':([48,49,68,],[58,59,73,]),'dec_var':([69,70,],[74,78,]),'cuerpo':([69,70,74,78,],[75,79,81,85,]),'dec_varp':([76,91,100,104,],[82,94,102,105,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,45 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> programa","S'",1,None,None,None),
-  ('programa -> PROGRAM ID PUNTOCOMA main','programa',4,'p_programa','scpa.py',75),
-  ('programa -> PROGRAM ID PUNTOCOMA clase main','programa',5,'p_programa','scpa.py',76),
-  ('programa -> PROGRAM ID PUNTOCOMA clase var main','programa',6,'p_programa','scpa.py',77),
-  ('programa -> PROGRAM ID PUNTOCOMA clase var FUNCION main','programa',7,'p_programa','scpa.py',78),
-  ('main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER','main',5,'p_main','scpa.py',82),
-  ('main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER','main',6,'p_main','scpa.py',83),
-  ('clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA','clase',5,'p_clase','scpa.py',86),
-  ('clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA','clase',6,'p_clase','scpa.py',87),
-  ('var -> VAR varp','var',2,'p_var','scpa.py',90),
-  ('varp -> tipo_compuesto ID PUNTOCOMA','varp',3,'p_varp','scpa.py',93),
-  ('varp -> tipo_compuesto ID PUNTOCOMA varp','varp',4,'p_varp','scpa.py',94),
-  ('varp -> tipo_simple ID PUNTOCOMA','varp',3,'p_varp','scpa.py',95),
-  ('varp -> tipo_simple ID PUNTOCOMA varp','varp',4,'p_varp','scpa.py',96),
-  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','varp',6,'p_varp','scpa.py',97),
-  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp','varp',7,'p_varp','scpa.py',98),
-  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','varp',9,'p_varp','scpa.py',99),
-  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp','varp',10,'p_varp','scpa.py',100),
-  ('tipo_simple -> INT','tipo_simple',1,'p_tipo_simple','scpa.py',103),
-  ('tipo_simple -> FLOAT','tipo_simple',1,'p_tipo_simple','scpa.py',104),
-  ('tipo_simple -> CHAR','tipo_simple',1,'p_tipo_simple','scpa.py',105),
-  ('tipo_compuesto -> ID','tipo_compuesto',1,'p_tipo_compuesto','scpa.py',108),
+  ('programa -> PROGRAM ID PUNTOCOMA main','programa',4,'p_programa','scpa.py',78),
+  ('programa -> PROGRAM ID PUNTOCOMA clase main','programa',5,'p_programa','scpa.py',79),
+  ('programa -> PROGRAM ID PUNTOCOMA clase var main','programa',6,'p_programa','scpa.py',80),
+  ('programa -> PROGRAM ID PUNTOCOMA clase var funcion main','programa',7,'p_programa','scpa.py',81),
+  ('programa -> PROGRAM ID PUNTOCOMA clase funcion main','programa',6,'p_programa','scpa.py',82),
+  ('programa -> PROGRAM ID PUNTOCOMA var main','programa',5,'p_programa','scpa.py',83),
+  ('programa -> PROGRAM ID PUNTOCOMA var funcion main','programa',6,'p_programa','scpa.py',84),
+  ('programa -> PROGRAM ID PUNTOCOMA funcion main','programa',5,'p_programa','scpa.py',85),
+  ('main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER','main',5,'p_main','scpa.py',89),
+  ('main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER','main',6,'p_main','scpa.py',90),
+  ('clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA','clase',5,'p_clase','scpa.py',93),
+  ('clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA','clase',6,'p_clase','scpa.py',94),
+  ('var -> VAR varp','var',2,'p_var','scpa.py',97),
+  ('varp -> tipo_compuesto ID PUNTOCOMA','varp',3,'p_varp','scpa.py',100),
+  ('varp -> tipo_compuesto ID PUNTOCOMA varp','varp',4,'p_varp','scpa.py',101),
+  ('varp -> tipo_simple ID PUNTOCOMA','varp',3,'p_varp','scpa.py',102),
+  ('varp -> tipo_simple ID PUNTOCOMA varp','varp',4,'p_varp','scpa.py',103),
+  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','varp',6,'p_varp','scpa.py',104),
+  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp','varp',7,'p_varp','scpa.py',105),
+  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','varp',9,'p_varp','scpa.py',106),
+  ('varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp','varp',10,'p_varp','scpa.py',107),
+  ('tipo_simple -> INT','tipo_simple',1,'p_tipo_simple','scpa.py',110),
+  ('tipo_simple -> FLOAT','tipo_simple',1,'p_tipo_simple','scpa.py',111),
+  ('tipo_simple -> CHAR','tipo_simple',1,'p_tipo_simple','scpa.py',112),
+  ('tipo_simple -> BOOL','tipo_simple',1,'p_tipo_simple','scpa.py',113),
+  ('tipo_compuesto -> ID','tipo_compuesto',1,'p_tipo_compuesto','scpa.py',116),
+  ('funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo','funcion',9,'p_funcion','scpa.py',119),
+  ('funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo','funcion',8,'p_funcion','scpa.py',120),
+  ('funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo','funcion',9,'p_funcion','scpa.py',121),
+  ('funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo','funcion',8,'p_funcion','scpa.py',122),
+  ('dec_var -> VAR dec_varp','dec_var',2,'p_dec_var','scpa.py',125),
+  ('dec_varp -> tipo_simple ID PUNTOCOMA dec_varp','dec_varp',4,'p_dec_varp','scpa.py',128),
+  ('dec_varp -> tipo_simple ID PUNTOCOMA','dec_varp',3,'p_dec_varp','scpa.py',129),
+  ('dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp','dec_varp',7,'p_dec_varp','scpa.py',130),
+  ('dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','dec_varp',6,'p_dec_varp','scpa.py',131),
+  ('dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp','dec_varp',10,'p_dec_varp','scpa.py',132),
+  ('dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA','dec_varp',9,'p_dec_varp','scpa.py',133),
+  ('parametros -> tipo_simple ID','parametros',2,'p_parametros','scpa.py',136),
+  ('parametros -> tipo_simple ID COMA parametros','parametros',4,'p_parametros','scpa.py',137),
+  ('cuerpo -> LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER','cuerpo',6,'p_cuerpo','scpa.py',140),
+  ('cuerpo -> LLAVEIZQ ESTATUTO LLAVEDER','cuerpo',3,'p_cuerpo','scpa.py',141),
 ]

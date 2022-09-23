@@ -6,57 +6,86 @@ Rule 0     S' -> programa
 Rule 1     programa -> PROGRAM ID PUNTOCOMA main
 Rule 2     programa -> PROGRAM ID PUNTOCOMA clase main
 Rule 3     programa -> PROGRAM ID PUNTOCOMA clase var main
-Rule 4     programa -> PROGRAM ID PUNTOCOMA clase var FUNCION main
-Rule 5     main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-Rule 6     main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
-Rule 7     clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
-Rule 8     clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
-Rule 9     var -> VAR varp
-Rule 10    varp -> tipo_compuesto ID PUNTOCOMA
-Rule 11    varp -> tipo_compuesto ID PUNTOCOMA varp
-Rule 12    varp -> tipo_simple ID PUNTOCOMA
-Rule 13    varp -> tipo_simple ID PUNTOCOMA varp
-Rule 14    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-Rule 15    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-Rule 16    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-Rule 17    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-Rule 18    tipo_simple -> INT
-Rule 19    tipo_simple -> FLOAT
-Rule 20    tipo_simple -> CHAR
-Rule 21    tipo_compuesto -> ID
+Rule 4     programa -> PROGRAM ID PUNTOCOMA clase var funcion main
+Rule 5     programa -> PROGRAM ID PUNTOCOMA clase funcion main
+Rule 6     programa -> PROGRAM ID PUNTOCOMA var main
+Rule 7     programa -> PROGRAM ID PUNTOCOMA var funcion main
+Rule 8     programa -> PROGRAM ID PUNTOCOMA funcion main
+Rule 9     main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+Rule 10    main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+Rule 11    clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
+Rule 12    clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+Rule 13    var -> VAR varp
+Rule 14    varp -> tipo_compuesto ID PUNTOCOMA
+Rule 15    varp -> tipo_compuesto ID PUNTOCOMA varp
+Rule 16    varp -> tipo_simple ID PUNTOCOMA
+Rule 17    varp -> tipo_simple ID PUNTOCOMA varp
+Rule 18    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+Rule 19    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+Rule 20    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+Rule 21    varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+Rule 22    tipo_simple -> INT
+Rule 23    tipo_simple -> FLOAT
+Rule 24    tipo_simple -> CHAR
+Rule 25    tipo_simple -> BOOL
+Rule 26    tipo_compuesto -> ID
+Rule 27    funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+Rule 28    funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+Rule 29    funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+Rule 30    funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+Rule 31    dec_var -> VAR dec_varp
+Rule 32    dec_varp -> tipo_simple ID PUNTOCOMA dec_varp
+Rule 33    dec_varp -> tipo_simple ID PUNTOCOMA
+Rule 34    dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+Rule 35    dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+Rule 36    dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+Rule 37    dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+Rule 38    parametros -> tipo_simple ID
+Rule 39    parametros -> tipo_simple ID COMA parametros
+Rule 40    cuerpo -> LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+Rule 41    cuerpo -> LLAVEIZQ ESTATUTO LLAVEDER
 
 Terminals, with rules where they appear
 
-BLOQUE               : 6
-BLOQUECLASE          : 8
-CHAR                 : 20
-CLASS                : 7 8
-CORCHETEDER          : 14 15 16 16 17 17
-CORCHETEIZQ          : 14 15 16 16 17 17
-CTEI                 : 14 15 16 16 17 17
-FLOAT                : 19
-FUNCION              : 4
-ID                   : 1 2 3 4 7 8 10 11 12 13 14 15 16 17 21
-INT                  : 18
-LLAVEDER             : 5 6 7 8
-LLAVEIZQ             : 5 6 7 8
-MAIN                 : 5 6
-PARENTESISDER        : 5 6
-PARENTESISIZQ        : 5 6
-PROGRAM              : 1 2 3 4
-PUNTOCOMA            : 1 2 3 4 7 8 10 11 12 13 14 15 16 17
-VAR                  : 9
+BLOQUECLASE          : 12
+BOOL                 : 25
+CHAR                 : 24
+CLASS                : 11 12
+COMA                 : 39
+CORCHETEDER          : 18 19 20 20 21 21 34 35 36 36 37 37
+CORCHETEIZQ          : 18 19 20 20 21 21 34 35 36 36 37 37
+CTEI                 : 18 19 20 20 21 21 34 35 36 36 37 37
+ESTATUTO             : 10 40 41
+FLOAT                : 23
+FUNC                 : 27 28 29 30
+ID                   : 1 2 3 4 5 6 7 8 11 12 14 15 16 17 18 19 20 21 26 27 28 29 30 32 33 34 35 36 37 38 39 40
+INT                  : 22
+LLAVEDER             : 9 10 11 12 40 41
+LLAVEIZQ             : 9 10 11 12 40 41
+MAIN                 : 9 10
+PARENTESISDER        : 9 10 27 28 29 30
+PARENTESISIZQ        : 9 10 27 28 29 30
+PROGRAM              : 1 2 3 4 5 6 7 8
+PUNTOCOMA            : 1 2 3 4 5 6 7 8 11 12 14 15 16 17 18 19 20 21 27 28 29 30 32 33 34 35 36 37 40
+RETURN               : 40
+VAR                  : 13 31
+VOID                 : 29 30
 error                : 
 
 Nonterminals, with rules where they appear
 
-clase                : 2 3 4
-main                 : 1 2 3 4
+clase                : 2 3 4 5
+cuerpo               : 27 28 29 30
+dec_var              : 27 29
+dec_varp             : 31 32 34 36
+funcion              : 4 5 7 8
+main                 : 1 2 3 4 5 6 7 8
+parametros           : 27 28 29 30 39
 programa             : 0
-tipo_compuesto       : 10 11
-tipo_simple          : 12 13 14 15 16 17
-var                  : 3 4
-varp                 : 9 11 13 15 17
+tipo_compuesto       : 14 15
+tipo_simple          : 16 17 18 19 20 21 27 28 32 33 34 35 36 37 38 39
+var                  : 3 4 6 7
+varp                 : 13 15 17 19 21
 
 Parsing method: LALR
 
@@ -66,7 +95,11 @@ state 0
     (1) programa -> . PROGRAM ID PUNTOCOMA main
     (2) programa -> . PROGRAM ID PUNTOCOMA clase main
     (3) programa -> . PROGRAM ID PUNTOCOMA clase var main
-    (4) programa -> . PROGRAM ID PUNTOCOMA clase var FUNCION main
+    (4) programa -> . PROGRAM ID PUNTOCOMA clase var funcion main
+    (5) programa -> . PROGRAM ID PUNTOCOMA clase funcion main
+    (6) programa -> . PROGRAM ID PUNTOCOMA var main
+    (7) programa -> . PROGRAM ID PUNTOCOMA var funcion main
+    (8) programa -> . PROGRAM ID PUNTOCOMA funcion main
 
     PROGRAM         shift and go to state 2
 
@@ -83,7 +116,11 @@ state 2
     (1) programa -> PROGRAM . ID PUNTOCOMA main
     (2) programa -> PROGRAM . ID PUNTOCOMA clase main
     (3) programa -> PROGRAM . ID PUNTOCOMA clase var main
-    (4) programa -> PROGRAM . ID PUNTOCOMA clase var FUNCION main
+    (4) programa -> PROGRAM . ID PUNTOCOMA clase var funcion main
+    (5) programa -> PROGRAM . ID PUNTOCOMA clase funcion main
+    (6) programa -> PROGRAM . ID PUNTOCOMA var main
+    (7) programa -> PROGRAM . ID PUNTOCOMA var funcion main
+    (8) programa -> PROGRAM . ID PUNTOCOMA funcion main
 
     ID              shift and go to state 3
 
@@ -93,7 +130,11 @@ state 3
     (1) programa -> PROGRAM ID . PUNTOCOMA main
     (2) programa -> PROGRAM ID . PUNTOCOMA clase main
     (3) programa -> PROGRAM ID . PUNTOCOMA clase var main
-    (4) programa -> PROGRAM ID . PUNTOCOMA clase var FUNCION main
+    (4) programa -> PROGRAM ID . PUNTOCOMA clase var funcion main
+    (5) programa -> PROGRAM ID . PUNTOCOMA clase funcion main
+    (6) programa -> PROGRAM ID . PUNTOCOMA var main
+    (7) programa -> PROGRAM ID . PUNTOCOMA var funcion main
+    (8) programa -> PROGRAM ID . PUNTOCOMA funcion main
 
     PUNTOCOMA       shift and go to state 4
 
@@ -103,17 +144,30 @@ state 4
     (1) programa -> PROGRAM ID PUNTOCOMA . main
     (2) programa -> PROGRAM ID PUNTOCOMA . clase main
     (3) programa -> PROGRAM ID PUNTOCOMA . clase var main
-    (4) programa -> PROGRAM ID PUNTOCOMA . clase var FUNCION main
-    (5) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
-    (7) clase -> . CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
-    (8) clase -> . CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+    (4) programa -> PROGRAM ID PUNTOCOMA . clase var funcion main
+    (5) programa -> PROGRAM ID PUNTOCOMA . clase funcion main
+    (6) programa -> PROGRAM ID PUNTOCOMA . var main
+    (7) programa -> PROGRAM ID PUNTOCOMA . var funcion main
+    (8) programa -> PROGRAM ID PUNTOCOMA . funcion main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+    (11) clase -> . CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
+    (12) clase -> . CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+    (13) var -> . VAR varp
+    (27) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (29) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    MAIN            shift and go to state 7
-    CLASS           shift and go to state 8
+    MAIN            shift and go to state 9
+    CLASS           shift and go to state 10
+    VAR             shift and go to state 11
+    FUNC            shift and go to state 12
 
     main                           shift and go to state 5
     clase                          shift and go to state 6
+    var                            shift and go to state 7
+    funcion                        shift and go to state 8
 
 state 5
 
@@ -126,473 +180,1072 @@ state 6
 
     (2) programa -> PROGRAM ID PUNTOCOMA clase . main
     (3) programa -> PROGRAM ID PUNTOCOMA clase . var main
-    (4) programa -> PROGRAM ID PUNTOCOMA clase . var FUNCION main
-    (5) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
-    (9) var -> . VAR varp
+    (4) programa -> PROGRAM ID PUNTOCOMA clase . var funcion main
+    (5) programa -> PROGRAM ID PUNTOCOMA clase . funcion main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+    (13) var -> . VAR varp
+    (27) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (29) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    MAIN            shift and go to state 7
+    MAIN            shift and go to state 9
     VAR             shift and go to state 11
+    FUNC            shift and go to state 12
 
-    main                           shift and go to state 9
-    var                            shift and go to state 10
+    main                           shift and go to state 13
+    var                            shift and go to state 14
+    funcion                        shift and go to state 15
 
 state 7
 
-    (5) main -> MAIN . PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> MAIN . PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
+    (6) programa -> PROGRAM ID PUNTOCOMA var . main
+    (7) programa -> PROGRAM ID PUNTOCOMA var . funcion main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+    (27) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (29) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    PARENTESISIZQ   shift and go to state 12
+    MAIN            shift and go to state 9
+    FUNC            shift and go to state 12
 
+    main                           shift and go to state 16
+    funcion                        shift and go to state 17
 
 state 8
 
-    (7) clase -> CLASS . ID LLAVEIZQ LLAVEDER PUNTOCOMA
-    (8) clase -> CLASS . ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+    (8) programa -> PROGRAM ID PUNTOCOMA funcion . main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
 
-    ID              shift and go to state 13
+    MAIN            shift and go to state 9
 
+    main                           shift and go to state 18
 
 state 9
+
+    (9) main -> MAIN . PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> MAIN . PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+
+    PARENTESISIZQ   shift and go to state 19
+
+
+state 10
+
+    (11) clase -> CLASS . ID LLAVEIZQ LLAVEDER PUNTOCOMA
+    (12) clase -> CLASS . ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+
+    ID              shift and go to state 20
+
+
+state 11
+
+    (13) var -> VAR . varp
+    (14) varp -> . tipo_compuesto ID PUNTOCOMA
+    (15) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (16) varp -> . tipo_simple ID PUNTOCOMA
+    (17) varp -> . tipo_simple ID PUNTOCOMA varp
+    (18) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (26) tipo_compuesto -> . ID
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    ID              shift and go to state 23
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    varp                           shift and go to state 21
+    tipo_compuesto                 shift and go to state 22
+    tipo_simple                    shift and go to state 24
+
+state 12
+
+    (27) funcion -> FUNC . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (29) funcion -> FUNC . VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC . VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    VOID            shift and go to state 30
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 29
+
+state 13
 
     (2) programa -> PROGRAM ID PUNTOCOMA clase main .
 
     $end            reduce using rule 2 (programa -> PROGRAM ID PUNTOCOMA clase main .)
 
 
-state 10
+state 14
 
     (3) programa -> PROGRAM ID PUNTOCOMA clase var . main
-    (4) programa -> PROGRAM ID PUNTOCOMA clase var . FUNCION main
-    (5) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
+    (4) programa -> PROGRAM ID PUNTOCOMA clase var . funcion main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+    (27) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> . FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+    (29) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> . FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    FUNCION         shift and go to state 15
-    MAIN            shift and go to state 7
+    MAIN            shift and go to state 9
+    FUNC            shift and go to state 12
 
-    main                           shift and go to state 14
+    main                           shift and go to state 31
+    funcion                        shift and go to state 32
 
-state 11
+state 15
 
-    (9) var -> VAR . varp
-    (10) varp -> . tipo_compuesto ID PUNTOCOMA
-    (11) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (12) varp -> . tipo_simple ID PUNTOCOMA
-    (13) varp -> . tipo_simple ID PUNTOCOMA varp
-    (14) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (21) tipo_compuesto -> . ID
-    (18) tipo_simple -> . INT
-    (19) tipo_simple -> . FLOAT
-    (20) tipo_simple -> . CHAR
+    (5) programa -> PROGRAM ID PUNTOCOMA clase funcion . main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
 
-    ID              shift and go to state 18
-    INT             shift and go to state 20
-    FLOAT           shift and go to state 21
-    CHAR            shift and go to state 22
+    MAIN            shift and go to state 9
 
-    varp                           shift and go to state 16
-    tipo_compuesto                 shift and go to state 17
-    tipo_simple                    shift and go to state 19
+    main                           shift and go to state 33
 
-state 12
+state 16
 
-    (5) main -> MAIN PARENTESISIZQ . PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> MAIN PARENTESISIZQ . PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
+    (6) programa -> PROGRAM ID PUNTOCOMA var main .
 
-    PARENTESISDER   shift and go to state 23
+    $end            reduce using rule 6 (programa -> PROGRAM ID PUNTOCOMA var main .)
 
 
-state 13
+state 17
 
-    (7) clase -> CLASS ID . LLAVEIZQ LLAVEDER PUNTOCOMA
-    (8) clase -> CLASS ID . LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+    (7) programa -> PROGRAM ID PUNTOCOMA var funcion . main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
 
-    LLAVEIZQ        shift and go to state 24
+    MAIN            shift and go to state 9
+
+    main                           shift and go to state 34
+
+state 18
+
+    (8) programa -> PROGRAM ID PUNTOCOMA funcion main .
+
+    $end            reduce using rule 8 (programa -> PROGRAM ID PUNTOCOMA funcion main .)
 
 
-state 14
+state 19
+
+    (9) main -> MAIN PARENTESISIZQ . PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> MAIN PARENTESISIZQ . PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
+
+    PARENTESISDER   shift and go to state 35
+
+
+state 20
+
+    (11) clase -> CLASS ID . LLAVEIZQ LLAVEDER PUNTOCOMA
+    (12) clase -> CLASS ID . LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA
+
+    LLAVEIZQ        shift and go to state 36
+
+
+state 21
+
+    (13) var -> VAR varp .
+
+    MAIN            reduce using rule 13 (var -> VAR varp .)
+    FUNC            reduce using rule 13 (var -> VAR varp .)
+
+
+state 22
+
+    (14) varp -> tipo_compuesto . ID PUNTOCOMA
+    (15) varp -> tipo_compuesto . ID PUNTOCOMA varp
+
+    ID              shift and go to state 37
+
+
+state 23
+
+    (26) tipo_compuesto -> ID .
+
+    ID              reduce using rule 26 (tipo_compuesto -> ID .)
+
+
+state 24
+
+    (16) varp -> tipo_simple . ID PUNTOCOMA
+    (17) varp -> tipo_simple . ID PUNTOCOMA varp
+    (18) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+
+    ID              shift and go to state 38
+
+
+state 25
+
+    (22) tipo_simple -> INT .
+
+    ID              reduce using rule 22 (tipo_simple -> INT .)
+
+
+state 26
+
+    (23) tipo_simple -> FLOAT .
+
+    ID              reduce using rule 23 (tipo_simple -> FLOAT .)
+
+
+state 27
+
+    (24) tipo_simple -> CHAR .
+
+    ID              reduce using rule 24 (tipo_simple -> CHAR .)
+
+
+state 28
+
+    (25) tipo_simple -> BOOL .
+
+    ID              reduce using rule 25 (tipo_simple -> BOOL .)
+
+
+state 29
+
+    (27) funcion -> FUNC tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+
+    ID              shift and go to state 39
+
+
+state 30
+
+    (29) funcion -> FUNC VOID . ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC VOID . ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+
+    ID              shift and go to state 40
+
+
+state 31
 
     (3) programa -> PROGRAM ID PUNTOCOMA clase var main .
 
     $end            reduce using rule 3 (programa -> PROGRAM ID PUNTOCOMA clase var main .)
 
 
-state 15
-
-    (4) programa -> PROGRAM ID PUNTOCOMA clase var FUNCION . main
-    (5) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-    (6) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER
-
-    MAIN            shift and go to state 7
-
-    main                           shift and go to state 25
-
-state 16
-
-    (9) var -> VAR varp .
-
-    FUNCION         reduce using rule 9 (var -> VAR varp .)
-    MAIN            reduce using rule 9 (var -> VAR varp .)
-
-
-state 17
-
-    (10) varp -> tipo_compuesto . ID PUNTOCOMA
-    (11) varp -> tipo_compuesto . ID PUNTOCOMA varp
-
-    ID              shift and go to state 26
-
-
-state 18
-
-    (21) tipo_compuesto -> ID .
-
-    ID              reduce using rule 21 (tipo_compuesto -> ID .)
-
-
-state 19
-
-    (12) varp -> tipo_simple . ID PUNTOCOMA
-    (13) varp -> tipo_simple . ID PUNTOCOMA varp
-    (14) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-
-    ID              shift and go to state 27
-
-
-state 20
-
-    (18) tipo_simple -> INT .
-
-    ID              reduce using rule 18 (tipo_simple -> INT .)
-
-
-state 21
-
-    (19) tipo_simple -> FLOAT .
-
-    ID              reduce using rule 19 (tipo_simple -> FLOAT .)
-
-
-state 22
-
-    (20) tipo_simple -> CHAR .
-
-    ID              reduce using rule 20 (tipo_simple -> CHAR .)
-
-
-state 23
-
-    (5) main -> MAIN PARENTESISIZQ PARENTESISDER . LLAVEIZQ LLAVEDER
-    (6) main -> MAIN PARENTESISIZQ PARENTESISDER . LLAVEIZQ BLOQUE LLAVEDER
-
-    LLAVEIZQ        shift and go to state 28
-
-
-state 24
-
-    (7) clase -> CLASS ID LLAVEIZQ . LLAVEDER PUNTOCOMA
-    (8) clase -> CLASS ID LLAVEIZQ . BLOQUECLASE LLAVEDER PUNTOCOMA
-
-    LLAVEDER        shift and go to state 29
-    BLOQUECLASE     shift and go to state 30
-
-
-state 25
-
-    (4) programa -> PROGRAM ID PUNTOCOMA clase var FUNCION main .
-
-    $end            reduce using rule 4 (programa -> PROGRAM ID PUNTOCOMA clase var FUNCION main .)
-
-
-state 26
-
-    (10) varp -> tipo_compuesto ID . PUNTOCOMA
-    (11) varp -> tipo_compuesto ID . PUNTOCOMA varp
-
-    PUNTOCOMA       shift and go to state 31
-
-
-state 27
-
-    (12) varp -> tipo_simple ID . PUNTOCOMA
-    (13) varp -> tipo_simple ID . PUNTOCOMA varp
-    (14) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-
-    PUNTOCOMA       shift and go to state 32
-    CORCHETEIZQ     shift and go to state 33
-
-
-state 28
-
-    (5) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ . LLAVEDER
-    (6) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ . BLOQUE LLAVEDER
-
-    LLAVEDER        shift and go to state 34
-    BLOQUE          shift and go to state 35
-
-
-state 29
-
-    (7) clase -> CLASS ID LLAVEIZQ LLAVEDER . PUNTOCOMA
-
-    PUNTOCOMA       shift and go to state 36
-
-
-state 30
-
-    (8) clase -> CLASS ID LLAVEIZQ BLOQUECLASE . LLAVEDER PUNTOCOMA
-
-    LLAVEDER        shift and go to state 37
-
-
-state 31
-
-    (10) varp -> tipo_compuesto ID PUNTOCOMA .
-    (11) varp -> tipo_compuesto ID PUNTOCOMA . varp
-    (10) varp -> . tipo_compuesto ID PUNTOCOMA
-    (11) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (12) varp -> . tipo_simple ID PUNTOCOMA
-    (13) varp -> . tipo_simple ID PUNTOCOMA varp
-    (14) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (21) tipo_compuesto -> . ID
-    (18) tipo_simple -> . INT
-    (19) tipo_simple -> . FLOAT
-    (20) tipo_simple -> . CHAR
-
-    FUNCION         reduce using rule 10 (varp -> tipo_compuesto ID PUNTOCOMA .)
-    MAIN            reduce using rule 10 (varp -> tipo_compuesto ID PUNTOCOMA .)
-    ID              shift and go to state 18
-    INT             shift and go to state 20
-    FLOAT           shift and go to state 21
-    CHAR            shift and go to state 22
-
-    tipo_compuesto                 shift and go to state 17
-    varp                           shift and go to state 38
-    tipo_simple                    shift and go to state 19
-
 state 32
 
-    (12) varp -> tipo_simple ID PUNTOCOMA .
-    (13) varp -> tipo_simple ID PUNTOCOMA . varp
-    (10) varp -> . tipo_compuesto ID PUNTOCOMA
-    (11) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (12) varp -> . tipo_simple ID PUNTOCOMA
-    (13) varp -> . tipo_simple ID PUNTOCOMA varp
-    (14) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (21) tipo_compuesto -> . ID
-    (18) tipo_simple -> . INT
-    (19) tipo_simple -> . FLOAT
-    (20) tipo_simple -> . CHAR
+    (4) programa -> PROGRAM ID PUNTOCOMA clase var funcion . main
+    (9) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+    (10) main -> . MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER
 
-    FUNCION         reduce using rule 12 (varp -> tipo_simple ID PUNTOCOMA .)
-    MAIN            reduce using rule 12 (varp -> tipo_simple ID PUNTOCOMA .)
-    ID              shift and go to state 18
-    INT             shift and go to state 20
-    FLOAT           shift and go to state 21
-    CHAR            shift and go to state 22
+    MAIN            shift and go to state 9
 
-    tipo_simple                    shift and go to state 19
-    varp                           shift and go to state 39
-    tipo_compuesto                 shift and go to state 17
+    main                           shift and go to state 41
 
 state 33
 
-    (14) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (5) programa -> PROGRAM ID PUNTOCOMA clase funcion main .
 
-    CTEI            shift and go to state 40
+    $end            reduce using rule 5 (programa -> PROGRAM ID PUNTOCOMA clase funcion main .)
 
 
 state 34
 
-    (5) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER .
+    (7) programa -> PROGRAM ID PUNTOCOMA var funcion main .
 
-    $end            reduce using rule 5 (main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER .)
+    $end            reduce using rule 7 (programa -> PROGRAM ID PUNTOCOMA var funcion main .)
 
 
 state 35
 
-    (6) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE . LLAVEDER
+    (9) main -> MAIN PARENTESISIZQ PARENTESISDER . LLAVEIZQ LLAVEDER
+    (10) main -> MAIN PARENTESISIZQ PARENTESISDER . LLAVEIZQ ESTATUTO LLAVEDER
 
-    LLAVEDER        shift and go to state 41
+    LLAVEIZQ        shift and go to state 42
 
 
 state 36
 
-    (7) clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .
+    (11) clase -> CLASS ID LLAVEIZQ . LLAVEDER PUNTOCOMA
+    (12) clase -> CLASS ID LLAVEIZQ . BLOQUECLASE LLAVEDER PUNTOCOMA
 
-    MAIN            reduce using rule 7 (clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .)
-    VAR             reduce using rule 7 (clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .)
+    LLAVEDER        shift and go to state 43
+    BLOQUECLASE     shift and go to state 44
 
 
 state 37
 
-    (8) clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER . PUNTOCOMA
+    (14) varp -> tipo_compuesto ID . PUNTOCOMA
+    (15) varp -> tipo_compuesto ID . PUNTOCOMA varp
 
-    PUNTOCOMA       shift and go to state 42
+    PUNTOCOMA       shift and go to state 45
 
 
 state 38
 
-    (11) varp -> tipo_compuesto ID PUNTOCOMA varp .
+    (16) varp -> tipo_simple ID . PUNTOCOMA
+    (17) varp -> tipo_simple ID . PUNTOCOMA varp
+    (18) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
 
-    FUNCION         reduce using rule 11 (varp -> tipo_compuesto ID PUNTOCOMA varp .)
-    MAIN            reduce using rule 11 (varp -> tipo_compuesto ID PUNTOCOMA varp .)
+    PUNTOCOMA       shift and go to state 46
+    CORCHETEIZQ     shift and go to state 47
 
 
 state 39
 
-    (13) varp -> tipo_simple ID PUNTOCOMA varp .
+    (27) funcion -> FUNC tipo_simple ID . PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple ID . PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    FUNCION         reduce using rule 13 (varp -> tipo_simple ID PUNTOCOMA varp .)
-    MAIN            reduce using rule 13 (varp -> tipo_simple ID PUNTOCOMA varp .)
+    PARENTESISIZQ   shift and go to state 48
 
 
 state 40
 
-    (14) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
-    (15) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA varp
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (29) funcion -> FUNC VOID ID . PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC VOID ID . PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
 
-    CORCHETEDER     shift and go to state 43
+    PARENTESISIZQ   shift and go to state 49
 
 
 state 41
 
-    (6) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER .
+    (4) programa -> PROGRAM ID PUNTOCOMA clase var funcion main .
 
-    $end            reduce using rule 6 (main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ BLOQUE LLAVEDER .)
+    $end            reduce using rule 4 (programa -> PROGRAM ID PUNTOCOMA clase var funcion main .)
 
 
 state 42
 
-    (8) clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .
+    (9) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ . LLAVEDER
+    (10) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ . ESTATUTO LLAVEDER
 
-    MAIN            reduce using rule 8 (clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .)
-    VAR             reduce using rule 8 (clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .)
+    LLAVEDER        shift and go to state 50
+    ESTATUTO        shift and go to state 51
 
 
 state 43
 
-    (14) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
-    (15) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA varp
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (11) clase -> CLASS ID LLAVEIZQ LLAVEDER . PUNTOCOMA
 
-    PUNTOCOMA       shift and go to state 45
-    CORCHETEIZQ     shift and go to state 44
+    PUNTOCOMA       shift and go to state 52
 
 
 state 44
 
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA varp
+    (12) clase -> CLASS ID LLAVEIZQ BLOQUECLASE . LLAVEDER PUNTOCOMA
 
-    CTEI            shift and go to state 46
+    LLAVEDER        shift and go to state 53
 
 
 state 45
 
-    (14) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
-    (15) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . varp
-    (10) varp -> . tipo_compuesto ID PUNTOCOMA
-    (11) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (12) varp -> . tipo_simple ID PUNTOCOMA
-    (13) varp -> . tipo_simple ID PUNTOCOMA varp
-    (14) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (21) tipo_compuesto -> . ID
-    (18) tipo_simple -> . INT
-    (19) tipo_simple -> . FLOAT
-    (20) tipo_simple -> . CHAR
+    (14) varp -> tipo_compuesto ID PUNTOCOMA .
+    (15) varp -> tipo_compuesto ID PUNTOCOMA . varp
+    (14) varp -> . tipo_compuesto ID PUNTOCOMA
+    (15) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (16) varp -> . tipo_simple ID PUNTOCOMA
+    (17) varp -> . tipo_simple ID PUNTOCOMA varp
+    (18) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (26) tipo_compuesto -> . ID
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
 
-    FUNCION         reduce using rule 14 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
-    MAIN            reduce using rule 14 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
-    ID              shift and go to state 18
-    INT             shift and go to state 20
-    FLOAT           shift and go to state 21
-    CHAR            shift and go to state 22
+    MAIN            reduce using rule 14 (varp -> tipo_compuesto ID PUNTOCOMA .)
+    FUNC            reduce using rule 14 (varp -> tipo_compuesto ID PUNTOCOMA .)
+    ID              shift and go to state 23
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
 
-    tipo_simple                    shift and go to state 19
-    varp                           shift and go to state 47
-    tipo_compuesto                 shift and go to state 17
+    tipo_compuesto                 shift and go to state 22
+    varp                           shift and go to state 54
+    tipo_simple                    shift and go to state 24
 
 state 46
 
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA varp
+    (16) varp -> tipo_simple ID PUNTOCOMA .
+    (17) varp -> tipo_simple ID PUNTOCOMA . varp
+    (14) varp -> . tipo_compuesto ID PUNTOCOMA
+    (15) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (16) varp -> . tipo_simple ID PUNTOCOMA
+    (17) varp -> . tipo_simple ID PUNTOCOMA varp
+    (18) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (26) tipo_compuesto -> . ID
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
 
-    CORCHETEDER     shift and go to state 48
+    MAIN            reduce using rule 16 (varp -> tipo_simple ID PUNTOCOMA .)
+    FUNC            reduce using rule 16 (varp -> tipo_simple ID PUNTOCOMA .)
+    ID              shift and go to state 23
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
 
+    tipo_simple                    shift and go to state 24
+    varp                           shift and go to state 55
+    tipo_compuesto                 shift and go to state 22
 
 state 47
 
-    (15) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .
+    (18) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
 
-    FUNCION         reduce using rule 15 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
-    MAIN            reduce using rule 15 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+    CTEI            shift and go to state 56
 
 
 state 48
 
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA varp
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ . parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple ID PARENTESISIZQ . parametros PARENTESISDER PUNTOCOMA cuerpo
+    (38) parametros -> . tipo_simple ID
+    (39) parametros -> . tipo_simple ID COMA parametros
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
 
-    PUNTOCOMA       shift and go to state 49
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
 
+    tipo_simple                    shift and go to state 57
+    parametros                     shift and go to state 58
 
 state 49
 
-    (16) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . varp
-    (10) varp -> . tipo_compuesto ID PUNTOCOMA
-    (11) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (12) varp -> . tipo_simple ID PUNTOCOMA
-    (13) varp -> . tipo_simple ID PUNTOCOMA varp
-    (14) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (15) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (16) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-    (17) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-    (21) tipo_compuesto -> . ID
-    (18) tipo_simple -> . INT
-    (19) tipo_simple -> . FLOAT
-    (20) tipo_simple -> . CHAR
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ . parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC VOID ID PARENTESISIZQ . parametros PARENTESISDER PUNTOCOMA cuerpo
+    (38) parametros -> . tipo_simple ID
+    (39) parametros -> . tipo_simple ID COMA parametros
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
 
-    FUNCION         reduce using rule 16 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
-    MAIN            reduce using rule 16 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
-    ID              shift and go to state 18
-    INT             shift and go to state 20
-    FLOAT           shift and go to state 21
-    CHAR            shift and go to state 22
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
 
-    tipo_simple                    shift and go to state 19
-    varp                           shift and go to state 50
-    tipo_compuesto                 shift and go to state 17
+    parametros                     shift and go to state 59
+    tipo_simple                    shift and go to state 57
 
 state 50
 
-    (17) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .
+    (9) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER .
 
-    FUNCION         reduce using rule 17 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
-    MAIN            reduce using rule 17 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+    $end            reduce using rule 9 (main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER .)
+
+
+state 51
+
+    (10) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO . LLAVEDER
+
+    LLAVEDER        shift and go to state 60
+
+
+state 52
+
+    (11) clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .
+
+    MAIN            reduce using rule 11 (clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .)
+    VAR             reduce using rule 11 (clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .)
+    FUNC            reduce using rule 11 (clase -> CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA .)
+
+
+state 53
+
+    (12) clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER . PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 61
+
+
+state 54
+
+    (15) varp -> tipo_compuesto ID PUNTOCOMA varp .
+
+    MAIN            reduce using rule 15 (varp -> tipo_compuesto ID PUNTOCOMA varp .)
+    FUNC            reduce using rule 15 (varp -> tipo_compuesto ID PUNTOCOMA varp .)
+
+
+state 55
+
+    (17) varp -> tipo_simple ID PUNTOCOMA varp .
+
+    MAIN            reduce using rule 17 (varp -> tipo_simple ID PUNTOCOMA varp .)
+    FUNC            reduce using rule 17 (varp -> tipo_simple ID PUNTOCOMA varp .)
+
+
+state 56
+
+    (18) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
+    (19) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA varp
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+
+    CORCHETEDER     shift and go to state 62
+
+
+state 57
+
+    (38) parametros -> tipo_simple . ID
+    (39) parametros -> tipo_simple . ID COMA parametros
+
+    ID              shift and go to state 63
+
+
+state 58
+
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros . PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros . PARENTESISDER PUNTOCOMA cuerpo
+
+    PARENTESISDER   shift and go to state 64
+
+
+state 59
+
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ parametros . PARENTESISDER PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC VOID ID PARENTESISIZQ parametros . PARENTESISDER PUNTOCOMA cuerpo
+
+    PARENTESISDER   shift and go to state 65
+
+
+state 60
+
+    (10) main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER .
+
+    $end            reduce using rule 10 (main -> MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER .)
+
+
+state 61
+
+    (12) clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .
+
+    MAIN            reduce using rule 12 (clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .)
+    VAR             reduce using rule 12 (clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .)
+    FUNC            reduce using rule 12 (clase -> CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA .)
+
+
+state 62
+
+    (18) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
+    (19) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA varp
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+
+    PUNTOCOMA       shift and go to state 67
+    CORCHETEIZQ     shift and go to state 66
+
+
+state 63
+
+    (38) parametros -> tipo_simple ID .
+    (39) parametros -> tipo_simple ID . COMA parametros
+
+    PARENTESISDER   reduce using rule 38 (parametros -> tipo_simple ID .)
+    COMA            shift and go to state 68
+
+
+state 64
+
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA cuerpo
+
+    PUNTOCOMA       shift and go to state 69
+
+
+state 65
+
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA dec_var cuerpo
+    (30) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA cuerpo
+
+    PUNTOCOMA       shift and go to state 70
+
+
+state 66
+
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA varp
+
+    CTEI            shift and go to state 71
+
+
+state 67
+
+    (18) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
+    (19) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . varp
+    (14) varp -> . tipo_compuesto ID PUNTOCOMA
+    (15) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (16) varp -> . tipo_simple ID PUNTOCOMA
+    (17) varp -> . tipo_simple ID PUNTOCOMA varp
+    (18) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (26) tipo_compuesto -> . ID
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    MAIN            reduce using rule 18 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    FUNC            reduce using rule 18 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    ID              shift and go to state 23
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 24
+    varp                           shift and go to state 72
+    tipo_compuesto                 shift and go to state 22
+
+state 68
+
+    (39) parametros -> tipo_simple ID COMA . parametros
+    (38) parametros -> . tipo_simple ID
+    (39) parametros -> . tipo_simple ID COMA parametros
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 57
+    parametros                     shift and go to state 73
+
+state 69
+
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . dec_var cuerpo
+    (28) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . cuerpo
+    (31) dec_var -> . VAR dec_varp
+    (40) cuerpo -> . LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> . LLAVEIZQ ESTATUTO LLAVEDER
+
+    VAR             shift and go to state 76
+    LLAVEIZQ        shift and go to state 77
+
+    dec_var                        shift and go to state 74
+    cuerpo                         shift and go to state 75
+
+state 70
+
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . dec_var cuerpo
+    (30) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . cuerpo
+    (31) dec_var -> . VAR dec_varp
+    (40) cuerpo -> . LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> . LLAVEIZQ ESTATUTO LLAVEDER
+
+    VAR             shift and go to state 76
+    LLAVEIZQ        shift and go to state 77
+
+    dec_var                        shift and go to state 78
+    cuerpo                         shift and go to state 79
+
+state 71
+
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA varp
+
+    CORCHETEDER     shift and go to state 80
+
+
+state 72
+
+    (19) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .
+
+    MAIN            reduce using rule 19 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+    FUNC            reduce using rule 19 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+
+
+state 73
+
+    (39) parametros -> tipo_simple ID COMA parametros .
+
+    PARENTESISDER   reduce using rule 39 (parametros -> tipo_simple ID COMA parametros .)
+
+
+state 74
+
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var . cuerpo
+    (40) cuerpo -> . LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> . LLAVEIZQ ESTATUTO LLAVEDER
+
+    LLAVEIZQ        shift and go to state 77
+
+    cuerpo                         shift and go to state 81
+
+state 75
+
+    (28) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo .
+
+    MAIN            reduce using rule 28 (funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo .)
+
+
+state 76
+
+    (31) dec_var -> VAR . dec_varp
+    (32) dec_varp -> . tipo_simple ID PUNTOCOMA dec_varp
+    (33) dec_varp -> . tipo_simple ID PUNTOCOMA
+    (34) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    dec_varp                       shift and go to state 82
+    tipo_simple                    shift and go to state 83
+
+state 77
+
+    (40) cuerpo -> LLAVEIZQ . ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> LLAVEIZQ . ESTATUTO LLAVEDER
+
+    ESTATUTO        shift and go to state 84
+
+
+state 78
+
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var . cuerpo
+    (40) cuerpo -> . LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> . LLAVEIZQ ESTATUTO LLAVEDER
+
+    LLAVEIZQ        shift and go to state 77
+
+    cuerpo                         shift and go to state 85
+
+state 79
+
+    (30) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo .
+
+    MAIN            reduce using rule 30 (funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo .)
+
+
+state 80
+
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA varp
+
+    PUNTOCOMA       shift and go to state 86
+
+
+state 81
+
+    (27) funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo .
+
+    MAIN            reduce using rule 27 (funcion -> FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo .)
+
+
+state 82
+
+    (31) dec_var -> VAR dec_varp .
+
+    LLAVEIZQ        reduce using rule 31 (dec_var -> VAR dec_varp .)
+
+
+state 83
+
+    (32) dec_varp -> tipo_simple . ID PUNTOCOMA dec_varp
+    (33) dec_varp -> tipo_simple . ID PUNTOCOMA
+    (34) dec_varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple . ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+
+    ID              shift and go to state 87
+
+
+state 84
+
+    (40) cuerpo -> LLAVEIZQ ESTATUTO . RETURN ID PUNTOCOMA LLAVEDER
+    (41) cuerpo -> LLAVEIZQ ESTATUTO . LLAVEDER
+
+    RETURN          shift and go to state 88
+    LLAVEDER        shift and go to state 89
+
+
+state 85
+
+    (29) funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo .
+
+    MAIN            reduce using rule 29 (funcion -> FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo .)
+
+
+state 86
+
+    (20) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . varp
+    (14) varp -> . tipo_compuesto ID PUNTOCOMA
+    (15) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (16) varp -> . tipo_simple ID PUNTOCOMA
+    (17) varp -> . tipo_simple ID PUNTOCOMA varp
+    (18) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (19) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (20) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (21) varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
+    (26) tipo_compuesto -> . ID
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    MAIN            reduce using rule 20 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    FUNC            reduce using rule 20 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    ID              shift and go to state 23
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 24
+    varp                           shift and go to state 90
+    tipo_compuesto                 shift and go to state 22
+
+state 87
+
+    (32) dec_varp -> tipo_simple ID . PUNTOCOMA dec_varp
+    (33) dec_varp -> tipo_simple ID . PUNTOCOMA
+    (34) dec_varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 91
+    CORCHETEIZQ     shift and go to state 92
+
+
+state 88
+
+    (40) cuerpo -> LLAVEIZQ ESTATUTO RETURN . ID PUNTOCOMA LLAVEDER
+
+    ID              shift and go to state 93
+
+
+state 89
+
+    (41) cuerpo -> LLAVEIZQ ESTATUTO LLAVEDER .
+
+    MAIN            reduce using rule 41 (cuerpo -> LLAVEIZQ ESTATUTO LLAVEDER .)
+
+
+state 90
+
+    (21) varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .
+
+    MAIN            reduce using rule 21 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+    FUNC            reduce using rule 21 (varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp .)
+
+
+state 91
+
+    (32) dec_varp -> tipo_simple ID PUNTOCOMA . dec_varp
+    (33) dec_varp -> tipo_simple ID PUNTOCOMA .
+    (32) dec_varp -> . tipo_simple ID PUNTOCOMA dec_varp
+    (33) dec_varp -> . tipo_simple ID PUNTOCOMA
+    (34) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    LLAVEIZQ        reduce using rule 33 (dec_varp -> tipo_simple ID PUNTOCOMA .)
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 83
+    dec_varp                       shift and go to state 94
+
+state 92
+
+    (34) dec_varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+
+    CTEI            shift and go to state 95
+
+
+state 93
+
+    (40) cuerpo -> LLAVEIZQ ESTATUTO RETURN ID . PUNTOCOMA LLAVEDER
+
+    PUNTOCOMA       shift and go to state 96
+
+
+state 94
+
+    (32) dec_varp -> tipo_simple ID PUNTOCOMA dec_varp .
+
+    LLAVEIZQ        reduce using rule 32 (dec_varp -> tipo_simple ID PUNTOCOMA dec_varp .)
+
+
+state 95
+
+    (34) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+
+    CORCHETEDER     shift and go to state 97
+
+
+state 96
+
+    (40) cuerpo -> LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA . LLAVEDER
+
+    LLAVEDER        shift and go to state 98
+
+
+state 97
+
+    (34) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA dec_varp
+    (35) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 100
+    CORCHETEIZQ     shift and go to state 99
+
+
+state 98
+
+    (40) cuerpo -> LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER .
+
+    MAIN            reduce using rule 40 (cuerpo -> LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER .)
+
+
+state 99
+
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA
+
+    CTEI            shift and go to state 101
+
+
+state 100
+
+    (34) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . dec_varp
+    (35) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
+    (32) dec_varp -> . tipo_simple ID PUNTOCOMA dec_varp
+    (33) dec_varp -> . tipo_simple ID PUNTOCOMA
+    (34) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    LLAVEIZQ        reduce using rule 35 (dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 83
+    dec_varp                       shift and go to state 102
+
+state 101
+
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA
+
+    CORCHETEDER     shift and go to state 103
+
+
+state 102
+
+    (34) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp .
+
+    LLAVEIZQ        reduce using rule 34 (dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp .)
+
+
+state 103
+
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 104
+
+
+state 104
+
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . dec_varp
+    (37) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .
+    (32) dec_varp -> . tipo_simple ID PUNTOCOMA dec_varp
+    (33) dec_varp -> . tipo_simple ID PUNTOCOMA
+    (34) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (35) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (36) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
+    (37) dec_varp -> . tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
+    (22) tipo_simple -> . INT
+    (23) tipo_simple -> . FLOAT
+    (24) tipo_simple -> . CHAR
+    (25) tipo_simple -> . BOOL
+
+    LLAVEIZQ        reduce using rule 37 (dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA .)
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    CHAR            shift and go to state 27
+    BOOL            shift and go to state 28
+
+    tipo_simple                    shift and go to state 83
+    dec_varp                       shift and go to state 105
+
+state 105
+
+    (36) dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp .
+
+    LLAVEIZQ        reduce using rule 36 (dec_varp -> tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp .)
 

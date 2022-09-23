@@ -3,5 +3,10 @@ var
 int x;
 float y[2];
 Perro chihuahua;
+
+func int m1 (int x, float y); 
+var int s[2];
+float r[4][4];
+{ estatuto return x; }
 main () {
 }
