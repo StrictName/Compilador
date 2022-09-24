@@ -12,7 +12,10 @@ reserved = {
     'func' : 'FUNC',
     'void' : 'VOID',
     'return' : 'RETURN',
-    'estatuto' : 'ESTATUTO'
+    'estatuto' : 'ESTATUTO',
+    'public' : 'PUBLIC',
+    'private' : 'PRIVATE',
+    'protectec' : 'PROTECTED'
 }
 
 tokens = [
@@ -22,11 +25,11 @@ tokens = [
     'PARENTESISDER',
     'LLAVEIZQ',
     'LLAVEDER',
-    'BLOQUECLASE',
     'CTEI',
     'CORCHETEIZQ',
     'CORCHETEDER',
-    'COMA'
+    'COMA',
+    'DOSPUNTOS'
 ] + list(reserved.values())
 
 t_PUNTOCOMA = r';'
@@ -37,8 +40,7 @@ t_LLAVEDER = r'\}'
 t_CORCHETEIZQ = r'\['
 t_CORCHETEDER = r'\]'
 t_COMA = r'\,'
-
-t_BLOQUECLASE = r'BLOQUECLASE'
+t_DOSPUNTOS = r'\:'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -90,8 +92,19 @@ def p_main(t):
             | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER'''
 
 def p_clase(t):
-    '''clase : CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
-            | CLASS ID LLAVEIZQ BLOQUECLASE LLAVEDER PUNTOCOMA'''
+    '''clase : CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
+            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
+            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA
+            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA clase
+            | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
+            | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
+            | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
+            | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
+
+def p_tipo_clase(t):
+    '''tipo_clase : PUBLIC
+                    | PROTECTED
+                    | PRIVATE'''
 
 def p_var(t):
     '''var : VAR varp'''
@@ -117,9 +130,21 @@ def p_tipo_compuesto(t):
 
 def p_funcion(t):
     '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
+                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
+                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo
+                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
                 | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion
+                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo
+                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo funcion
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo'''
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
+                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo
+                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion
+                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo
+                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo funcion'''
 
 def p_dec_var(t):
     '''dec_var : VAR dec_varp'''
@@ -140,6 +165,23 @@ def p_cuerpo(t):
     '''cuerpo : LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
                 | LLAVEIZQ ESTATUTO LLAVEDER'''
 
+def p_bloque_clase(t):
+    '''bloque_clase : atributo
+                    | metodo'''
+
+def p_atributo(t):
+    '''atributo : tipo_clase tipo_simple ID PUNTOCOMA
+                | tipo_clase tipo_simple ID PUNTOCOMA atributo'''
+
+def p_metodo(t):
+    '''metodo : tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+            | tipo_clase tipo_simple ID PARENTESISIZQ PARENTESISDER cuerpo
+            | tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+            | tipo_clase tipo_simple ID PARENTESISIZQ PARENTESISDER cuerpo metodo
+            | tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+            | tipo_clase VOID ID PARENTESISIZQ PARENTESISDER cuerpo
+            | tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+            | tipo_clase VOID ID PARENTESISIZQ PARENTESISDER cuerpo metodo'''
 
 
 

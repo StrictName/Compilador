@@ -1,12 +1,18 @@
-program prueba;
-var 
-int x;
-float y[2];
-Perro chihuahua;
+program proyectocompilador;
 
-func int m1 (int x, float y); 
-var int s[2];
-float r[4][4];
-{ estatuto return x; }
-main () {
+class Animal 
+{
+   public int x;
+   private float s;
+
+
+   public int hello (int y, int z)
+   {
+      ESTATUTO
+      return e;
+   }
+};
+
+main() {
 }
+
