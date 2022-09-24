@@ -15,7 +15,9 @@ reserved = {
     'estatuto' : 'ESTATUTO',
     'public' : 'PUBLIC',
     'private' : 'PRIVATE',
-    'protectec' : 'PROTECTED'
+    'protected' : 'PROTECTED',
+    'attribute' : 'ATTRIBUTE',
+    'method' : 'METHOD'
 }
 
 tokens = [
@@ -39,8 +41,8 @@ t_LLAVEIZQ = r'\{'
 t_LLAVEDER = r'\}'
 t_CORCHETEIZQ = r'\['
 t_CORCHETEDER = r'\]'
-t_COMA = r'\,'
-t_DOSPUNTOS = r'\:'
+t_COMA = r','
+t_DOSPUNTOS = r':'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -166,8 +168,7 @@ def p_cuerpo(t):
                 | LLAVEIZQ ESTATUTO LLAVEDER'''
 
 def p_bloque_clase(t):
-    '''bloque_clase : atributo
-                    | metodo'''
+    '''bloque_clase : ATTRIBUTE DOSPUNTOS atributo METHOD DOSPUNTOS metodo'''
 
 def p_atributo(t):
     '''atributo : tipo_clase tipo_simple ID PUNTOCOMA

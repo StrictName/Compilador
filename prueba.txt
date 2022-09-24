@@ -2,17 +2,74 @@ program proyectocompilador;
 
 class Animal 
 {
+   attribute:
    public int x;
    private float s;
+
+   method:
+   private void prueba () 
+   {
+      estatuto
+   }
 
 
    public int hello (int y, int z)
    {
-      ESTATUTO
+      estatuto
       return e;
    }
 };
 
-main() {
+class Dog : public Animal 
+{
+   attribute:
+   public int x;
+   private float s;
+
+   method:
+   private void prueba () 
+   {
+      estatuto
+   }
+
+
+   public int hello (int y, int z)
+   {
+      estatuto
+      return e;
+   }
+};
+
+var 
+   Dog perro;
+   int edad;
+   int edad2;
+   float peso;
+   char caracter;
+   int array[1];
+   float array2[2][3];
+
+
+func int suma ();
+var 
+   int edad3;
+{
+   estatuto 
+   return edad3;
 }
 
+
+func void suma (int x, float y);
+{
+   estatuto 
+}
+
+func void suma (char z);
+{
+   estatuto 
+}
+
+main()
+{
+   
+}
