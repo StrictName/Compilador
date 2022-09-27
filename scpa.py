@@ -8,16 +8,26 @@ reserved = {
     'int' : 'INT',
     'float' : 'FLOAT',
     'char' : 'CHAR',
-    'bool' : 'BOOL',
     'func' : 'FUNC',
     'void' : 'VOID',
     'return' : 'RETURN',
-    'estatuto' : 'ESTATUTO',
     'public' : 'PUBLIC',
     'private' : 'PRIVATE',
     'protected' : 'PROTECTED',
     'attribute' : 'ATTRIBUTE',
-    'method' : 'METHOD'
+    'method' : 'METHOD',
+    'read' : 'READ',
+    'write' : 'WRITE',
+    'while' : 'WHILE',
+    'do' : 'DO',
+    'from' : 'FROM',
+    'to' : 'TO',
+    'and' : 'AND',
+    'or' : 'OR',
+    'not' : 'NOT',
+    'equal' : 'EQUAL',
+    'if' : 'IF',
+    'else' : 'ELSE'
 }
 
 tokens = [
@@ -28,10 +38,20 @@ tokens = [
     'LLAVEIZQ',
     'LLAVEDER',
     'CTEI',
+    'CTEF',
+    'CTECH',
     'CORCHETEIZQ',
     'CORCHETEDER',
     'COMA',
-    'DOSPUNTOS'
+    'DOSPUNTOS',
+    'IGUAL',
+    'LETRERO',
+    'LESSTHAN',
+    'GREATERTHAN',
+    'MAS',
+    'MENOS',
+    'POR',
+    'DIV'
 ] + list(reserved.values())
 
 t_PUNTOCOMA = r';'
@@ -42,11 +62,30 @@ t_LLAVEDER = r'\}'
 t_CORCHETEIZQ = r'\['
 t_CORCHETEDER = r'\]'
 t_COMA = r','
-t_DOSPUNTOS = r':'
+t_DOSPUNTOS = r'\:'
+t_IGUAL = r'\='
+t_LESSTHAN = r'\<'
+t_GREATERTHAN = r'\>'
+t_MAS = r'\+'
+t_MENOS = r'\-'
+t_POR = r'\*'
+t_DIV = r'\/'
+
+t_LETRERO = r'"[a-zA-Z_][a-zA-Z_0-9]*"'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value, 'ID')
+    return t
+
+def t_CTECH(t):
+    r'\'[a-zA-Z_][a-zA-Z_0-9]?\''
+    t.type = reserved.get(t.value, 'CTECH')
+    return t
+
+def t_CTEF(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
     return t
 
 def t_CTEI(t):
@@ -91,7 +130,7 @@ def p_programa(t):
 
 def p_main(t):
     '''main : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ ESTATUTO LLAVEDER'''
+            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
 
 def p_clase(t):
     '''clase : CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
@@ -124,8 +163,7 @@ def p_varp(t):
 def p_tipo_simple(t):
     '''tipo_simple : INT
                     | FLOAT
-                    | CHAR
-                    | BOOL'''
+                    | CHAR'''
 
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
@@ -133,20 +171,12 @@ def p_tipo_compuesto(t):
 def p_funcion(t):
     '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
                 | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
-                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo
-                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
                 | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
                 | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion
-                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo
-                | FUNC tipo_simple ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo funcion
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
-                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo
-                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion
-                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo
-                | FUNC VOID ID PARENTESISIZQ PARENTESISDER PUNTOCOMA cuerpo funcion'''
+                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion'''
 
 def p_dec_var(t):
     '''dec_var : VAR dec_varp'''
@@ -164,8 +194,8 @@ def p_parametros(t):
                     | tipo_simple ID COMA parametros'''
 
 def p_cuerpo(t):
-    '''cuerpo : LLAVEIZQ ESTATUTO RETURN ID PUNTOCOMA LLAVEDER
-                | LLAVEIZQ ESTATUTO LLAVEDER'''
+    '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA LLAVEDER
+                | LLAVEIZQ estatuto LLAVEDER'''
 
 def p_bloque_clase(t):
     '''bloque_clase : ATTRIBUTE DOSPUNTOS atributo METHOD DOSPUNTOS metodo'''
@@ -176,16 +206,100 @@ def p_atributo(t):
 
 def p_metodo(t):
     '''metodo : tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-            | tipo_clase tipo_simple ID PARENTESISIZQ PARENTESISDER cuerpo
             | tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-            | tipo_clase tipo_simple ID PARENTESISIZQ PARENTESISDER cuerpo metodo
             | tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-            | tipo_clase VOID ID PARENTESISIZQ PARENTESISDER cuerpo
-            | tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-            | tipo_clase VOID ID PARENTESISIZQ PARENTESISDER cuerpo metodo'''
+            | tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo'''
 
 
+def p_estatuto(t):
+    '''estatuto : asignacion PUNTOCOMA
+                | asignacion PUNTOCOMA estatuto
+                | llamada PUNTOCOMA
+                | llamada PUNTOCOMA estatuto
+                | lee PUNTOCOMA
+                | lee PUNTOCOMA estatuto
+                | escribe PUNTOCOMA
+                | escribe PUNTOCOMA estatuto
+                | condicion
+                | condicion estatuto
+                | ciclo_w
+                | ciclo_w estatuto
+                | ciclo_f
+                | ciclo_f estatuto'''
 
+def p_asignacion(t):
+    '''asignacion : variable IGUAL exp'''
+
+def p_llamada(t):
+    '''llamada :  ID PARENTESISIZQ llamadap PARENTESISDER'''
+
+def p_llamadap(t):
+    '''llamadap : exp
+                | exp COMA llamadap'''
+
+def p_lee(t):
+    '''lee : READ PARENTESISIZQ leep PARENTESISDER'''
+
+def p_leep(t):
+    '''leep : variable
+            | variable COMA leep'''
+
+def p_variable(t):
+    '''variable : ID
+                | ID CORCHETEIZQ exp CORCHETEDER
+                | ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER'''
+
+def p_escribe(t):
+    '''escribe : WRITE PARENTESISIZQ escribep PARENTESISDER'''
+
+def p_escribep(t):
+    '''escribep : exp
+                | exp COMA escribep
+                | LETRERO
+                | LETRERO COMA escribep'''
+
+def p_condicion(t):
+    '''condicion : IF PARENTESISIZQ exp PARENTESISDER LLAVEIZQ estatuto LLAVEDER
+                | IF PARENTESISIZQ exp PARENTESISDER LLAVEIZQ estatuto LLAVEDER ELSE LLAVEIZQ estatuto LLAVEDER'''
+
+def p_ciclo_w(t):
+    '''ciclo_w : WHILE PARENTESISIZQ exp PARENTESISDER DO LLAVEIZQ estatuto LLAVEDER'''
+
+def p_ciclo_f(t):
+    '''ciclo_f : FROM variable IGUAL exp TO exp DO LLAVEIZQ estatuto LLAVEDER'''
+
+def p_exp(t):
+    '''exp : t_exp
+            | t_exp OR exp'''
+
+def p_t_exp(t):
+    '''t_exp : g_exp
+            | g_exp AND t_exp'''
+
+def p_g_exp(t):
+    '''g_exp : m_exp
+            | m_exp EQUAL m_exp
+            | m_exp NOT m_exp
+            | m_exp GREATERTHAN m_exp
+            | m_exp LESSTHAN m_exp'''
+
+def p_m_exp(t):
+    '''m_exp : t
+            | t MAS m_exp
+            | t MENOS m_exp'''
+
+def p_t(t):
+    '''t : f
+        | f POR t
+        | f DIV t'''
+
+def p_f(t):
+    '''f : PARENTESISIZQ exp PARENTESISDER
+        | CTEI
+        | CTEF
+        | CTECH
+        | variable
+        | llamada'''
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)

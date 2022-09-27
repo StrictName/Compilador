@@ -7,15 +7,34 @@ class Animal
    private float s;
 
    method:
-   private void prueba () 
+   private void prueba (int ys) 
    {
-      estatuto
+      x = 5;
+      y[3] = x;
+      
+
+      if(x+2 equal 2)
+      {
+         p = x;
+      }
+
+      else 
+      {
+         metodo(x);
+      }
+      
    }
 
 
    public int hello (int y, int z)
    {
-      estatuto
+      y=3;
+
+      while (x+2*3) do 
+      {
+         mato(2);
+         y = 2;
+      }
       return e;
    }
 };
@@ -27,15 +46,23 @@ class Dog : public Animal
    private float s;
 
    method:
-   private void prueba () 
+   private void prueba (int y) 
    {
-      estatuto
+      if(5>3)
+      {
+         x=w;
+      }
+
+
+
+      return x*2;
    }
 
 
    public int hello (int y, int z)
    {
-      estatuto
+      x=3;
+      
       return e;
    }
 };
@@ -50,26 +77,43 @@ var
    float array2[2][3];
 
 
-func int suma ();
+func int suma (int y);
 var 
    int edad3;
 {
-   estatuto 
-   return edad3;
+   
+   x = 5.3;
+   y = x;
+   z = suma(x) + a - 6;
+
+   read (x);
+   read (x[2], x);
+   read (x,w,x);
+   write ('t', "jajaja");
+
+   x='w';
+   return x+2;
+   
 }
 
 
 func void suma (int x, float y);
 {
-   estatuto 
+   x=2;
 }
 
 func void suma (char z);
 {
-   estatuto 
+   y=3;
 }
 
 main()
 {
-   
+   x=2;
+   write(x+2);
+
+   from x = 2+3 to y do
+   {
+      read(w);
+   }
 }
