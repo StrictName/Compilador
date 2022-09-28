@@ -51,7 +51,8 @@ tokens = [
     'MAS',
     'MENOS',
     'POR',
-    'DIV'
+    'DIV',
+    'PUNTO'
 ] + list(reserved.values())
 
 t_PUNTOCOMA = r';'
@@ -70,6 +71,7 @@ t_MAS = r'\+'
 t_MENOS = r'\-'
 t_POR = r'\*'
 t_DIV = r'\/'
+t_PUNTO = r'.'
 
 t_LETRERO = r'"[a-zA-Z_][a-zA-Z_0-9]*"'
 
@@ -225,7 +227,12 @@ def p_estatuto(t):
                 | ciclo_w
                 | ciclo_w estatuto
                 | ciclo_f
-                | ciclo_f estatuto'''
+                | ciclo_f estatuto
+                | ID PUNTO ID PARENTESISIZQ ID PARENTESISDER PUNTOCOMA estatuto
+                | ID PUNTO ID PARENTESISIZQ CTEI PARENTESISDER PUNTOCOMA estatuto
+                | ID PUNTO ID PARENTESISIZQ CTEF PARENTESISDER PUNTOCOMA estatuto
+                | ID PUNTO ID PARENTESISIZQ CTECH PARENTESISDER PUNTOCOMA estatuto
+                | ID PUNTO ID PUNTOCOMA estatuto'''
 
 def p_asignacion(t):
     '''asignacion : variable IGUAL exp'''
@@ -299,7 +306,25 @@ def p_f(t):
         | CTEF
         | CTECH
         | variable
-        | llamada'''
+        | llamada
+        | llamada_metodo
+        | llamada_atributo'''
+
+def p_llamada_metodo(t):
+    '''llamada_metodo : ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER'''
+
+def p_llamada_metodop(t):
+    '''llamada_metodop : CTEI
+                        | CTEI COMA llamada_metodop
+                        | CTEF
+                        | CTEF COMA llamada_metodop
+                        | CTECH
+                        | CTECH COMA llamada_metodop
+                        | ID
+                        | ID COMA llamada_metodop'''
+
+def p_llamada_atributo(t):
+    '''llamada_atributo : ID PUNTO ID'''
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
