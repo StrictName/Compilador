@@ -105,7 +105,7 @@ func void suma (int x, float y);
    y = p.ladra;
 
    p.come(x);
-   p.duerma(3);
+   p.duerma(3, y);
    p.juega(4.8);
    p.corre('a');
    p.atri1;
@@ -114,6 +114,9 @@ func void suma (int x, float y);
 
    if (x > p.edad and y < p.anos ) {
       y[1] = p.edad;
+      if (v < p.calculo) {
+         u = 1 + p;
+      }
    }
 
    while (p.animal) do {
@@ -136,7 +139,7 @@ main()
    write(x+2);
 
    p.come(x);
-   p.duerma(3);
+   p.duerma(3, y);
    p.juega(4.8);
    p.corre('a');
    p.atri1;
@@ -154,6 +157,9 @@ main()
 
    if (x > p.edad and y < p.anos ) {
       y[1] = p.edad;
+      if (v < p.calculo) {
+         u = 1 + p;
+      }
    }
 
    while (p.animal) do {

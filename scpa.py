@@ -8,6 +8,7 @@ reserved = {
     'int' : 'INT',
     'float' : 'FLOAT',
     'char' : 'CHAR',
+    'bool' : 'BOOL',
     'func' : 'FUNC',
     'void' : 'VOID',
     'return' : 'RETURN',
@@ -112,9 +113,7 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-
 lex.lex()
-
 
 import sys
 import ply.yacc as yacc
@@ -165,7 +164,8 @@ def p_varp(t):
 def p_tipo_simple(t):
     '''tipo_simple : INT
                     | FLOAT
-                    | CHAR'''
+                    | CHAR
+                    | BOOL'''
 
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
@@ -228,11 +228,8 @@ def p_estatuto(t):
                 | ciclo_w estatuto
                 | ciclo_f
                 | ciclo_f estatuto
-                | ID PUNTO ID PARENTESISIZQ ID PARENTESISDER PUNTOCOMA estatuto
-                | ID PUNTO ID PARENTESISIZQ CTEI PARENTESISDER PUNTOCOMA estatuto
-                | ID PUNTO ID PARENTESISIZQ CTEF PARENTESISDER PUNTOCOMA estatuto
-                | ID PUNTO ID PARENTESISIZQ CTECH PARENTESISDER PUNTOCOMA estatuto
-                | ID PUNTO ID PUNTOCOMA estatuto'''
+                | llamada_metodo PUNTOCOMA estatuto
+                | llamada_atributo PUNTOCOMA estatuto'''
 
 def p_asignacion(t):
     '''asignacion : variable IGUAL exp'''
