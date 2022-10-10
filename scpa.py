@@ -115,6 +115,230 @@ def t_error(t):
 
 lex.lex()
 
+def return_type_cubo(opdo1, opdo2, operador):
+    return cubo_semantico[opdo1][opdo2][operador]
+cubo_semantico = {
+   'int':{
+        'int':{
+            '+': 'int',
+            '-': 'int',
+            '/': 'float',
+            '*': 'int',
+            '<': 'bool',
+            '>': 'bool',
+            'and': 'err',
+            'or': 'err',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': True
+        },
+        'float':{
+            '+': 'float',
+            '-': 'float',
+            '/': 'float',
+            '*': 'float',
+            '<': 'bool',
+            '>': 'bool',
+            'and': 'err',
+            'or': 'err',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': False
+        },
+        'bool':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'char':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        }
+    },
+
+    'float':{
+        'int':{
+            '+': 'float',
+            '-': 'float',
+            '/': 'float',
+            '*': 'float',
+            '<': 'bool',
+            '>': 'bool',
+            'and': 'err',
+            'or': 'err',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': True
+        },
+        'float':{
+            '+': 'float',
+            '-': 'float',
+            '/': 'float',
+            '*': 'float',
+            '<': 'bool',
+            '>': 'bool',
+            'and': 'err',
+            'or': 'err',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': True
+        },
+        'bool':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'char':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        }
+    },
+
+    'bool':{
+        'int':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'float':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'bool':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'bool',
+            'or': 'bool',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': True
+        },
+        'char':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        }
+    },
+    'char':{
+        'int':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'float':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'bool':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'err',
+            'equal': 'err',
+            '=': False
+        },
+        'char':{
+            '+': 'err',
+            '-': 'err',
+            '/': 'err',
+            '*': 'err',
+            '<': 'err',
+            '>': 'err',
+            'and': 'err',
+            'or': 'err',
+            'not': 'bool',
+            'equal': 'bool',
+            '=': True
+        }
+    }
+
+}
+
 import sys
 import ply.yacc as yacc
 
@@ -162,7 +386,7 @@ def p_varp(t):
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp'''
 
 def p_tipo_simple(t):
-    '''tipo_simple : INT
+    '''tipo_simple : INT n_seen_type
                     | FLOAT
                     | CHAR
                     | BOOL'''
@@ -325,6 +549,14 @@ def p_llamada_atributo(t):
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
+
+
+# Punto neuralgico para reconocer el tipo
+def p_n_seen_type(p):
+    'n_seen_type : '
+    global current_type
+    current_type = p[-1]
+
 
 yacc.yacc()
 
