@@ -6,7 +6,7 @@ class varTable:
             }
         }
 
-    def agregaFunc(self, num, bloque_codigo, nombre, tipo):
+    def agregaFila(self, num, bloque_codigo, nombre, tipo):
         self.tabla[num] = {}
         self.tabla[num]["bloque_codigo"] = bloque_codigo
         self.tabla[num]["nombre"] = nombre

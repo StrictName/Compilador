@@ -342,6 +342,10 @@ cubo_semantico = {
 import sys
 import ply.yacc as yacc
 
+bloque_codigoActual = ""
+nombreActual = ""
+tipoActual = ""
+
 def p_programa(t):
     '''programa : PROGRAM ID PUNTOCOMA main
                 | PROGRAM ID PUNTOCOMA clase main
@@ -356,6 +360,8 @@ def p_programa(t):
 def p_main(t):
     '''main : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
             | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
+    global bloque_codigoActual
+    bloque_codigoActual = t[1]
 
 def p_clase(t):
     '''clase : CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
@@ -366,6 +372,9 @@ def p_clase(t):
             | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
             | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
             | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
+    global bloque_codigoActual, nombreActual
+    bloque_codigoActual = t[1]
+    nombreActual = t[2]
 
 def p_tipo_clase(t):
     '''tipo_clase : PUBLIC
@@ -386,13 +395,17 @@ def p_varp(t):
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp'''
 
 def p_tipo_simple(t):
-    '''tipo_simple : INT n_seen_type
+    '''tipo_simple : INT
                     | FLOAT
                     | CHAR
                     | BOOL'''
+    global tipoActual
+    tipoActual = t[1]
 
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
+    global tipoActual
+    tipoActual = t[1]
 
 def p_funcion(t):
     '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
@@ -403,9 +416,14 @@ def p_funcion(t):
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion'''
+    global bloque_codigoActual, nombreActual
+    bloque_codigoActual = t[1]
+    nombreActual = t[3]
 
 def p_dec_var(t):
     '''dec_var : VAR dec_varp'''
+    global bloque_codigoActual
+    bloque_codigoActual = t[1]
 
 def p_dec_varp(t):
     '''dec_varp : tipo_simple ID PUNTOCOMA dec_varp
@@ -414,6 +432,8 @@ def p_dec_varp(t):
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
+    global nombreActual
+    nombreActual = t[1]
 
 def p_parametros(t):
     '''parametros : tipo_simple ID
@@ -549,13 +569,6 @@ def p_llamada_atributo(t):
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
-
-
-# Punto neuralgico para reconocer el tipo
-def p_n_seen_type(p):
-    'n_seen_type : '
-    global current_type
-    current_type = p[-1]
 
 
 yacc.yacc()
