@@ -1,10 +1,11 @@
-import imp
 import ply.lex as lex
 import sys
 import ply.yacc as yacc
 from variable import Var
 from varTable import varTable
 from semanticCube import SemanticCube
+
+varsTable = varTable()
 
 reserved = {
     'program' : 'PROGRAM',
@@ -121,11 +122,6 @@ def t_error(t):
 
 lex.lex()
 
-
-bloque_codigoActual = ""
-nombreActual = ""
-tipoActual = ""
-
 def p_programa(t):
     '''programa : PROGRAM ID PUNTOCOMA main
                 | PROGRAM ID PUNTOCOMA clase main
@@ -140,8 +136,6 @@ def p_programa(t):
 def p_main(t):
     '''main : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
             | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
-    global bloque_codigoActual
-    bloque_codigoActual = t[1]
 
 def p_clase(t):
     '''clase : CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
@@ -152,9 +146,6 @@ def p_clase(t):
             | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
             | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
             | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
-    global bloque_codigoActual, nombreActual
-    bloque_codigoActual = t[1]
-    nombreActual = t[2]
 
 def p_tipo_clase(t):
     '''tipo_clase : PUBLIC
@@ -162,30 +153,27 @@ def p_tipo_clase(t):
                     | PRIVATE'''
 
 def p_var(t):
-    '''var : VAR varp'''
+    '''var : VAR scopeGlobal_np varp'''
 
 def p_varp(t):
     '''varp : tipo_compuesto ID PUNTOCOMA
             | tipo_compuesto ID PUNTOCOMA varp
-            | tipo_simple ID PUNTOCOMA
-            | tipo_simple ID PUNTOCOMA varp
+            | tipo_simple ID getID_np PUNTOCOMA saveVar_np
+            | tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
             | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp'''
 
 def p_tipo_simple(t):
-    '''tipo_simple : INT
-                    | FLOAT
-                    | CHAR
-                    | BOOL'''
-    global tipoActual
-    tipoActual = t[1]
+    '''tipo_simple : INT getType_np
+                    | FLOAT getType_np
+                    | CHAR getType_np
+                    | BOOL getType_np'''
+
 
 def p_tipo_compuesto(t):
-    '''tipo_compuesto : ID'''
-    global tipoActual
-    tipoActual = t[1]
+    '''tipo_compuesto : ID getType_np'''
 
 def p_funcion(t):
     '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
@@ -196,24 +184,17 @@ def p_funcion(t):
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
                 | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion'''
-    global bloque_codigoActual, nombreActual
-    bloque_codigoActual = t[1]
-    nombreActual = t[3]
 
 def p_dec_var(t):
-    '''dec_var : VAR dec_varp'''
-    global bloque_codigoActual
-    bloque_codigoActual = t[1]
+    '''dec_var : VAR scopeFunc_np dec_varp'''
 
 def p_dec_varp(t):
-    '''dec_varp : tipo_simple ID PUNTOCOMA dec_varp
-                | tipo_simple ID PUNTOCOMA
+    '''dec_varp : tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp
+                | tipo_simple ID getID_np PUNTOCOMA saveVar_np
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
-    global nombreActual
-    nombreActual = t[1]
 
 def p_parametros(t):
     '''parametros : tipo_simple ID
@@ -224,11 +205,11 @@ def p_cuerpo(t):
                 | LLAVEIZQ estatuto LLAVEDER'''
 
 def p_bloque_clase(t):
-    '''bloque_clase : ATTRIBUTE DOSPUNTOS atributo METHOD DOSPUNTOS metodo'''
+    '''bloque_clase : ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo'''
 
 def p_atributo(t):
-    '''atributo : tipo_clase tipo_simple ID PUNTOCOMA
-                | tipo_clase tipo_simple ID PUNTOCOMA atributo'''
+    '''atributo : tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np
+                | tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np atributo'''
 
 def p_metodo(t):
     '''metodo : tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo
@@ -347,14 +328,51 @@ def p_llamada_metodop(t):
 def p_llamada_atributo(t):
     '''llamada_atributo : ID PUNTO ID'''
 
+def p_empty(p):
+    'empty :'
+    pass
+
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
 
 
+
+# PUNTOS NEURÁLGICOS #
+
+# Guarda nombre de variable
+def p_getID_np(p):
+    '''getID_np : empty'''
+    global current_var_id
+    current_var_id = p[-1]
+
+def p_getType_np(p):
+    '''getType_np : empty'''
+    global current_var_type
+    current_var_type = p[-1]
+
+def p_scopeClass_np(p):
+    '''scopeClass_np : empty'''
+    global current_var_scope
+    current_var_scope = 'class'
+
+def p_scopeFunc_np(p):
+    '''scopeFunc_np : empty'''
+    global current_var_scope
+    current_var_scope = 'func'
+
+def p_scopeGlobal_np(p):
+    '''scopeGlobal_np : empty'''
+    global current_var_scope
+    current_var_scope = 'global'
+
+def p_saveVar_np(p):
+    '''saveVar_np : empty'''
+    varsTable.add(current_var_id, current_var_type, current_var_scope)
+
+
+
 yacc.yacc()
-
 if __name__ == '__main__':
-
     if len(sys.argv) > 1:
         file = sys.argv[1]
         try:
@@ -367,3 +385,13 @@ if __name__ == '__main__':
             print(EOFError)
     else:
         print("Archivo no encontrado")
+        
+'''
+parser = yacc.yacc()
+file = sys.argv[1]
+f = open(file, 'r')
+data = f.read()
+case01 = parser.parse(data)
+'''
+
+print(varsTable.toString())

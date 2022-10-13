@@ -16,24 +16,28 @@
 
 
 #Function Directory 
+from tkinter.messagebox import NO
 from variable import Var
 
 class varTable:
-    def __init_(self):
+    def __init__(self):
         self.table = {}
-    
+
     def add(self, name, type, scope):
         currentVar = Var(type, scope)
         if name in self.table:
-            return "The variable already exists"
+            print("The variable already exists")
         else:
             self.table[name] = currentVar
-            return None
-    
+            print(f"Variable {name} saved successfully")
+
     def search(self, name):
         if name in self.table:
             return self.table[name], None
-        else: return None, "Variable undeclared"
-    
+        else:
+            return None, "Variable undeclared"
 
-    
+    def toString(self):
+        for key in self.table:
+            print(f"{key}: {self.table[key].type}, {self.table[key].scope} ")
+
