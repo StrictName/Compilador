@@ -95,4 +95,8 @@ from s = p.t > 2 to p.ala equal 5 do { m1(x, 8); }
 }
 
 Avance 2
-Se agrego el diccionario que será el cubo semántico, la tabla de variables y el directorio de funciones, pero no toma en cuenta aun a los objetos.
+Se agregó el diccionario que será el cubo semántico. Asi mismo, se crean la tabla de variables y el directorio de funciones con sus datos (id, tipo, scope), pero no toma en cuenta aun a los objetos. Igualmente falta guardar arreglos y matrices (atributos)
+
+
+Avance 3
+Se comenzó con la generación de cuadruplos al definir e insertar algunos puntos neurálgicos para poder ir guardando los operadores y operandos en sus respectivas pilas. Sin embargo aún falta respetar los paréntesis dentro de las expresiones y generar los cuadruplos completos de todos los posibles estatutos.
