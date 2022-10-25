@@ -1,6 +1,3 @@
-from ast import operator
-from inspect import stack
-from pickle import POP
 from queue import Empty
 from symbol import parameters
 import ply.lex as lex
@@ -126,8 +123,8 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
  
 # A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t\n\b'
- 
+t_ignore = ' \t\n\b'
+
 # Error handling rule
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -437,7 +434,7 @@ def p_saveParameter_np(p):
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
-    functionsTable.add(current_func_id, current_func_type, parameters_list, varsTable.pop())
+    functionsTable.add(current_func_id, current_func_type, parameters_list, varsTable)
 
 
 def p_saveIDpilaO_np(p):

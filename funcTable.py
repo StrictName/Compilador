@@ -19,9 +19,4 @@ class funcTable:
         else:
             return None, "Function undeclared"
 
-    def toString(self):
-        for key in self.table:
-            print(f"{key}: {self.table[key].type}")
-            for parameter in self.table[key].parameters:
-                print(f"{parameter.id}: {parameter.type}")
-            self.table[key].varsTable.toString()
+    
