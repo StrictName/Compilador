@@ -16,7 +16,7 @@
 
 
 #Function Directory 
-from tkinter.messagebox import NO
+#from tkinter.messagebox import NO
 from variable import Var
 
 class varTable:
@@ -26,7 +26,7 @@ class varTable:
     def add(self, name, type, scope):
         currentVar = Var(type, scope)
         if name in self.table:
-            print("The variable already exists")
+            print(f"The variable {name} already exists")
         else:
             self.table[name] = currentVar
             print(f"Variable {name} saved successfully")

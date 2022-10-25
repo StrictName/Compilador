@@ -1,0 +1,11 @@
+program proyectocompilador;
+
+func int suma (int y);
+var int edad;
+{
+    p = 4;
+}
+
+main()
+{
+}

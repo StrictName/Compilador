@@ -1,0 +1,103 @@
+program proyectocompilador;
+
+class Animal 
+{
+   attribute:
+   public int x;
+   private float s;
+
+   method:
+   private void prueba (int ys) 
+   {
+      x = 5;
+      y[3] = x;
+      
+
+      if(x+2 equal 2)
+      {
+         p = x;
+      }
+
+      else 
+      {
+         metodo(x);
+      }
+      
+   }
+
+
+   public int hello (int y, int z)
+   {
+      y=3;
+
+      while (x+2*3 / 5) do 
+      {
+         mato(2);
+         y = 2;
+         s = (x + 2) * (d - 3);
+      }
+      return e;
+   }
+};
+
+class Dog : public Animal 
+{
+   attribute:
+   public int xs;
+   private float ss;
+
+   method:
+   private void prueba (int y) 
+   {
+      if(5>3)
+      {
+         x=w;
+      }
+
+
+
+      return x*2;
+   }
+
+
+   public int hello (int y, int z)
+   {
+      x=3;
+      
+      return e;
+   }
+};
+
+var 
+   Dog perro;
+   int edad;
+   int edad2;
+   float peso;
+   char caracter;
+   int array[1];
+   float array2[2][3];
+
+
+func int suma (int y);
+var 
+   int edad3;
+{
+   
+   x = 5.3;
+   y = x;
+   z = suma(x) + a - 6;
+
+   read (x);
+   read (x[2], x);
+   read (x,w,x);
+   write ('t', "jajaja");
+
+   x='w';
+   return x+2;
+   
+}
+
+main()
+{
+
+}

@@ -1,0 +1,7 @@
+program proyectocompilador;
+
+
+main()
+{
+    s = x + 2 * d - 3;
+}

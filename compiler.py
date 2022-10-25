@@ -1,11 +1,24 @@
+from ast import operator
+from inspect import stack
+from pickle import POP
+from queue import Empty
+from symbol import parameters
 import ply.lex as lex
 import sys
 import ply.yacc as yacc
-from variable import Var
 from varTable import varTable
+from funcTable import funcTable
+from parametro import Parameter
+from arreglo import Array
+from arrayTable import arrayTable
 from semanticCube import SemanticCube
+from classTable import classTable
+
 
 varsTable = varTable()
+functionsTable = funcTable()
+arraysTable = arrayTable()
+claseTable = classTable()
 
 reserved = {
     'program' : 'PROGRAM',
@@ -122,6 +135,9 @@ def t_error(t):
 
 lex.lex()
 
+POper = []
+PilaO = []
+
 def p_programa(t):
     '''programa : PROGRAM ID PUNTOCOMA main
                 | PROGRAM ID PUNTOCOMA clase main
@@ -138,14 +154,14 @@ def p_main(t):
             | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
 
 def p_clase(t):
-    '''clase : CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
-            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
-            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA
-            | CLASS ID DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA clase
-            | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
-            | CLASS ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
-            | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA
-            | CLASS ID LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
+    '''clase : CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
+            | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
+            | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA
+            | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA clase
+            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
+            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
+            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA
+            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
 
 def p_tipo_clase(t):
     '''tipo_clase : PUBLIC
@@ -176,17 +192,17 @@ def p_tipo_compuesto(t):
     '''tipo_compuesto : ID getType_np'''
 
 def p_funcion(t):
-    '''funcion : FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
-                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
-                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
-                | FUNC tipo_simple ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo funcion
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo
-                | FUNC VOID ID PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo funcion'''
+    '''funcion : FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
+                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
+                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
+                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion'''
 
 def p_dec_var(t):
-    '''dec_var : VAR scopeFunc_np dec_varp'''
+    '''dec_var : VAR  scopeFunc_np dec_varp'''
 
 def p_dec_varp(t):
     '''dec_varp : tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp
@@ -197,8 +213,8 @@ def p_dec_varp(t):
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
 
 def p_parametros(t):
-    '''parametros : tipo_simple ID
-                    | tipo_simple ID COMA parametros'''
+    '''parametros : tipo_simple ID getParameters_np saveParameter_np
+                    | tipo_simple ID getParameters_np COMA saveParameter_np parametros'''
 
 def p_cuerpo(t):
     '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA LLAVEDER
@@ -254,7 +270,7 @@ def p_leep(t):
             | variable COMA leep'''
 
 def p_variable(t):
-    '''variable : ID
+    '''variable : ID saveIDpilaO_np
                 | ID CORCHETEIZQ exp CORCHETEDER
                 | ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER'''
 
@@ -279,28 +295,28 @@ def p_ciclo_f(t):
 
 def p_exp(t):
     '''exp : t_exp
-            | t_exp OR exp'''
+            | t_exp OR saveOperadorOr_np exp'''
 
 def p_t_exp(t):
     '''t_exp : g_exp
-            | g_exp AND t_exp'''
+            | g_exp AND saveOperadorAnd_np t_exp'''
 
 def p_g_exp(t):
     '''g_exp : m_exp
-            | m_exp EQUAL m_exp
-            | m_exp NOT m_exp
-            | m_exp GREATERTHAN m_exp
-            | m_exp LESSTHAN m_exp'''
+            | m_exp EQUAL saveOperadorRelacional_np m_exp
+            | m_exp NOT saveOperadorRelacional_np m_exp
+            | m_exp GREATERTHAN saveOperadorRelacional_np m_exp
+            | m_exp LESSTHAN saveOperadorRelacional_np m_exp'''
 
 def p_m_exp(t):
     '''m_exp : t
-            | t MAS m_exp
-            | t MENOS m_exp'''
+            | t MAS saveOperadorMasMenos_np m_exp
+            | t MENOS saveOperadorMasMenos_np m_exp'''
 
 def p_t(t):
     '''t : f
-        | f POR t
-        | f DIV t'''
+        | f POR saveOperadorMultiDivision_np t
+        | f DIV saveOperadorMultiDivision_np t'''
 
 def p_f(t):
     '''f : PARENTESISIZQ exp PARENTESISDER
@@ -339,7 +355,28 @@ def p_error(t):
 
 # PUNTOS NEURÁLGICOS #
 
-# Guarda nombre de variable
+
+#Guarda datos de la clase
+def p_getnameClass_np(p):
+    '''getnameClass_np : empty'''
+    global current_name_class
+    current_name_class = p[-1]
+
+def p_geFatherClass_np(p):
+    '''getFatherClass_np : empty'''
+    global current_class_type
+    current_class_type = 'father'
+
+def p_getSonClass_np(p):
+    '''getSonClass_np : empty'''
+    global current_class_type
+    current_class_type = 'son'
+
+def p_saveClass_np(p):
+    '''saveClass_np : empty'''
+    claseTable.add(current_name_class, current_class_type)
+
+# Guarda datos de las variables
 def p_getID_np(p):
     '''getID_np : empty'''
     global current_var_id
@@ -349,6 +386,12 @@ def p_getType_np(p):
     '''getType_np : empty'''
     global current_var_type
     current_var_type = p[-1]
+
+
+#def p_getArraySize_np(p):
+#    '''getArraySize_np : empty'''
+#    global current_array_size
+#    current_array_size = p[-1]
 
 def p_scopeClass_np(p):
     '''scopeClass_np : empty'''
@@ -369,7 +412,89 @@ def p_saveVar_np(p):
     '''saveVar_np : empty'''
     varsTable.add(current_var_id, current_var_type, current_var_scope)
 
+#Guarda datos de las funciones
 
+def p_getIDFunc_np(p):
+    '''getIDFunc_np : empty'''
+    global current_func_id
+    current_func_id = str(p[-1])
+
+def p_getTypeFunc_np(p):
+    '''getTypeFunc_np : empty'''
+    global current_func_type
+    current_func_type = str(p[-1])
+
+def p_getParameters_np(p):
+    '''getParameters_np : empty'''
+    global current_parameter
+    current_parameter = Parameter(str(p[-2]), str(p[-1]))
+
+def p_saveParameter_np(p):
+    '''saveParameter_np : empty'''
+    global parameters_list
+    parameters_list = []
+    parameters_list.append(current_parameter)
+
+def p_saveFunc_np(p):
+    '''saveFunc_np : empty'''
+    functionsTable.add(current_func_id, current_func_type, parameters_list, varsTable.pop())
+
+
+def p_saveIDpilaO_np(p):
+    '''saveIDpilaO_np : empty'''
+    global current_id_cuadruplo
+    current_id_cuadruplo = p[-1]
+    PilaO.append(current_id_cuadruplo)
+
+def p_saveOperadorMultiDivision_np(p):
+    '''saveOperadorMultiDivision_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
+def p_saveOperadorMasMenos_np(p):
+    '''saveOperadorMasMenos_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
+def p_saveOperadorRelacional_np(p):
+    '''saveOperadorRelacional_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
+def p_saveOperadorOr_np(p):
+    '''saveOperadorOr_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
+def p_saveOperadorAnd_np(p):
+    '''saveOperadorAnd_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
+def p_pushFondoFalso_np(p):
+    '''pushFondoFalso_np : empty'''
+    POper.append('(')
+
+def p_popFondoFalso_np(p):
+    '''popFondoFalso_np : empty'''
+    global POper
+    top = POper.pop()
+    if top != '(':
+        print("ERROR Fondo Falso")
+
+def p_plusMinus_np(p):
+    '''plusMinus_np : empty'''
+    if len(POper) > 0:
+        if POper[-1] == '+' or '-':
+            left_operand = PilaO.pop()
+            right_operand = PilaO.pop()
+            operador = POper.pop()
+    print(left_operand, right_operand, operador)
 
 yacc.yacc()
 if __name__ == '__main__':
@@ -394,4 +519,11 @@ data = f.read()
 case01 = parser.parse(data)
 '''
 
+print("Tabla de variables")
 print(varsTable.toString())
+
+print("Tabla de clases")
+print(claseTable.toString())
+
+print(PilaO)
+print(POper)

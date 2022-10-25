@@ -1,4 +1,4 @@
-#Variable Table 
+# Variable Table
 
 #The key is the name od the variable and their atributes are scope and type
 class Var:

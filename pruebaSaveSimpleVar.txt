@@ -6,7 +6,7 @@ class Animal
    public int x;
    private float s;
 
-    method:
+   method:
    private void prueba (int ys) 
    {
       x = 5;
