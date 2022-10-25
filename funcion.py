@@ -4,7 +4,7 @@ from varTable import varTable
 
 
 class Function:
-    def __init__(self, type, parameters, varsTable):
+    def __init__(self, type, parameters):
         self.type = type
         self.parameters = parameters
-        self.varsTable = varTable()
+        #self.varsTable = varTable()

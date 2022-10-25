@@ -1,5 +1,4 @@
 from queue import Empty
-from symbol import parameters
 import ply.lex as lex
 import sys
 import ply.yacc as yacc
@@ -10,7 +9,6 @@ from arreglo import Array
 from arrayTable import arrayTable
 from semanticCube import SemanticCube
 from classTable import classTable
-
 
 varsTable = varTable()
 functionsTable = funcTable()
@@ -184,15 +182,21 @@ def p_tipo_simple(t):
                     | CHAR getType_np
                     | BOOL getType_np'''
 
+def p_tipo_simple_func(t):
+    '''tipo_simple_func : INT getTypeFunc_np
+                        | FLOAT getTypeFunc_np
+                        | CHAR getTypeFunc_np
+                        | BOOL getTypeFunc_np'''
+
 
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID getType_np'''
 
 def p_funcion(t):
-    '''funcion : FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
-                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
-                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
-                | FUNC tipo_simple getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo funcion
+    '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo funcion
                 | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
                 | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
                 | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
@@ -210,8 +214,14 @@ def p_dec_varp(t):
                 | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
 
 def p_parametros(t):
-    '''parametros : tipo_simple ID getParameters_np saveParameter_np
-                    | tipo_simple ID getParameters_np COMA saveParameter_np parametros'''
+    '''parametros : INT ID getParameters_np saveParameter_np
+                    | INT ID getParameters_np COMA saveParameter_np parametros
+                    | FLOAT ID getParameters_np saveParameter_np
+                    | FLOAT ID getParameters_np COMA saveParameter_np parametros
+                    | CHAR ID getParameters_np saveParameter_np
+                    | CHAR ID getParameters_np COMA saveParameter_np parametros
+                    | BOOL ID getParameters_np saveParameter_np
+                    | BOOL ID getParameters_np COMA saveParameter_np parametros'''
 
 def p_cuerpo(t):
     '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA LLAVEDER
@@ -434,7 +444,7 @@ def p_saveParameter_np(p):
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
-    functionsTable.add(current_func_id, current_func_type, parameters_list, varsTable)
+    functionsTable.add(current_func_id, current_func_type, parameters_list)
 
 
 def p_saveIDpilaO_np(p):
@@ -521,6 +531,9 @@ print(varsTable.toString())
 
 print("Tabla de clases")
 print(claseTable.toString())
+
+print("Tabla de Funciones")
+print(functionsTable.toString())
 
 print(PilaO)
 print(POper)
