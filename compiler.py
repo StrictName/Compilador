@@ -189,10 +189,10 @@ def p_varp(t):
             | tipo_compuesto ID PUNTOCOMA varp
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np varp
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np varp'''
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp'''
 
 def p_tipo_simple(t):
     '''tipo_simple : INT getType_np saveTypeVar_np
@@ -226,10 +226,10 @@ def p_dec_var(t):
 def p_dec_varp(t):
     '''dec_varp : tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp
                 | tipo_simple ID getID_np PUNTOCOMA saveVar_np
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np dec_varp
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np dec_varp
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np'''
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np'''
 
 def p_parametros(t):
     '''parametros : INT ID getParameters_np saveParameter_np
@@ -414,17 +414,18 @@ def p_getType_np(p):
 
 ####Arreglo####
 
-def p_getArray_np(p):
-    '''getArray_np : empty'''
-    global current_var_type
-    current_var_type += '[' + str(p[-2])+']'
+
+#def p_getArray_np(p):
+#    '''getArray_np : empty'''
+#    global current_var_type
+#    current_var_type += '[' + str(p[-2])+']'
 
 ####Matriz####
 
-def p_getMatrix_np(p):
-    '''getMatrix_np : empty'''
-    global current_var_type
-    current_var_type += '[' + str(p[-5])+']' + '[' + str(p[-2])+']'
+#def p_getMatrix_np(p):
+#    '''getMatrix_np : empty'''
+#    global current_var_type
+#    current_var_type += '[' + str(p[-5])+']' + '[' + str(p[-2])+']'
 
 #####Scope####
 
@@ -445,7 +446,8 @@ def p_scopeGlobal_np(p):
 
 def p_saveVar_np(p):
     '''saveVar_np : empty'''
-    varsTable.add(current_var_id, current_var_type, current_var_scope)
+    address = asignar_direccion_memoria()
+    varsTable.add(current_var_id, current_var_type, current_var_scope, address)
 
 ################Guarda datos de las funciones###################
 
