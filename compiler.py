@@ -377,11 +377,11 @@ def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
 
 
-
+######################
 # PUNTOS NEURÁLGICOS #
+######################
 
-
-#Guarda datos de la clase
+##################### Guarda datos de la clase ####################
 def p_getnameClass_np(p):
     '''getnameClass_np : empty'''
     global current_name_class
@@ -401,7 +401,7 @@ def p_saveClass_np(p):
     '''saveClass_np : empty'''
     claseTable.add(current_name_class, current_class_type)
 
-# Guarda datos de las variables
+################### Guarda datos de las variables###################
 def p_getID_np(p):
     '''getID_np : empty'''
     global current_var_id
@@ -412,21 +412,21 @@ def p_getType_np(p):
     global current_var_type
     current_var_type = p[-1]
 
-#Arreglo
+####Arreglo####
 
 def p_getArray_np(p):
     '''getArray_np : empty'''
     global current_var_type
     current_var_type += '[' + str(p[-2])+']'
 
-#Matriz
+####Matriz####
 
 def p_getMatrix_np(p):
     '''getMatrix_np : empty'''
     global current_var_type
     current_var_type += '[' + str(p[-5])+']' + '[' + str(p[-2])+']'
 
-#Scope
+#####Scope####
 
 def p_scopeClass_np(p):
     '''scopeClass_np : empty'''
@@ -447,7 +447,7 @@ def p_saveVar_np(p):
     '''saveVar_np : empty'''
     varsTable.add(current_var_id, current_var_type, current_var_scope)
 
-#Guarda datos de las funciones
+################Guarda datos de las funciones###################
 
 def p_getIDFunc_np(p):
     '''getIDFunc_np : empty'''
@@ -474,6 +474,7 @@ def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
     functionsTable.add(current_func_id, current_func_type, parameters_list)
 
+############################Cuadruplos#########################3
 
 def p_saveIDpilaO_np(p):
     '''saveIDpilaO_np : empty'''
@@ -539,7 +540,7 @@ def p_saveTypeVar_np(p):
     PilaTipos.append(current_var_type)
 
 
-# Memoria virtual
+########################## Memoria virtual #################################
 def asignar_direccion_memoria():
     global current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int
     aux = 0
@@ -564,6 +565,52 @@ def asignar_direccion_memoria():
                 print('ERROR: Se excedió el máximo de variables bool globales')
             aux = dir_global_bool
             dir_global_bool += 1
+
+    elif current_var_scope == 'funcion':
+        if current_var_type == 'int':
+            if dir_local_funcion_int> 2499:
+                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+            aux = dir_local_funcion_int
+            dir_local_funcion_int += 1
+        elif current_var_type == 'float':
+            if dir_local_funcion_float > 2999:
+                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+            aux = dir_local_funcion_float
+            dir_local_funcion_float += 1
+        elif current_var_type == 'char':
+            if dir_local_funcion_char > 3499:
+                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+            aux = dir_local_funcion_char
+            dir_local_funcion_char += 1
+        elif current_var_type == 'bool':
+            if dir_local_funcion_bool > 3999:
+                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+            aux = dir_local_funcion_bool
+            dir_local_funcion_bool += 1
+
+    else:
+        if current_var_type == 'int':
+            if dir_local_clase_int> 4499:
+                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            aux = dir_local_clase_int
+            dir_local_clase_int += 1
+        elif current_var_type == 'float':
+            if dir_local_clase_float> 4999:
+                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            aux = dir_local_clase_float
+            dir_local_clase_float += 1
+        elif current_var_type == 'char':
+            if dir_local_clase_char> 5499:
+                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            aux = dir_local_clase_char
+            dir_local_clase_char += 1
+        elif current_var_type == 'bool':
+            if dir_local_clase_bool> 5999:
+                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            aux = dir_local_clase_bool
+            dir_local_clase_bool += 1
+    return aux
+
 
 
 yacc.yacc()
