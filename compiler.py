@@ -15,6 +15,10 @@ functionsTable = funcTable()
 arraysTable = arrayTable()
 claseTable = classTable()
 
+POper = []
+PilaO = []
+PilaTipos = []
+
 reserved = {
     'program' : 'PROGRAM',
     'main' : 'MAIN',
@@ -130,8 +134,22 @@ def t_error(t):
 
 lex.lex()
 
-POper = []
-PilaO = []
+# Direcciones de memoria virtual
+dir_global_int = 0
+dir_global_float = 500
+dir_global_char = 1000
+dir_global_bool = 1500
+dir_local_funcion_int = 2000
+dir_local_funcion_float = 2500
+dir_local_funcion_char = 3000
+dir_local_funcion_bool = 3500
+dir_local_clase_int = 4000
+dir_local_clase_float = 4500
+dir_local_clase_char = 5000
+dir_local_clase_bool = 5500
+dir_constante_int = 6000
+dir_constante_float = 6500
+dir_constante_char = 7000
 
 def p_programa(t):
     '''programa : PROGRAM ID PUNTOCOMA main
@@ -171,16 +189,16 @@ def p_varp(t):
             | tipo_compuesto ID PUNTOCOMA varp
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
-            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp
-            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-            | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA varp'''
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np varp
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np varp'''
 
 def p_tipo_simple(t):
-    '''tipo_simple : INT getType_np
-                    | FLOAT getType_np
-                    | CHAR getType_np
-                    | BOOL getType_np'''
+    '''tipo_simple : INT getType_np saveTypeVar_np
+                    | FLOAT getType_np saveTypeVar_np
+                    | CHAR getType_np saveTypeVar_np
+                    | BOOL getType_np saveTypeVar_np'''
 
 def p_tipo_simple_func(t):
     '''tipo_simple_func : INT getTypeFunc_np
@@ -190,7 +208,7 @@ def p_tipo_simple_func(t):
 
 
 def p_tipo_compuesto(t):
-    '''tipo_compuesto : ID getType_np'''
+    '''tipo_compuesto : ID'''
 
 def p_funcion(t):
     '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
@@ -208,10 +226,10 @@ def p_dec_var(t):
 def p_dec_varp(t):
     '''dec_varp : tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp
                 | tipo_simple ID getID_np PUNTOCOMA saveVar_np
-                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
-                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA
-                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA dec_varp
-                | tipo_simple ID CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA'''
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np dec_varp
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER getArray_np PUNTOCOMA saveVar_np
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np dec_varp
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER getMatrix_np PUNTOCOMA saveVar_np'''
 
 def p_parametros(t):
     '''parametros : INT ID getParameters_np saveParameter_np
@@ -394,11 +412,21 @@ def p_getType_np(p):
     global current_var_type
     current_var_type = p[-1]
 
+#Arreglo
 
-#def p_getArraySize_np(p):
-#    '''getArraySize_np : empty'''
-#    global current_array_size
-#    current_array_size = p[-1]
+def p_getArray_np(p):
+    '''getArray_np : empty'''
+    global current_var_type
+    current_var_type += '[' + str(p[-2])+']'
+
+#Matriz
+
+def p_getMatrix_np(p):
+    '''getMatrix_np : empty'''
+    global current_var_type
+    current_var_type += '[' + str(p[-5])+']' + '[' + str(p[-2])+']'
+
+#Scope
 
 def p_scopeClass_np(p):
     '''scopeClass_np : empty'''
@@ -408,7 +436,7 @@ def p_scopeClass_np(p):
 def p_scopeFunc_np(p):
     '''scopeFunc_np : empty'''
     global current_var_scope
-    current_var_scope = 'func'
+    current_var_scope = 'funcion'
 
 def p_scopeGlobal_np(p):
     '''scopeGlobal_np : empty'''
@@ -503,6 +531,41 @@ def p_plusMinus_np(p):
             operador = POper.pop()
     print(left_operand, right_operand, operador)
 
+
+def p_saveTypeVar_np(p):
+    '''saveTypeVar_np : empty'''
+    global current_var_type
+    current_var_type = p[-2]
+    PilaTipos.append(current_var_type)
+
+
+# Memoria virtual
+def asignar_direccion_memoria():
+    global current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int
+    aux = 0
+    if current_var_scope == 'global':
+        if current_var_type == 'int':
+            if dir_global_int > 499:
+                print('ERROR: Se excedió el máximo de variables enteras globales')
+            aux = dir_global_int
+            dir_global_int += 1
+        elif current_var_type == 'float':
+            if dir_global_float > 999:
+                print('ERROR: Se excedió el máximo de variables float globales')
+            aux = dir_global_float
+            dir_global_float += 1
+        elif current_var_type == 'char':
+            if dir_global_char > 1499:
+                print('ERROR: Se excedió el máximo de variables char globales')
+            aux = dir_global_char
+            dir_global_char += 1
+        elif current_var_type == 'bool':
+            if dir_global_bool > 1999:
+                print('ERROR: Se excedió el máximo de variables bool globales')
+            aux = dir_global_bool
+            dir_global_bool += 1
+
+
 yacc.yacc()
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -537,3 +600,4 @@ print(functionsTable.toString())
 
 print(PilaO)
 print(POper)
+print(PilaTipos)

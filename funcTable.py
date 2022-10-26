@@ -22,6 +22,6 @@ class funcTable:
     def toString(self):
         for key in self.table:
             print(f"{key}: {self.table[key].type}")
-            print(" Parametros:")
+            print("  Parametros:")
             for parameter in self.table[key].parameters:
-                print(f"    {parameter.name}: {parameter.type}")
+                print(f"  {parameter.name}: {parameter.type}")

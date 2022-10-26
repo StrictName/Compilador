@@ -78,7 +78,7 @@ var
    float array2[2][3];
 
 
-func int suma (int y);
+func int suma (int y, float c, bool flag);
 var 
    int edad3;
 {
