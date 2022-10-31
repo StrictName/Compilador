@@ -33,9 +33,17 @@ class varTable:
 
     def search(self, name):
         if name in self.table:
-            return self.table[name], None
+            return name
         else:
             return None, "Variable undeclared"
+
+    def find_address(self, name):
+        if name in self.table:
+            return self.table[name].direccion
+
+    def find_type(self, name):
+        if name in self.table:
+            return self.table[name].type
 
     def toString(self):
         for key in self.table:

@@ -74,9 +74,10 @@ var
    int edad2;
    float peso;
    char caracter;
+   float x;
    int array[1];
    float array2[2][3];
-
+   
 
 func int suma (int y, float c, bool flag);
 var 

@@ -1,3 +1,4 @@
+from distutils.log import error
 from queue import Empty
 import ply.lex as lex
 import sys
@@ -151,15 +152,17 @@ dir_constante_int = 6000
 dir_constante_float = 6500
 dir_constante_char = 7000
 
+
+
 def p_programa(t):
-    '''programa : PROGRAM ID PUNTOCOMA main
-                | PROGRAM ID PUNTOCOMA clase main
-                | PROGRAM ID PUNTOCOMA clase var main
-                | PROGRAM ID PUNTOCOMA clase var funcion main
-                | PROGRAM ID PUNTOCOMA clase funcion main
-                | PROGRAM ID PUNTOCOMA var main
-                | PROGRAM ID PUNTOCOMA var funcion main
-                | PROGRAM ID PUNTOCOMA funcion main'''
+    '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA funcion main'''
     t[0] = "Este es un programa"
 
 def p_main(t):
@@ -195,10 +198,10 @@ def p_varp(t):
             | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp'''
 
 def p_tipo_simple(t):
-    '''tipo_simple : INT getType_np saveTypeVar_np
-                    | FLOAT getType_np saveTypeVar_np
-                    | CHAR getType_np saveTypeVar_np
-                    | BOOL getType_np saveTypeVar_np'''
+    '''tipo_simple : INT getType_np
+                    | FLOAT getType_np
+                    | CHAR getType_np
+                    | BOOL getType_np'''
 
 def p_tipo_simple_func(t):
     '''tipo_simple_func : INT getTypeFunc_np
@@ -335,13 +338,13 @@ def p_g_exp(t):
 
 def p_m_exp(t):
     '''m_exp : t
-            | t MAS saveOperadorMasMenos_np m_exp
-            | t MENOS saveOperadorMasMenos_np m_exp'''
+            | t plusMinus_np MAS saveOperadorMasMenos_np m_exp
+            | t plusMinus_np MENOS saveOperadorMasMenos_np m_exp'''
 
 def p_t(t):
     '''t : f
-        | f POR saveOperadorMultiDivision_np t
-        | f DIV saveOperadorMultiDivision_np t'''
+        | f multiDiv_np POR saveOperadorMultiDivision_np t
+        | f multiDiv_np DIV saveOperadorMultiDivision_np t'''
 
 def p_f(t):
     '''f : PARENTESISIZQ exp PARENTESISDER
@@ -478,11 +481,25 @@ def p_saveFunc_np(p):
 
 ############################Cuadruplos#########################3
 
+def search_address(id):
+    global varsTable
+    print(varsTable.search(id))
+    if id == varsTable.search(id):
+        return varsTable.find_address(id)
+    else:
+        error('No se encontró la dirección de la variable')
+
+def search_type(id):
+    global varsTable
+    if id == varsTable.search(id):
+        return varsTable.find_type(id)
+    else:
+        error('No se encontró el type de la variable')
+
 def p_saveIDpilaO_np(p):
     '''saveIDpilaO_np : empty'''
-    global current_id_cuadruplo
-    current_id_cuadruplo = p[-1]
-    PilaO.append(current_id_cuadruplo)
+    PilaO.append(search_address(p[-1]))
+    PilaTipos.append(search_type(p[-1]))
 
 def p_saveOperadorMultiDivision_np(p):
     '''saveOperadorMultiDivision_np : empty'''
@@ -514,25 +531,38 @@ def p_saveOperadorAnd_np(p):
     current_oper_cuadruplo = p[-1]
     POper.append(current_oper_cuadruplo)
 
-def p_pushFondoFalso_np(p):
-    '''pushFondoFalso_np : empty'''
-    POper.append('(')
+#def p_pushFondoFalso_np(p):
+#    '''pushFondoFalso_np : empty'''
+#    POper.append('(')
 
-def p_popFondoFalso_np(p):
-    '''popFondoFalso_np : empty'''
-    global POper
-    top = POper.pop()
-    if top != '(':
-        print("ERROR Fondo Falso")
+#def p_popFondoFalso_np(p):
+#    '''popFondoFalso_np : empty'''
+#    global POper
+#    top = POper.pop()
+#    if top != '(':
+#        print("ERROR Fondo Falso")
 
 def p_plusMinus_np(p):
     '''plusMinus_np : empty'''
     if len(POper) > 0:
         if POper[-1] == '+' or '-':
-            left_operand = PilaO.pop()
             right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
             operador = POper.pop()
-    print(left_operand, right_operand, operador)
+            print(left_operand, left_type, right_operand, right_type, operador)
+
+def p_multiDiv_np(p):
+    '''multiDiv_np : empty'''
+    if len(POper) > 0:
+        if POper[-1] == '*' or '/':
+            right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
+            operador = POper.pop()
+            print(left_operand, left_type, right_operand, right_type, operador)
 
 
 def p_saveTypeVar_np(p):
@@ -540,6 +570,10 @@ def p_saveTypeVar_np(p):
     global current_var_type
     current_var_type = p[-2]
     PilaTipos.append(current_var_type)
+
+def p_generacionCuadruplo_np(p):
+    '''generacionCuadruplo_np : empty'''
+
 
 
 ########################## Memoria virtual #################################
@@ -570,7 +604,7 @@ def asignar_direccion_memoria():
 
     elif current_var_scope == 'funcion':
         if current_var_type == 'int':
-            if dir_local_funcion_int> 2499:
+            if dir_local_funcion_int > 2499:
                 print('ERROR: Se excedió el máximo de variables enteras locales funcion')
             aux = dir_local_funcion_int
             dir_local_funcion_int += 1

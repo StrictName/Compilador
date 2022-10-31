@@ -1,0 +1,10 @@
+program Compilador;
+
+var
+    int i;
+    int a;
+    float c;
+
+main() {
+    c = i + a;
+}
