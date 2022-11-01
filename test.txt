@@ -7,12 +7,12 @@ var
     float c;
     float d;
     int e;
+    int f;
 
 main() {
     
     c = d * e;
     b = c + a;
     a = i / d;
-
 
 }

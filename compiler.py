@@ -158,7 +158,6 @@ dir_constante_float = 6500
 dir_constante_char = 7000
 
 
-
 def p_programa(t):
     '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA main
                 | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase main
@@ -268,8 +267,8 @@ def p_metodo(t):
 
 
 def p_estatuto(t):
-    '''estatuto : asignacion PUNTOCOMA
-                | asignacion PUNTOCOMA estatuto
+    '''estatuto : asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np
+                | asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto
                 | llamada PUNTOCOMA
                 | llamada PUNTOCOMA estatuto
                 | lee PUNTOCOMA
@@ -286,7 +285,7 @@ def p_estatuto(t):
                 | llamada_atributo PUNTOCOMA estatuto'''
 
 def p_asignacion(t):
-    '''asignacion : variable igual_np IGUAL saveOperadorIgual_np exp'''
+    '''asignacion : variable IGUAL saveOperadorIgual_np exp'''
 
 def p_llamada(t):
     '''llamada :  ID PARENTESISIZQ llamadap PARENTESISDER'''
@@ -554,17 +553,18 @@ def p_saveOperadorIgual_np(p):
 
 def p_multiDiv_np(p):
     '''multiDiv_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
-        if POper[-1] == '*' or '/':
+        if (POper[-1] == '*' or  POper[-1] == '/'):
             right_operand = PilaO.pop()
             right_type = PilaTipos.pop()
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
-            print(result_type)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
+                current_var_type = result_type
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
@@ -573,15 +573,18 @@ def p_multiDiv_np(p):
 
 def p_plusMinus_np(p):
     '''plusMinus_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
-        if POper[-1] == '+' or '-':
+        if (POper[-1] == '+' or POper[-1] == '-'):
             right_operand = PilaO.pop()
             right_type = PilaTipos.pop()
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
+                current_var_type = result_type
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
@@ -590,15 +593,18 @@ def p_plusMinus_np(p):
 
 def p_relationalOp_np(p):
     '''relationalOp_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
-        if POper[-1] == '<' or '>' or 'equal' or 'not':
+        if POper[-1] == '<' or POper[-1] == '>' or POper[-1] == 'equal' or POper[-1] == 'not':
             right_operand = PilaO.pop()
             right_type = PilaTipos.pop()
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
+                current_var_type = result_type
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
@@ -607,6 +613,7 @@ def p_relationalOp_np(p):
 
 def p_and_np(p):
     '''and_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
         if POper[-1] == 'and':
             right_operand = PilaO.pop()
@@ -614,8 +621,10 @@ def p_and_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
+                current_var_type = result_type
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
@@ -624,6 +633,7 @@ def p_and_np(p):
 
 def p_or_np(p):
     '''or_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
         if POper[-1] == 'or':
             right_operand = PilaO.pop()
@@ -631,8 +641,10 @@ def p_or_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
+                current_var_type = result_type
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
@@ -641,6 +653,7 @@ def p_or_np(p):
 
 def p_igual_np(p):
     '''igual_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
     if len(POper) > 0:
         if POper[-1] == '=':
             right_operand = PilaO.pop()
@@ -648,9 +661,8 @@ def p_igual_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic(left_type, right_type, operador)
+            result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
-                result = asignar_direccion_memoria()
                 cuadruplo.addQuadrupleIgual(operador, left_operand, right_operand)
                 PilaTipos.append(result_type)
             #print(left_operand, left_type, right_operand, right_type, operador)
@@ -715,7 +727,7 @@ def asignar_direccion_memoria():
 
     else:
         if current_var_type == 'int':
-            if dir_local_clase_int> 4499:
+            if dir_local_clase_int > 4499:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_int
             dir_local_clase_int += 1

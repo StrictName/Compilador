@@ -13,9 +13,9 @@ class classTable:
 
     def search(self, name):
         if name in self.table:
-            return self.table[name], None
+            return self.table[name]
         else:
-            return None, "Variable undeclared"
+            return "Variable undeclared"
 
     def toString(self):
         for key in self.table:

@@ -4,8 +4,8 @@ class quadruplesList:
         self.cont = 0
 
     def addQuadruple(self, operador, left_operand, right_operand, result):
-        cuadruplo = quadruple(operador, left_operand, right_operand, result)
         if operador != '=':
+            cuadruplo = quadruple(operador, left_operand, right_operand, result)
             self.quadsList.append(cuadruplo)
             self.cont += 1
             print(cuadruplo.printQuad())

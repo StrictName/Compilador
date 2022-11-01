@@ -35,7 +35,7 @@ class varTable:
         if name in self.table:
             return name
         else:
-            return None, "Variable undeclared"
+            return "Variable undeclared"
 
     def find_address(self, name):
         if name in self.table:

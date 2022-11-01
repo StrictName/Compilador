@@ -15,9 +15,9 @@ class funcTable:
 
     def search(self, name):
         if name in self.table:
-            return self.table[name], None
+            return self.table[name]
         else:
-            return None, "Function undeclared"
+            return "Function undeclared"
 
     def toString(self):
         for key in self.table:
