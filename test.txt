@@ -3,6 +3,7 @@ program Compilador;
 var
     int i;
     int a;
+    int b;
     float c;
     float d;
     int e;
@@ -10,7 +11,8 @@ var
 main() {
     
     c = d * e;
-    c = i + a;
+    b = c + a;
+    a = i / d;
 
 
 }

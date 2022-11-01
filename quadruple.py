@@ -4,13 +4,18 @@ class quadruplesList:
         self.cont = 0
 
     def addQuadruple(self, operador, left_operand, right_operand, result):
+        cuadruplo = quadruple(operador, left_operand, right_operand, result)
         if operador != '=':
-            cuadruplo = quadruple(operador, left_operand, right_operand, result)
             self.quadsList.append(cuadruplo)
-        else:
-            cuadruplo = quadruple(operador, right_operand, '', left_operand)
-            self.quadsList.append(cuadruplo)
+            self.cont += 1
+            print(cuadruplo.printQuad())
+
+    def addQuadrupleIgual(self, operador, left_operand, right_operand):
+        cuadruplo = quadruple(operador, right_operand, '', left_operand)
+        self.quadsList.append(cuadruplo)
         self.cont += 1
+        print(cuadruplo.printQuad())
+
 
 
 class quadruple:

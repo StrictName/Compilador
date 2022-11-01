@@ -12,12 +12,14 @@ from semanticCube import SemanticCube
 from classTable import classTable
 import quadruple as quadruple
 
+
 varsTable = varTable()
 functionsTable = funcTable()
 arraysTable = arrayTable()
 claseTable = classTable()
 cuboS = SemanticCube()
-cuadruplo = quadruple.quadruplesList
+cuadruplo = quadruple.quadruplesList()
+#printCuadruplo = quadruple.quadruple()
 
 POper = []
 PilaO = []
@@ -284,7 +286,7 @@ def p_estatuto(t):
                 | llamada_atributo PUNTOCOMA estatuto'''
 
 def p_asignacion(t):
-    '''asignacion : variable IGUAL exp'''
+    '''asignacion : variable igual_np IGUAL saveOperadorIgual_np exp'''
 
 def p_llamada(t):
     '''llamada :  ID PARENTESISIZQ llamadap PARENTESISDER'''
@@ -533,6 +535,12 @@ def p_saveOperadorAnd_np(p):
     current_oper_cuadruplo = p[-1]
     POper.append(current_oper_cuadruplo)
 
+def p_saveOperadorIgual_np(p):
+    '''saveOperadorIgual_np : empty'''
+    global current_oper_cuadruplo
+    current_oper_cuadruplo = p[-1]
+    POper.append(current_oper_cuadruplo)
+
 #def p_pushFondoFalso_np(p):
 #    '''pushFondoFalso_np : empty'''
 #    POper.append('(')
@@ -554,7 +562,8 @@ def p_multiDiv_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semantic[left_type, right_type, operador]
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            print(result_type)
             if result_type != 'err':
                 result = asignar_direccion_memoria()
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
@@ -628,6 +637,22 @@ def p_or_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            #print(left_operand, left_type, right_operand, right_type, operador)
+
+def p_igual_np(p):
+    '''igual_np : empty'''
+    if len(POper) > 0:
+        if POper[-1] == '=':
+            right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
+            operador = POper.pop()
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            if result_type != 'err':
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadrupleIgual(operador, left_operand, right_operand)
+                PilaTipos.append(result_type)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_saveTypeVar_np(p):
