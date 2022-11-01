@@ -10,12 +10,14 @@ from arreglo import Array
 from arrayTable import arrayTable
 from semanticCube import SemanticCube
 from classTable import classTable
+import quadruple as quadruple
 
 varsTable = varTable()
 functionsTable = funcTable()
 arraysTable = arrayTable()
 claseTable = classTable()
 cuboS = SemanticCube()
+cuadruplo = quadruple.quadruplesList
 
 POper = []
 PilaO = []
@@ -544,7 +546,7 @@ def p_saveOperadorAnd_np(p):
 
 def p_multiDiv_np(p):
     '''multiDiv_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, current_var_type, result
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result
     if len(POper) > 0:
         if POper[-1] == '*' or '/':
             right_operand = PilaO.pop()
@@ -552,11 +554,12 @@ def p_multiDiv_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            result_type = cuboS.semanticCube[left_type, right_type, operador]
+            result_type = cuboS.semantic[left_type, right_type, operador]
             if result_type != 'err':
-                current_var_type = result_type
-                result = asignar_direccion_memoria
-                
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
+                PilaTipos.append(result_type)
+                PilaO.append(result)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_plusMinus_np(p):
@@ -568,6 +571,12 @@ def p_plusMinus_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            if result_type != 'err':
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
+                PilaTipos.append(result_type)
+                PilaO.append(result)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_relationalOp_np(p):
@@ -579,7 +588,13 @@ def p_relationalOp_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            print(left_operand, left_type, right_operand, right_type, operador)
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            if result_type != 'err':
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
+                PilaTipos.append(result_type)
+                PilaO.append(result)
+            #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_and_np(p):
     '''and_np : empty'''
@@ -590,6 +605,12 @@ def p_and_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            if result_type != 'err':
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
+                PilaTipos.append(result_type)
+                PilaO.append(result)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_or_np(p):
@@ -601,7 +622,13 @@ def p_or_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            print(left_operand, left_type, right_operand, right_type, operador)
+            result_type = cuboS.semantic(left_type, right_type, operador)
+            if result_type != 'err':
+                result = asignar_direccion_memoria()
+                cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
+                PilaTipos.append(result_type)
+                PilaO.append(result)
+            #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_saveTypeVar_np(p):
     '''saveTypeVar_np : empty'''
@@ -718,6 +745,6 @@ print(varsTable.toString())
 #print("Tabla de Funciones")
 #print(functionsTable.toString())
 
-#print(PilaO)
-#print(POper)
-#print(PilaTipos)
+print(PilaO)
+print(POper)
+print(PilaTipos)
