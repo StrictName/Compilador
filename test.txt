@@ -4,7 +4,13 @@ var
     int i;
     int a;
     float c;
+    float d;
+    int e;
 
 main() {
+    
+    c = d * e;
     c = i + a;
+
+
 }

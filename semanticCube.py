@@ -221,7 +221,7 @@ class SemanticCube:
             }
     }
 
-def semanticCube (self, oper1, oper2, operador):
+def semanticCube(self, oper1, oper2, operador):
     if oper1 in self.cube and oper2 in self.cube[oper1] and operador in self.cube[oper1][oper2]:
         return self.cube[oper1][oper2][operador], None
     else: return None, "Type mismatch"

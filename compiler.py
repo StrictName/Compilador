@@ -15,6 +15,7 @@ varsTable = varTable()
 functionsTable = funcTable()
 arraysTable = arrayTable()
 claseTable = classTable()
+cuboS = SemanticCube()
 
 POper = []
 PilaO = []
@@ -323,18 +324,18 @@ def p_ciclo_f(t):
 
 def p_exp(t):
     '''exp : t_exp
-            | t_exp OR saveOperadorOr_np exp'''
+            | t_exp or_np OR saveOperadorOr_np exp'''
 
 def p_t_exp(t):
     '''t_exp : g_exp
-            | g_exp AND saveOperadorAnd_np t_exp'''
+            | g_exp and_np AND saveOperadorAnd_np t_exp'''
 
 def p_g_exp(t):
     '''g_exp : m_exp
-            | m_exp EQUAL saveOperadorRelacional_np m_exp
-            | m_exp NOT saveOperadorRelacional_np m_exp
-            | m_exp GREATERTHAN saveOperadorRelacional_np m_exp
-            | m_exp LESSTHAN saveOperadorRelacional_np m_exp'''
+            | m_exp relationalOp_np EQUAL saveOperadorRelacional_np m_exp
+            | m_exp relationalOp_np NOT saveOperadorRelacional_np m_exp
+            | m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np m_exp
+            | m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np m_exp'''
 
 def p_m_exp(t):
     '''m_exp : t
@@ -483,7 +484,6 @@ def p_saveFunc_np(p):
 
 def search_address(id):
     global varsTable
-    print(varsTable.search(id))
     if id == varsTable.search(id):
         return varsTable.find_address(id)
     else:
@@ -542,6 +542,23 @@ def p_saveOperadorAnd_np(p):
 #    if top != '(':
 #        print("ERROR Fondo Falso")
 
+def p_multiDiv_np(p):
+    '''multiDiv_np : empty'''
+    global right_operand, right_type, left_operand, left_type, operador, result_type, current_var_type, result
+    if len(POper) > 0:
+        if POper[-1] == '*' or '/':
+            right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
+            operador = POper.pop()
+            result_type = cuboS.semanticCube[left_type, right_type, operador]
+            if result_type != 'err':
+                current_var_type = result_type
+                result = asignar_direccion_memoria
+                
+            #print(left_operand, left_type, right_operand, right_type, operador)
+
 def p_plusMinus_np(p):
     '''plusMinus_np : empty'''
     if len(POper) > 0:
@@ -551,12 +568,12 @@ def p_plusMinus_np(p):
             left_operand = PilaO.pop()
             left_type = PilaTipos.pop()
             operador = POper.pop()
-            print(left_operand, left_type, right_operand, right_type, operador)
+            #print(left_operand, left_type, right_operand, right_type, operador)
 
-def p_multiDiv_np(p):
-    '''multiDiv_np : empty'''
+def p_relationalOp_np(p):
+    '''relationalOp_np : empty'''
     if len(POper) > 0:
-        if POper[-1] == '*' or '/':
+        if POper[-1] == '<' or '>' or 'equal' or 'not':
             right_operand = PilaO.pop()
             right_type = PilaTipos.pop()
             left_operand = PilaO.pop()
@@ -564,6 +581,27 @@ def p_multiDiv_np(p):
             operador = POper.pop()
             print(left_operand, left_type, right_operand, right_type, operador)
 
+def p_and_np(p):
+    '''and_np : empty'''
+    if len(POper) > 0:
+        if POper[-1] == 'and':
+            right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
+            operador = POper.pop()
+            #print(left_operand, left_type, right_operand, right_type, operador)
+
+def p_or_np(p):
+    '''or_np : empty'''
+    if len(POper) > 0:
+        if POper[-1] == 'or':
+            right_operand = PilaO.pop()
+            right_type = PilaTipos.pop()
+            left_operand = PilaO.pop()
+            left_type = PilaTipos.pop()
+            operador = POper.pop()
+            print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_saveTypeVar_np(p):
     '''saveTypeVar_np : empty'''
@@ -573,7 +611,6 @@ def p_saveTypeVar_np(p):
 
 def p_generacionCuadruplo_np(p):
     '''generacionCuadruplo_np : empty'''
-
 
 
 ########################## Memoria virtual #################################
@@ -675,12 +712,12 @@ case01 = parser.parse(data)
 print("Tabla de variables")
 print(varsTable.toString())
 
-print("Tabla de clases")
-print(claseTable.toString())
+#print("Tabla de clases")
+#print(claseTable.toString())
 
-print("Tabla de Funciones")
-print(functionsTable.toString())
+#print("Tabla de Funciones")
+#print(functionsTable.toString())
 
-print(PilaO)
-print(POper)
-print(PilaTipos)
+#print(PilaO)
+#print(POper)
+#print(PilaTipos)
