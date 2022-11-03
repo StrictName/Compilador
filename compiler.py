@@ -24,6 +24,7 @@ cuadruplo = quadruple.quadruplesList()
 POper = []
 PilaO = []
 PilaTipos = []
+PSaltos = []
 
 reserved = {
     'program' : 'PROGRAM',
@@ -159,14 +160,14 @@ dir_constante_char = 7000
 
 
 def p_programa(t):
-    '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase var main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase var funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA clase funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA var main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA var funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA funcion main'''
+    '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np funcion main'''
     t[0] = "Este es un programa"
 
 def p_main(t):
@@ -316,8 +317,8 @@ def p_escribep(t):
                 | LETRERO COMA escribep'''
 
 def p_condicion(t):
-    '''condicion : IF PARENTESISIZQ exp PARENTESISDER LLAVEIZQ estatuto LLAVEDER
-                | IF PARENTESISIZQ exp PARENTESISDER LLAVEIZQ estatuto LLAVEDER ELSE LLAVEIZQ estatuto LLAVEDER'''
+    '''condicion : IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
+                | IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE LLAVEIZQ estatuto LLAVEDER'''
 
 def p_ciclo_w(t):
     '''ciclo_w : WHILE PARENTESISIZQ exp PARENTESISDER DO LLAVEIZQ estatuto LLAVEDER'''
@@ -551,6 +552,13 @@ def p_saveOperadorIgual_np(p):
 #    if top != '(':
 #        print("ERROR Fondo Falso")
 
+def p_gotoMain_np(p):
+    '''gotoMain_np : empty'''
+    cuadruplo.addGotoMain()
+
+#def p_mainJump_np(p):
+#    '''mainJump_np : empty'''
+
 def p_multiDiv_np(p):
     '''multiDiv_np : empty'''
     global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
@@ -667,6 +675,23 @@ def p_igual_np(p):
                 PilaTipos.append(result_type)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
+def p_ifQuad_np(p):
+    '''ifQuad_np : empty'''
+    global result_type
+    result_type = PilaTipos.pop()
+    if (result_type != 'bool'):
+        print('Type-mismatch')
+    else:
+        result = PilaO.pop()
+        cuadruplo.addQuadIf(result)
+        PSaltos.append(cuadruplo.cont - 1)
+
+def p_fillIfQuad_np(p):
+    '''fillIfQuad_np : empty'''
+    end = PSaltos.pop()
+    print(end)
+    cuadruplo.fillIf(end-1)
+
 def p_saveTypeVar_np(p):
     '''saveTypeVar_np : empty'''
     global current_var_type
@@ -781,6 +806,8 @@ print(varsTable.toString())
 
 #print("Tabla de Funciones")
 #print(functionsTable.toString())
+
+cuadruplo.printQuads()
 
 print(PilaO)
 print(POper)

@@ -9,8 +9,8 @@ class SemanticCube:
                     '*': 'int',
                     '<': 'bool',
                     '>': 'bool',
-                    'and': 'err',
-                    'or': 'err',
+                    'and': 'bool',
+                    'or': 'bool',
                     'not': 'bool',
                     'equal': 'bool',
                     '=': True
@@ -22,8 +22,8 @@ class SemanticCube:
                     '*': 'float',
                     '<': 'bool',
                     '>': 'bool',
-                    'and': 'err',
-                    'or': 'err',
+                    'and': 'bool',
+                    'or': 'bool',
                     'not': 'bool',
                     'equal': 'bool',
                     '=': False
@@ -64,8 +64,8 @@ class SemanticCube:
                     '*': 'float',
                     '<': 'bool',
                     '>': 'bool',
-                    'and': 'err',
-                    'or': 'err',
+                    'and': 'bool',
+                    'or': 'bool',
                     'not': 'bool',
                     'equal': 'bool',
                     '=': True
@@ -77,8 +77,8 @@ class SemanticCube:
                     '*': 'float',
                     '<': 'bool',
                     '>': 'bool',
-                    'and': 'err',
-                    'or': 'err',
+                    'and': 'bool',
+                    'or': 'bool',
                     'not': 'bool',
                     'equal': 'bool',
                     '=': True

@@ -11,8 +11,11 @@ var
 
 main() {
     
-    c = d * e;
-    b = c + a;
-    a = i / d;
+    if (a > b) {
+        b = i + a;
+    }
+    
+    c = d + e + i * a;
+    a = i + e;
 
 }
