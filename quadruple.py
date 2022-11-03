@@ -17,23 +17,50 @@ class quadruplesList:
         #print(cuadruplo.printQuad())
 
     def addGotoMain(self):
-        cuadruplo = quadruple('Goto', '-', '-', 'main')
+        cuadruplo = quadruple('Goto', 'main', ' ', ' ')
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
 
     def addQuadIf(self, result):
-        cuadruplo = quadruple('GotoF', result, '-', '')
+        cuadruplo = quadruple('GotoF', result, ' ', ' ')
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
 
-    def fillIf(self, end):
+    def addQuadElse(self):
+        cuadruplo = quadruple('GOTO', ' ', ' ', ' ')
+        self.quadsList.append(cuadruplo)
+        self.cont += 1
+
+    def fill(self, end):
         self.quadsList[end].result = self.cont
+    
+    def addQuadWhileF(self, result):
+        cuadruplo = quadruple('GotoF', result, ' ', ' ')
+        self.quadsList.append(cuadruplo)
+        self.cont += 1
+    
+    def addQuadWhile(self, retorno):
+        cuadruplo = quadruple('GOTO', ' ', ' ', retorno)
+        self.quadsList.append(cuadruplo)
+        self.cont += 1
 
     def printQuads(self):
+        count = 1
         for i in self.quadsList:
-            print(f"{i.printQuad()}")
+            print(f"{count}, {i.printQuad()}")
+            count += 1
+    
+    def addQuadRead(self, variable):
+        cuadruplo = quadruple('READ', '  ', '  ', variable)
+        self.quadsList.append(cuadruplo)
+        self.cont += 1
+
+    def addQuadWrite(self, variable):
+        cuadruplo = quadruple('WRITE', ' ', ' ', variable)
+        self.quadsList.append(cuadruplo)
+        self.cont += 1
 
 
 class quadruple:

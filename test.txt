@@ -8,14 +8,32 @@ var
     float d;
     int e;
     int f;
+    float g;
+    char x;
+    bool hola;
 
 main() {
     
+      
+   
+
     if (a > b) {
         b = i + a;
+        read(a, b);
+    } else {
+        a = e + f;
+        write(e, "Hola", a);
+    }
+
+    if (c < d) {
+        g = c + d;
     }
     
+    while (c < d) do 
+    {
+        g = d;
+    }
+
     c = d + e + i * a;
-    a = i + e;
 
 }

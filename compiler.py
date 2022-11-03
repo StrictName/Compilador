@@ -47,7 +47,7 @@ reserved = {
     'write' : 'WRITE',
     'while' : 'WHILE',
     'do' : 'DO',
-    'from' : 'FROM',
+    'for' : 'FOR',
     'to' : 'TO',
     'and' : 'AND',
     'or' : 'OR',
@@ -299,8 +299,8 @@ def p_lee(t):
     '''lee : READ PARENTESISIZQ leep PARENTESISDER'''
 
 def p_leep(t):
-    '''leep : variable
-            | variable COMA leep'''
+    '''leep : variable readQuad_np
+            | variable readQuad_np COMA leep'''
 
 def p_variable(t):
     '''variable : ID saveIDpilaO_np
@@ -311,20 +311,20 @@ def p_escribe(t):
     '''escribe : WRITE PARENTESISIZQ escribep PARENTESISDER'''
 
 def p_escribep(t):
-    '''escribep : exp
-                | exp COMA escribep
-                | LETRERO
-                | LETRERO COMA escribep'''
+    '''escribep : exp writeQuad_np
+                | exp writeQuad_np COMA escribep
+                | LETRERO pushLetrero_np writeQuad_np
+                | LETRERO pushLetrero_np writeQuad_np COMA escribep'''
 
 def p_condicion(t):
     '''condicion : IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
-                | IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE LLAVEIZQ estatuto LLAVEDER'''
+                | IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np'''
 
 def p_ciclo_w(t):
-    '''ciclo_w : WHILE PARENTESISIZQ exp PARENTESISDER DO LLAVEIZQ estatuto LLAVEDER'''
+    '''ciclo_w : WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np'''
 
 def p_ciclo_f(t):
-    '''ciclo_f : FROM variable IGUAL exp TO exp DO LLAVEIZQ estatuto LLAVEDER'''
+    '''ciclo_f : FOR variable IGUAL exp TO exp DO LLAVEIZQ estatuto LLAVEDER'''
 
 def p_exp(t):
     '''exp : t_exp
@@ -485,6 +485,12 @@ def p_saveFunc_np(p):
     functionsTable.add(current_func_id, current_func_type, parameters_list)
 
 ############################Cuadruplos#########################3
+
+def p_saveTypeVar_np(p):
+    '''saveTypeVar_np : empty'''
+    global current_var_type
+    current_var_type = p[-2]
+    PilaTipos.append(current_var_type)
 
 def search_address(id):
     global varsTable
@@ -675,6 +681,8 @@ def p_igual_np(p):
                 PilaTipos.append(result_type)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
+
+######################### IF #####################
 def p_ifQuad_np(p):
     '''ifQuad_np : empty'''
     global result_type
@@ -690,17 +698,62 @@ def p_fillIfQuad_np(p):
     '''fillIfQuad_np : empty'''
     end = PSaltos.pop()
     print(end)
-    cuadruplo.fillIf(end-1)
+    cuadruplo.fill(end-1)
 
-def p_saveTypeVar_np(p):
-    '''saveTypeVar_np : empty'''
-    global current_var_type
-    current_var_type = p[-2]
-    PilaTipos.append(current_var_type)
+def p_elseQuad_np(p):
+    '''elseQuad_np : empty'''
+    false = PSaltos.pop()
+    cuadruplo.addQuadElse()
+    PSaltos.append(cuadruplo.cont - 1)
+    cuadruplo.fill(false-1)
 
-def p_generacionCuadruplo_np(p):
-    '''generacionCuadruplo_np : empty'''
 
+###################### WHILE ##########################
+def p_whileQuadSaltos_np(p):
+    '''whileQuadSaltos_np : empty'''
+    PSaltos.append(cuadruplo.cont)
+
+def p_whileQuad_np(p):
+    '''whileQuad_np : empty'''
+    global result_type
+    result_type = PilaTipos.pop()
+    print(result_type)
+    if (result_type != 'bool'):
+        print('Type-mismatch')
+    else:
+        result = PilaO.pop()
+        cuadruplo.addQuadWhileF(result)
+        PSaltos.append(cuadruplo.cont - 1)
+
+def p_fillWhileQuad_np(p):
+    '''fillWhileQuad_np : empty'''
+    end = PSaltos.pop()
+    retorno = PSaltos.pop()
+    cuadruplo.addQuadWhile(retorno)
+    cuadruplo.fill(end-1)
+
+###################### FOR #################
+#def p_validarIdFor_np(p):
+#    '''validarIdFor_np : empty'''
+#    PilaO.append(p[-1])
+
+
+################## READ #################
+def p_readQuad_np(p):
+    '''readQuad_np : empty'''
+    variable = PilaO.pop()
+    PilaTipos.pop()
+    cuadruplo.addQuadRead(variable)
+
+################## WRITE ###############
+def p_pushLetrero_np(p):
+    '''pushLetrero_np : empty'''
+    PilaO.append(p[-1])
+
+def p_writeQuad_np(p):
+    '''writeQuad_np : empty'''
+    variable = PilaO.pop()
+    cuadruplo.addQuadWrite(variable)
 
 ########################## Memoria virtual #################################
 def asignar_direccion_memoria():

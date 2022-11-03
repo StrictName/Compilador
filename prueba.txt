@@ -123,7 +123,7 @@ func void suma (int x, float y);
       x = p.corre(3);
    }
 
-   from s = p.t > 2 to p.ala equal 5 do {
+   for s = p.t > 2 to p.ala equal 5 do {
       m1(x, 8);
    }
 }
@@ -144,7 +144,7 @@ main()
    p.corre('a');
    p.atri1;
 
-   from x = 2+3 to y do
+   for x = 2+3 to y do
    {
       read(w);
    }
@@ -166,7 +166,7 @@ main()
       x = p.corre(3);
    }
 
-   from s = p.t > 2 to p.ala equal 5 do {
+   for s = p.t > 2 to p.ala equal 5 do {
       m1(x, 8);
    }
    
