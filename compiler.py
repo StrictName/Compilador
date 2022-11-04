@@ -171,8 +171,8 @@ def p_programa(t):
     t[0] = "Este es un programa"
 
 def p_main(t):
-    '''main : MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-            | MAIN PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
+    '''main : MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
+            | MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
 
 def p_clase(t):
     '''clase : CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
@@ -562,6 +562,10 @@ def p_gotoMain_np(p):
     '''gotoMain_np : empty'''
     cuadruplo.addGotoMain()
 
+def p_fillMain_np(p):
+    '''fillMain_np : empty'''
+    cuadruplo.fill(0)
+
 #def p_mainJump_np(p):
 #    '''mainJump_np : empty'''
 
@@ -697,7 +701,6 @@ def p_ifQuad_np(p):
 def p_fillIfQuad_np(p):
     '''fillIfQuad_np : empty'''
     end = PSaltos.pop()
-    print(end)
     cuadruplo.fill(end-1)
 
 def p_elseQuad_np(p):
@@ -749,10 +752,13 @@ def p_readQuad_np(p):
 def p_pushLetrero_np(p):
     '''pushLetrero_np : empty'''
     PilaO.append(p[-1])
+    PilaTipos.append("string")
+
 
 def p_writeQuad_np(p):
     '''writeQuad_np : empty'''
     variable = PilaO.pop()
+    PilaTipos.pop()
     cuadruplo.addQuadWrite(variable)
 
 ########################## Memoria virtual #################################

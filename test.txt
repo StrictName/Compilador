@@ -12,10 +12,16 @@ var
     char x;
     bool hola;
 
-main() {
-    
-      
+func int suma (int y);
+var 
+   int varF1;
    
+{
+   read(varF1);
+   
+}
+
+main() {
 
     if (a > b) {
         b = i + a;
