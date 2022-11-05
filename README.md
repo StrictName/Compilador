@@ -1,7 +1,10 @@
 <h1 align="center"> Cyber-AC </h1>
 <em> Proyecto Final Diseño de Compiladores </em>
+
 <em> A01283076 Antonio Díaz Ramos </em>
+
 <em> A01275834 Citlalli Rosario Alonzo Mateos</em>
+
 ## Avance 1: 
 Sintáxis completa del programa, incluye declaración de clases (con sus atributos y métodos, y herencia simple), variables, funciones y el main. 
 Hemos realizado diversas pruebas y consideramos que toda la sintáxis funciona y está completa, al igual que contempla lo necesario para que el compilador funcione
