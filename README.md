@@ -1,5 +1,4 @@
-# Compilador
-Compilador orientado a objetos
+<h1 align="center"> Cyber-AC </h1>
 
 ## Avance 1: 
 Sintáxis completa del programa, incluye declaración de clases (con sus atributos y métodos, y herencia simple), variables, funciones y el main. 
@@ -35,6 +34,7 @@ class Animal
       
    }
 
+![image](https://user-images.githubusercontent.com/70440578/200093017-32fcf7e6-f0a9-49f2-8509-0b2a78edfe5b.png)
 
    public int hello (int y, int z)
    {
