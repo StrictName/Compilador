@@ -191,7 +191,7 @@ Se agrego el diccionario del cubo semántico, la tabla de variables y el directo
 Se empiezan a generar los cuadruplos de las expresiones de asignación, lectura y escritura. También se generan los cuadruplos de while. 
 
 ## Avance 4
-Se realizó la asignación de direcciones virtuales a las variables y constantes. Ya se genera el código intermedio de if y for. Los cuadruplos ya se realizan tomando en cuenta las direcciones virtuales.
+Se realizó la asignación de direcciones virtuales a las variables y constantes. Ya se genera el código intermedio de if y for, addemás, los cuadruplos se crean tomando en cuenta las direcciones virtuales.
 
 
 
