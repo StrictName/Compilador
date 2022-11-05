@@ -193,6 +193,62 @@ Se empiezan a generar los cuadruplos de las expresiones de asignación, lectura 
 ## Avance 4
 Se realizó la asignación de direcciones virtuales a las variables y constantes. Ya se genera el código intermedio de if y for, addemás, los cuadruplos se crean tomando en cuenta las direcciones virtuales.
 
+```
+program Compilador;
+
+var
+    int i;
+    int a;
+    int b;
+    float c;
+    float d;
+    int e;
+    int f;
+    float g;
+    char x;
+    bool hola;
+    int j;
+
+func int suma (int y);
+var 
+   int varF1;
+   
+{
+   read(varF1);
+   
+}
+
+main() {
+
+    for j = 1 to i + a * b do {
+        b = i + a;
+    }
+
+    write ("Terminafor"); 
+
+    if (a > b) {
+        read(a, b);
+    } else {
+        a = e + f;
+        write(e, "Hola", a);
+    }
+
+    if (c < d) {
+        g = c + d;
+    }
+    
+    while (c < d) do 
+    {
+        g = d;
+    }
+
+    c = d + e + i * a;
+
+}
+
+```
+
+<img width="238" alt="Screen Shot 2022-11-04 at 19 08 21" src="https://user-images.githubusercontent.com/62078976/200094343-a9bba9d5-f2f4-498c-9ff2-d39859168882.png">
 
 
 
