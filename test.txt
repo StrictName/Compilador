@@ -11,6 +11,7 @@ var
     float g;
     char x;
     bool hola;
+    int j;
 
 func int suma (int y);
 var 
@@ -23,8 +24,13 @@ var
 
 main() {
 
-    if (a > b) {
+    for j = 1 to i + a * b do {
         b = i + a;
+    }
+
+    write ("Terminafor"); 
+
+    if (a > b) {
         read(a, b);
     } else {
         a = e + f;

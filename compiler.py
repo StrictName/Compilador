@@ -1,11 +1,13 @@
 from distutils.log import error
 from queue import Empty
+from tokenize import PseudoExtras
 import ply.lex as lex
 import sys
 import ply.yacc as yacc
 from varTable import varTable
 from funcTable import funcTable
 from parametro import Parameter
+from cteTable import cteTable
 from arreglo import Array
 from arrayTable import arrayTable
 from semanticCube import SemanticCube
@@ -19,6 +21,7 @@ arraysTable = arrayTable()
 claseTable = classTable()
 cuboS = SemanticCube()
 cuadruplo = quadruple.quadruplesList()
+constantsTable = cteTable()
 #printCuadruplo = quadruple.quadruple()
 
 POper = []
@@ -321,10 +324,13 @@ def p_condicion(t):
                 | IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np'''
 
 def p_ciclo_w(t):
-    '''ciclo_w : WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np'''
+    '''ciclo_w : WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np'''
 
 def p_ciclo_f(t):
-    '''ciclo_f : FOR variable IGUAL exp TO exp DO LLAVEIZQ estatuto LLAVEDER'''
+    '''ciclo_f : FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np'''
+
+def p_variable_for(t):
+    '''variable_for : ID validarIdFor_np'''
 
 def p_exp(t):
     '''exp : t_exp
@@ -353,9 +359,9 @@ def p_t(t):
 
 def p_f(t):
     '''f : PARENTESISIZQ exp PARENTESISDER
-        | CTEI
-        | CTEF
-        | CTECH
+        | CTEI saveConstantInt_np
+        | CTEF saveConstantFloat_np
+        | CTECH saveConstantChar_np
         | variable
         | llamada
         | llamada_metodo
@@ -457,6 +463,33 @@ def p_saveVar_np(p):
     address = asignar_direccion_memoria()
     varsTable.add(current_var_id, current_var_type, current_var_scope, address)
 
+def p_saveConstantInt_np(p):
+    '''saveConstantInt_np : empty'''
+    global cte_type
+    cte_type = 'int'
+    address = asignar_direccion_memoriaCtes()
+    PilaO.append(address)
+    PilaTipos.append(cte_type)
+    constantsTable.add(p[-1], cte_type, address)
+
+def p_saveConstantFloat_np(p):
+    '''saveConstantFloat_np : empty'''
+    global cte_type
+    cte_type = 'float'
+    address = asignar_direccion_memoriaCtes()
+    PilaO.append(address)
+    PilaTipos.append(cte_type)
+    constantsTable.add(p[-1], cte_type, address)
+
+def p_saveConstantChar_np(p):
+    '''saveConstantChar_np : empty'''
+    global cte_type
+    cte_type = 'char'
+    address = asignar_direccion_memoriaCtes()
+    PilaO.append(address)
+    PilaTipos.append(cte_type)
+    constantsTable.add(p[-1], cte_type, address)
+
 ################Guarda datos de las funciones###################
 
 def p_getIDFunc_np(p):
@@ -486,11 +519,11 @@ def p_saveFunc_np(p):
 
 ############################Cuadruplos#########################3
 
-def p_saveTypeVar_np(p):
-    '''saveTypeVar_np : empty'''
-    global current_var_type
-    current_var_type = p[-2]
-    PilaTipos.append(current_var_type)
+#def p_saveTypeVar_np(p):
+#    '''saveTypeVar_np : empty'''
+#    global current_var_type
+#    current_var_type = p[-2]
+#    PilaTipos.append(current_var_type)
 
 def search_address(id):
     global varsTable
@@ -564,7 +597,7 @@ def p_gotoMain_np(p):
 
 def p_fillMain_np(p):
     '''fillMain_np : empty'''
-    cuadruplo.fill(0)
+    cuadruplo.fillMain(0)
 
 #def p_mainJump_np(p):
 #    '''mainJump_np : empty'''
@@ -680,9 +713,8 @@ def p_igual_np(p):
             left_type = PilaTipos.pop()
             operador = POper.pop()
             result_type = cuboS.type_cube(left_type, right_type, operador)
-            if result_type != 'err':
+            if result_type != False:
                 cuadruplo.addQuadrupleIgual(operador, left_operand, right_operand)
-                PilaTipos.append(result_type)
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 
@@ -706,7 +738,7 @@ def p_fillIfQuad_np(p):
 def p_elseQuad_np(p):
     '''elseQuad_np : empty'''
     false = PSaltos.pop()
-    cuadruplo.addQuadElse()
+    cuadruplo.addQuadGOTO()
     PSaltos.append(cuadruplo.cont - 1)
     cuadruplo.fill(false-1)
 
@@ -720,12 +752,11 @@ def p_whileQuad_np(p):
     '''whileQuad_np : empty'''
     global result_type
     result_type = PilaTipos.pop()
-    print(result_type)
     if (result_type != 'bool'):
         print('Type-mismatch')
     else:
         result = PilaO.pop()
-        cuadruplo.addQuadWhileF(result)
+        cuadruplo.addQuadGotoF(result)
         PSaltos.append(cuadruplo.cont - 1)
 
 def p_fillWhileQuad_np(p):
@@ -736,10 +767,66 @@ def p_fillWhileQuad_np(p):
     cuadruplo.fill(end-1)
 
 ###################### FOR #################
-#def p_validarIdFor_np(p):
-#    '''validarIdFor_np : empty'''
-#    PilaO.append(p[-1])
+def p_validarIdFor_np(p):
+    '''validarIdFor_np : empty'''
+    if (varsTable.find_type(p[-1]) != 'int'):
+        print("ERROR: Type mismatch")
+    else:
+        PilaO.append(varsTable.find_address(p[-1]))
+        PilaTipos.append(varsTable.find_type(p[-1]))
 
+def p_forInitialExp_np(p):
+    '''forInitialExp_np : empty'''
+    global vControl, exp
+    exp_type = PilaTipos.pop()
+    if (exp_type != 'int'):
+        print("ERROR: Type mismatch")
+    else:
+        exp = PilaO.pop()
+        vControl = PilaO[-1]
+        control_type = PilaTipos[-1]
+        tipo_res = cuboS.type_cube(control_type, exp_type, '=')
+        if (tipo_res != True):
+            print("ERROR: Type mismatch")
+        else:
+            cuadruplo.addQuadrupleIgual('=', vControl, exp)
+            cuadruplo.addQuadrupleIgual('=', 'VControl', vControl)
+
+def p_forResultExp_np(p):
+    '''forResultExp_np : empty'''
+    global current_var_type, result_type, vControl, current_var_scope, result, exp
+    exp_type = PilaTipos.pop()
+    if (exp_type != 'int'):
+        print("ERROR: Type mismatch")
+    else:
+        exp = PilaO.pop()
+        cuadruplo.addQuadrupleIgual('=', 'VFinal', exp)
+        current_var_type = 'bool'
+        current_var_scope = 'funcion'
+        result = asignar_direccion_memoria()
+        cuadruplo.addQuadruple('<', 'VControl', 'VFinal', result)
+        PSaltos.append(cuadruplo.cont-1)
+        cuadruplo.addQuadGotoF(result)
+        PSaltos.append(cuadruplo.cont-1)
+
+def p_endFor_np(p):
+    '''endFor_np : empty'''
+    print(PilaO)
+    print(PilaTipos)
+    global result_type, current_var_scope, current_var_type, result
+    current_var_type = 'int'
+    current_var_scope = 'funcion'
+    result = asignar_direccion_memoria()
+    cuadruplo.addQuadruple('+', 'VControl', 1, result)
+    cuadruplo.addQuadrupleIgual('=', 'VControl', result)
+    cuadruplo.addQuadrupleIgual('=', PilaO[-1], result)
+    FIN = PSaltos.pop()
+    print(FIN)
+    RET = PSaltos.pop()
+    cuadruplo.addQuadruple('GOTO', ' ', ' ', RET)
+    cuadruplo.fill(FIN-1)
+    PilaO.pop()
+    PilaTipos.pop()
 
 ################## READ #################
 def p_readQuad_np(p):
@@ -816,23 +903,41 @@ def asignar_direccion_memoria():
             aux = dir_local_clase_int
             dir_local_clase_int += 1
         elif current_var_type == 'float':
-            if dir_local_clase_float> 4999:
+            if dir_local_clase_float > 4999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_float
             dir_local_clase_float += 1
         elif current_var_type == 'char':
-            if dir_local_clase_char> 5499:
+            if dir_local_clase_char > 5499:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_char
             dir_local_clase_char += 1
         elif current_var_type == 'bool':
-            if dir_local_clase_bool> 5999:
+            if dir_local_clase_bool > 5999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_bool
             dir_local_clase_bool += 1
     return aux
 
-
+def asignar_direccion_memoriaCtes():
+    global cte_type, dir_constante_int, dir_constante_float, dir_constante_char
+    aux = 0
+    if cte_type == 'int':
+        if dir_constante_int > 6499:
+            print('ERROR: Se excedió el máximo de constantes int')
+        aux = dir_constante_int
+        dir_constante_int += 1
+    elif cte_type == 'float':
+        if dir_constante_float > 6999:
+            print('ERROR: Se excedió el máximo de constantes float')
+        aux = dir_constante_float
+        dir_constante_float += 1
+    elif cte_type == 'char':
+        if dir_constante_char > 7499:
+            print('ERROR: Se excedió el máximo de constantes char')
+        aux = dir_constante_char
+        dir_constante_char += 1
+    return aux
 
 yacc.yacc()
 if __name__ == '__main__':
@@ -865,6 +970,9 @@ print(varsTable.toString())
 
 #print("Tabla de Funciones")
 #print(functionsTable.toString())
+
+print("Tabla de constantes")
+print(constantsTable.toString())
 
 cuadruplo.printQuads()
 

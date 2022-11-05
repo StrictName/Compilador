@@ -11,7 +11,7 @@ class varTable:
             print(f"The variable {name} already exists")
         else:
             self.table[name] = currentVar
-            print(f"Variable {name} saved successfully")
+            #print(f"Variable {name} saved successfully, direccion {direccion}")
 
     def search(self, name):
         if name in self.table:
