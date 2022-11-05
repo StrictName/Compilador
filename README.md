@@ -2,7 +2,6 @@
 <em> Proyecto Final Diseño de Compiladores </em>
 
 <em> A01283076 Antonio Díaz Ramos </em>
-
 <em> A01275834 Citlalli Rosario Alonzo Mateos</em>
 
 ## Avance 1: 
