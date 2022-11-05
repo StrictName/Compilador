@@ -11,6 +11,7 @@ al momento de revisar la sintáxis del lenguaje de programación.
 
 La sintáxis que actualmente el programa maneja es la declaración del nombre de programa, clases, atributos, métodos, funciones, variables y estatutos como if, if-else, from, while-do, read y write. 
 
+```
 program proyectocompilador;
 
 class Animal 
@@ -38,8 +39,6 @@ class Animal
       
    }
 
-![image](https://user-images.githubusercontent.com/70440578/200093017-32fcf7e6-f0a9-49f2-8509-0b2a78edfe5b.png)
-
    public int hello (int y, int z)
    {
       y=3;
@@ -66,8 +65,6 @@ class Dog : public Animal
       {
          x=w;
       }
-
-
 
       return x*2;
    }
@@ -185,8 +182,17 @@ main()
    }
    
 }
+```
 
 ## Avance 2
-Se agrego el diccionario que será el cubo semántico, la tabla de variables y el directorio de funciones, pero no toma en cuenta aun a los objetos. 
+Se agrego el diccionario del cubo semántico, la tabla de variables y el directorio de funciones. El cubo semántico ya tiene los operadores derechos, operadores izquierdos, y operandos con su respectivo resultado, además, se hizo la función que devuelve el resultado. La tabla de variables ya guarda las variables de todo el programa junto con su scope y tipo. El directorio de funciones aun no está conectado a la tabla de variables pero ya guarda el nombre de la función. 
+
+## Avance 3
+Se empiezan a generar los cuadruplos de las expresiones de asignación, lectura y escritura. También se generan los cuadruplos de while. 
+
+## Avance 4
+Se realizó la asignación de direcciones virtuales a las variables y constantes. Ya se genera el código intermedio de if y for. Los cuadruplos ya se realizan tomando en cuenta las direcciones virtuales.
+
+
 
 
