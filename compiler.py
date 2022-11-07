@@ -6,7 +6,6 @@ import sys
 import ply.yacc as yacc
 from varTable import varTable
 from funcTable import funcTable
-from parametro import Parameter
 from cteTable import cteTable
 from arreglo import Array
 from arrayTable import arrayTable
@@ -28,6 +27,12 @@ POper = []
 PilaO = []
 PilaTipos = []
 PSaltos = []
+parameters_list = []
+tam_func = []
+cont_int = 0
+cont_float = 0
+cont_char = 0
+cont_bool = 0
 
 reserved = {
     'program' : 'PROGRAM',
@@ -145,32 +150,32 @@ def t_error(t):
 lex.lex()
 
 # Direcciones de memoria virtual
-dir_global_int = 0
-dir_global_float = 500
-dir_global_char = 1000
-dir_global_bool = 1500
-dir_local_funcion_int = 2000
-dir_local_funcion_float = 2500
-dir_local_funcion_char = 3000
-dir_local_funcion_bool = 3500
-dir_local_clase_int = 4000
-dir_local_clase_float = 4500
-dir_local_clase_char = 5000
-dir_local_clase_bool = 5500
-dir_constante_int = 6000
-dir_constante_float = 6500
-dir_constante_char = 7000
-
+dir_global_program = 0
+dir_global_int = 1
+dir_global_float = 1000
+dir_global_char = 2000
+dir_global_bool = 3000
+dir_local_funcion_int = 4000
+dir_local_funcion_float = 5000
+dir_local_funcion_char = 6000
+dir_local_funcion_bool = 7000
+dir_local_clase_int = 8000
+dir_local_clase_float = 9000
+dir_local_clase_char = 10000
+dir_local_clase_bool = 11000
+dir_constante_int = 12000
+dir_constante_float = 13000
+dir_constante_char = 14000
 
 def p_programa(t):
-    '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase var main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase var funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np clase funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np var main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np var funcion main
-                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA gotoMain_np funcion main'''
+    '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np clase main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np clase var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np clase var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np clase funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np var main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np var funcion main
+                | PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np funcion main'''
     t[0] = "Este es un programa"
 
 def p_main(t):
@@ -217,18 +222,17 @@ def p_tipo_simple_func(t):
                         | CHAR getTypeFunc_np
                         | BOOL getTypeFunc_np'''
 
-
 def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
 
 def p_funcion(t):
-    '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var saveFunc_np cuerpo funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFunc_np cuerpo
+    '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np
                 | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion'''
 
 def p_dec_var(t):
@@ -253,7 +257,7 @@ def p_parametros(t):
                     | BOOL ID getParameters_np COMA saveParameter_np parametros'''
 
 def p_cuerpo(t):
-    '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA LLAVEDER
+    '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
                 | LLAVEIZQ estatuto LLAVEDER'''
 
 def p_bloque_clase(t):
@@ -423,8 +427,16 @@ def p_getID_np(p):
 
 def p_getType_np(p):
     '''getType_np : empty'''
-    global current_var_type
+    global current_var_type, cont_int, cont_float, cont_char, cont_bool
     current_var_type = p[-1]
+    if (p[-1] == 'int'):
+        cont_int += 1
+    elif (p[-1] == 'float'):
+        cont_float += 1
+    elif (p[-1] == 'char'):
+        cont_char += 1
+    elif (p[-1] == 'bool'):
+        cont_bool += 1
 
 ####Arreglo####
 
@@ -460,8 +472,9 @@ def p_scopeGlobal_np(p):
 
 def p_saveVar_np(p):
     '''saveVar_np : empty'''
+    global address_func
     address = asignar_direccion_memoria()
-    varsTable.add(current_var_id, current_var_type, current_var_scope, address)
+    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func)
 
 def p_saveConstantInt_np(p):
     '''saveConstantInt_np : empty'''
@@ -494,28 +507,54 @@ def p_saveConstantChar_np(p):
 
 def p_getIDFunc_np(p):
     '''getIDFunc_np : empty'''
-    global current_func_id
+    global current_func_id, parameters_list, cont_char, cont_int, cont_float, cont_bool, inicio_cuadruplo
+    cont_int = 0
+    cont_float = 0
+    cont_char = 0
+    cont_bool = 0
     current_func_id = str(p[-1])
+    inicio_cuadruplo = cuadruplo.cont
 
 def p_getTypeFunc_np(p):
     '''getTypeFunc_np : empty'''
-    global current_func_type
+    global current_func_type, address_func, current_var_scope, current_var_type
     current_func_type = str(p[-1])
+    current_var_type = current_func_type
+    current_var_scope = 'funcion'
+    address_func = asignar_direccion_memoria()
 
 def p_getParameters_np(p):
     '''getParameters_np : empty'''
-    global current_parameter
-    current_parameter = Parameter(str(p[-2]), str(p[-1]))
+    global current_var_id, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
+    current_var_id = p[-1]
+    current_var_type = p[-2]
+    current_var_scope = 'funcion'
+    parameters_list.append(p[-2])
+    if (p[-2] == 'int'):
+        cont_int += 1
+    elif (p[-2] == 'float'):
+        cont_float += 1
+    elif (p[-2] == 'char'):
+        cont_char += 1
+    elif (p[-2] == 'bool'):
+        cont_bool += 1
 
 def p_saveParameter_np(p):
     '''saveParameter_np : empty'''
-    global parameters_list
-    parameters_list = []
-    parameters_list.append(current_parameter)
+    global parameters_list, address_func
+    address = asignar_direccion_memoria()
+    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func)
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
-    functionsTable.add(current_func_id, current_func_type, parameters_list)
+    global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool
+    tam_func.append(cont_int)
+    tam_func.append(cont_float)
+    tam_func.append(cont_char)
+    tam_func.append(cont_bool)
+    functionsTable.add(current_func_id, current_func_type, address_func, inicio_cuadruplo, tam_func, parameters_list)
+    parameters_list = []
+    tam_func = []
 
 ############################Cuadruplos#########################3
 
@@ -604,7 +643,7 @@ def p_fillMain_np(p):
 
 def p_multiDiv_np(p):
     '''multiDiv_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
     if len(POper) > 0:
         if (POper[-1] == '*' or  POper[-1] == '/'):
             right_operand = PilaO.pop()
@@ -617,6 +656,14 @@ def p_multiDiv_np(p):
                 current_var_type = result_type
                 current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
+                if (result_type == 'int'):
+                    cont_int += 1
+                elif (result_type == 'float'):
+                    cont_float += 1
+                elif (result_type == 'char'):
+                    cont_char += 1
+                elif (result_type == 'bool'):
+                    cont_bool += 1
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
@@ -624,7 +671,7 @@ def p_multiDiv_np(p):
 
 def p_plusMinus_np(p):
     '''plusMinus_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
     if len(POper) > 0:
         if (POper[-1] == '+' or POper[-1] == '-'):
             right_operand = PilaO.pop()
@@ -637,6 +684,14 @@ def p_plusMinus_np(p):
                 current_var_type = result_type
                 current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
+                if (result_type == 'int'):
+                    cont_int += 1
+                elif (result_type == 'float'):
+                    cont_float += 1
+                elif (result_type == 'char'):
+                    cont_char += 1
+                elif (result_type == 'bool'):
+                    cont_bool += 1
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
@@ -644,7 +699,7 @@ def p_plusMinus_np(p):
 
 def p_relationalOp_np(p):
     '''relationalOp_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
     if len(POper) > 0:
         if POper[-1] == '<' or POper[-1] == '>' or POper[-1] == 'equal' or POper[-1] == 'not':
             right_operand = PilaO.pop()
@@ -657,6 +712,14 @@ def p_relationalOp_np(p):
                 current_var_type = result_type
                 current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
+                if (result_type == 'int'):
+                    cont_int += 1
+                elif (result_type == 'float'):
+                    cont_float += 1
+                elif (result_type == 'char'):
+                    cont_char += 1
+                elif (result_type == 'bool'):
+                    cont_bool += 1
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
@@ -664,7 +727,7 @@ def p_relationalOp_np(p):
 
 def p_and_np(p):
     '''and_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
     if len(POper) > 0:
         if POper[-1] == 'and':
             right_operand = PilaO.pop()
@@ -677,6 +740,14 @@ def p_and_np(p):
                 current_var_type = result_type
                 current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
+                if (result_type == 'int'):
+                    cont_int += 1
+                elif (result_type == 'float'):
+                    cont_float += 1
+                elif (result_type == 'char'):
+                    cont_char += 1
+                elif (result_type == 'bool'):
+                    cont_bool += 1
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
@@ -684,7 +755,7 @@ def p_and_np(p):
 
 def p_or_np(p):
     '''or_np : empty'''
-    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope
+    global right_operand, right_type, left_operand, left_type, operador, result_type, result, current_var_type, current_var_scope, cont_int, cont_float, cont_char, cont_bool
     if len(POper) > 0:
         if POper[-1] == 'or':
             right_operand = PilaO.pop()
@@ -697,6 +768,14 @@ def p_or_np(p):
                 current_var_type = result_type
                 current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
+                if (result_type == 'int'):
+                    cont_int += 1
+                elif (result_type == 'float'):
+                    cont_float += 1
+                elif (result_type == 'char'):
+                    cont_char += 1
+                elif (result_type == 'bool'):
+                    cont_bool += 1
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
@@ -716,6 +795,12 @@ def p_igual_np(p):
             if result_type != False:
                 cuadruplo.addQuadrupleIgual(operador, left_operand, right_operand)
             #print(left_operand, left_type, right_operand, right_type, operador)
+
+def p_emptyStackReturn_np(p):
+    '''emptyStackReturn_np : empty'''
+    if len(POper) == 0:
+        PilaO.pop()
+        PilaTipos.pop()
 
 
 ######################### IF #####################
@@ -850,70 +935,75 @@ def p_writeQuad_np(p):
 
 ########################## Memoria virtual #################################
 def asignar_direccion_memoria():
-    global current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int
+    global dir_global_program, current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int
     aux = 0
     if current_var_scope == 'global':
-        if current_var_type == 'int':
-            if dir_global_int > 499:
+        if current_var_type == 'program':
+            if dir_global_program > 0:
+                print('ERROR: exceso de programas')
+            aux = dir_global_program
+            dir_global_program += 1
+        elif current_var_type == 'int':
+            if dir_global_int > 999:
                 print('ERROR: Se excedió el máximo de variables enteras globales')
             aux = dir_global_int
             dir_global_int += 1
         elif current_var_type == 'float':
-            if dir_global_float > 999:
+            if dir_global_float > 1999:
                 print('ERROR: Se excedió el máximo de variables float globales')
             aux = dir_global_float
             dir_global_float += 1
         elif current_var_type == 'char':
-            if dir_global_char > 1499:
+            if dir_global_char > 2999:
                 print('ERROR: Se excedió el máximo de variables char globales')
             aux = dir_global_char
             dir_global_char += 1
         elif current_var_type == 'bool':
-            if dir_global_bool > 1999:
+            if dir_global_bool > 3999:
                 print('ERROR: Se excedió el máximo de variables bool globales')
             aux = dir_global_bool
             dir_global_bool += 1
 
     elif current_var_scope == 'funcion':
         if current_var_type == 'int':
-            if dir_local_funcion_int > 2499:
+            if dir_local_funcion_int > 4999:
                 print('ERROR: Se excedió el máximo de variables enteras locales funcion')
             aux = dir_local_funcion_int
             dir_local_funcion_int += 1
         elif current_var_type == 'float':
-            if dir_local_funcion_float > 2999:
+            if dir_local_funcion_float > 5999:
                 print('ERROR: Se excedió el máximo de variables enteras locales funcion')
             aux = dir_local_funcion_float
             dir_local_funcion_float += 1
         elif current_var_type == 'char':
-            if dir_local_funcion_char > 3499:
+            if dir_local_funcion_char > 6999:
                 print('ERROR: Se excedió el máximo de variables enteras locales funcion')
             aux = dir_local_funcion_char
             dir_local_funcion_char += 1
         elif current_var_type == 'bool':
-            if dir_local_funcion_bool > 3999:
+            if dir_local_funcion_bool > 7999:
                 print('ERROR: Se excedió el máximo de variables enteras locales funcion')
             aux = dir_local_funcion_bool
             dir_local_funcion_bool += 1
 
     else:
         if current_var_type == 'int':
-            if dir_local_clase_int > 4499:
+            if dir_local_clase_int > 8999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_int
             dir_local_clase_int += 1
         elif current_var_type == 'float':
-            if dir_local_clase_float > 4999:
+            if dir_local_clase_float > 9999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_float
             dir_local_clase_float += 1
         elif current_var_type == 'char':
-            if dir_local_clase_char > 5499:
+            if dir_local_clase_char > 10999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_char
             dir_local_clase_char += 1
         elif current_var_type == 'bool':
-            if dir_local_clase_bool > 5999:
+            if dir_local_clase_bool > 11999:
                 print('ERROR: Se excedió el máximo de variables enteras locales clase')
             aux = dir_local_clase_bool
             dir_local_clase_bool += 1
@@ -923,17 +1013,17 @@ def asignar_direccion_memoriaCtes():
     global cte_type, dir_constante_int, dir_constante_float, dir_constante_char
     aux = 0
     if cte_type == 'int':
-        if dir_constante_int > 6499:
+        if dir_constante_int > 12999:
             print('ERROR: Se excedió el máximo de constantes int')
         aux = dir_constante_int
         dir_constante_int += 1
     elif cte_type == 'float':
-        if dir_constante_float > 6999:
+        if dir_constante_float > 13999:
             print('ERROR: Se excedió el máximo de constantes float')
         aux = dir_constante_float
         dir_constante_float += 1
     elif cte_type == 'char':
-        if dir_constante_char > 7499:
+        if dir_constante_char > 14999:
             print('ERROR: Se excedió el máximo de constantes char')
         aux = dir_constante_char
         dir_constante_char += 1
@@ -965,16 +1055,14 @@ case01 = parser.parse(data)
 print("Tabla de variables")
 print(varsTable.toString())
 
-#print("Tabla de clases")
-#print(claseTable.toString())
-
-#print("Tabla de Funciones")
-#print(functionsTable.toString())
-
 print("Tabla de constantes")
 print(constantsTable.toString())
 
+print("Tabla de funciones")
+print(functionsTable.toString())
+
 cuadruplo.printQuads()
+
 
 print(PilaO)
 print(POper)

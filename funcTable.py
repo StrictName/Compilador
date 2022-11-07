@@ -5,8 +5,8 @@ class funcTable:
     def __init__(self):
         self.table = {}
 
-    def add(self, name, type, parameters):
-        currentFunc = Function(type, parameters)
+    def add(self, name, type, address, inicio_cuad, tam, parameters):
+        currentFunc = Function(type, address, inicio_cuad, tam, parameters)
         if name in self.table:
             print("The function is already declarated")
         else:
@@ -19,9 +19,13 @@ class funcTable:
         else:
             return "Function undeclared"
 
+    def find_address(self, name):
+        if name in self.table:
+            return self.table[name].address
+
     def toString(self):
         for key in self.table:
-            print(f"{key}: {self.table[key].type}")
+            print(f"{key}: {self.table[key].type}, {self.table[key].address}, {self.table[key].inicio_cuad}, {self.table[key].tam}")
             print("  Parametros:")
             for parameter in self.table[key].parameters:
-                print(f"  {parameter.name}: {parameter.type}")
+                print(f"  {parameter}")

@@ -13,14 +13,27 @@ var
     bool hola;
     int j;
 
-func int suma (int y);
+func int suma (int y, int r);
 var 
    int varF1;
    
 {
    read(varF1);
+   write(varF1);
    
 }
+
+func float resta (int ele1, float ele2);
+var 
+   float resultado;
+   char chayo;
+   
+{
+   resultado = ele1 + ele2;
+   return resultado;
+   
+}
+
 
 main() {
 

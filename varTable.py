@@ -5,8 +5,8 @@ class varTable:
     def __init__(self):
         self.table = {}
 
-    def add(self, name, type, scope, direccion):
-        currentVar = Var(type, scope, direccion)
+    def add(self, name, type, scope, direccion, direccion_funcion):
+        currentVar = Var(type, scope, direccion, direccion_funcion)
         if name in self.table:
             print(f"The variable {name} already exists")
         else:
@@ -29,5 +29,5 @@ class varTable:
 
     def toString(self):
         for key in self.table:
-            print(f"{key}: {self.table[key].type}, {self.table[key].scope}, {self.table[key].direccion}")
+            print(f"{key}: {self.table[key].type}, {self.table[key].scope}, {self.table[key].direccion}, {self.table[key].direccion_funcion}")
 
