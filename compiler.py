@@ -159,13 +159,14 @@ dir_local_funcion_int = 4000
 dir_local_funcion_float = 5000
 dir_local_funcion_char = 6000
 dir_local_funcion_bool = 7000
-dir_local_clase_int = 8000
-dir_local_clase_float = 9000
-dir_local_clase_char = 10000
-dir_local_clase_bool = 11000
-dir_constante_int = 12000
-dir_constante_float = 13000
-dir_constante_char = 14000
+dir_local_funcion_void = 8000
+dir_local_clase_int = 9000
+dir_local_clase_float = 10000
+dir_local_clase_char = 11000
+dir_local_clase_bool = 12000
+dir_constante_int = 13000
+dir_constante_float = 14000
+dir_constante_char = 15000
 
 def p_programa(t):
     '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np main
@@ -296,7 +297,7 @@ def p_asignacion(t):
     '''asignacion : variable IGUAL saveOperadorIgual_np exp'''
 
 def p_llamada(t):
-    '''llamada :  ID PARENTESISIZQ llamadap PARENTESISDER'''
+    '''llamada : ID verifyFunc_np PARENTESISIZQ llamadap PARENTESISDER'''
 
 def p_llamadap(t):
     '''llamadap : exp
@@ -503,7 +504,7 @@ def p_saveConstantChar_np(p):
     PilaTipos.append(cte_type)
     constantsTable.add(p[-1], cte_type, address)
 
-################Guarda datos de las funciones###################
+################Guarda datos de las funciones y genera cuadruplos generados de las funciones###################
 
 def p_getIDFunc_np(p):
     '''getIDFunc_np : empty'''
@@ -553,10 +554,43 @@ def p_saveFunc_np(p):
     tam_func.append(cont_char)
     tam_func.append(cont_bool)
     functionsTable.add(current_func_id, current_func_type, address_func, inicio_cuadruplo, tam_func, parameters_list)
+    if current_func_type != 'void':
+        current_var_type = current_func_type
+        current_var_scope = 'global'
+        address_var = asignar_direccion_memoria()
+        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, address_func)
+    #for key in varsTable.table:
+    #    if varsTable.table[key].direccion_funcion == address_func:
+    #        varsTable.delete_var(key)
+    if address_func != 0:
+        cuadruplo.addQuadruple('ENDFunc', ' ', ' ', ' ')
     parameters_list = []
     tam_func = []
 
-############################Cuadruplos#########################3
+def p_verifyFunc_np(p):
+    '''verifyFunc_np : empty'''
+    global current_func_id
+    current_func_id = p[-1]
+    if functionsTable.search(current_func_id) == "Function undeclared":
+        print("ERROR: Function undeclared")
+
+def p_eraSize_np(p):
+    '''eraSize_np : empty'''
+    global current_func_id, param_count
+    params = functionsTable.find_parameters(current_func_id)
+    cuadruplo.addQuadruple('ERA', params, ' ', ' ')
+    param_count = 1
+
+def p_params_np(p):
+    '''params_np : empty'''
+    global current_func_id, param_count
+    argument = PilaO.pop()
+    argument_type = PilaTipos.pop()
+    #if (argument_type == functionsTable.find_param(current_func_id, param_count)):
+        #cuadruplo.addQuadruple('PARAMETER', argument, ' ', )
+
+
+############################Cuadruplos############################
 
 #def p_saveTypeVar_np(p):
 #    '''saveTypeVar_np : empty'''
@@ -799,8 +833,9 @@ def p_igual_np(p):
 def p_emptyStackReturn_np(p):
     '''emptyStackReturn_np : empty'''
     if len(POper) == 0:
-        PilaO.pop()
+        ret_value = PilaO.pop()
         PilaTipos.pop()
+        cuadruplo.addQuadruple('RETURN', ' ', ' ', ret_value)
 
 
 ######################### IF #####################
@@ -935,7 +970,7 @@ def p_writeQuad_np(p):
 
 ########################## Memoria virtual #################################
 def asignar_direccion_memoria():
-    global dir_global_program, current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int
+    global dir_global_program, current_var_type, current_var_scope, dir_global_bool, dir_global_char, dir_global_float, dir_global_int, dir_local_clase_bool, dir_local_clase_char, dir_local_clase_float, dir_local_clase_int, dir_local_funcion_bool, dir_local_funcion_char, dir_local_funcion_float, dir_local_funcion_int, dir_local_funcion_void
     aux = 0
     if current_var_scope == 'global':
         if current_var_type == 'program':
@@ -967,44 +1002,49 @@ def asignar_direccion_memoria():
     elif current_var_scope == 'funcion':
         if current_var_type == 'int':
             if dir_local_funcion_int > 4999:
-                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+                print('ERROR: Se excedió el máximo de variables/funciones enteras locales')
             aux = dir_local_funcion_int
             dir_local_funcion_int += 1
         elif current_var_type == 'float':
             if dir_local_funcion_float > 5999:
-                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+                print('ERROR: Se excedió el máximo de variables/funciones float locales')
             aux = dir_local_funcion_float
             dir_local_funcion_float += 1
         elif current_var_type == 'char':
             if dir_local_funcion_char > 6999:
-                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+                print('ERROR: Se excedió el máximo de variables/funciones char locales')
             aux = dir_local_funcion_char
             dir_local_funcion_char += 1
         elif current_var_type == 'bool':
             if dir_local_funcion_bool > 7999:
-                print('ERROR: Se excedió el máximo de variables enteras locales funcion')
+                print('ERROR: Se excedió el máximo de variables/funciones bool locales')
             aux = dir_local_funcion_bool
             dir_local_funcion_bool += 1
+        elif current_var_type == 'void':
+            if dir_local_funcion_void > 8999:
+                print('ERROR: Se excedió el máximo de funciones void')
+            aux = dir_local_funcion_void
+            dir_local_funcion_void += 1
 
     else:
         if current_var_type == 'int':
-            if dir_local_clase_int > 8999:
-                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            if dir_local_clase_int > 9999:
+                print('ERROR: Se excedió el máximo de variables/clases enteras locales')
             aux = dir_local_clase_int
             dir_local_clase_int += 1
         elif current_var_type == 'float':
-            if dir_local_clase_float > 9999:
-                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            if dir_local_clase_float > 10999:
+                print('ERROR: Se excedió el máximo de variables/clases enteras locales')
             aux = dir_local_clase_float
             dir_local_clase_float += 1
         elif current_var_type == 'char':
-            if dir_local_clase_char > 10999:
-                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            if dir_local_clase_char > 11999:
+                print('ERROR: Se excedió el máximo de variables/clases enteras locales')
             aux = dir_local_clase_char
             dir_local_clase_char += 1
         elif current_var_type == 'bool':
-            if dir_local_clase_bool > 11999:
-                print('ERROR: Se excedió el máximo de variables enteras locales clase')
+            if dir_local_clase_bool > 12999:
+                print('ERROR: Se excedió el máximo de variables/clases enteras locales')
             aux = dir_local_clase_bool
             dir_local_clase_bool += 1
     return aux
@@ -1013,17 +1053,17 @@ def asignar_direccion_memoriaCtes():
     global cte_type, dir_constante_int, dir_constante_float, dir_constante_char
     aux = 0
     if cte_type == 'int':
-        if dir_constante_int > 12999:
+        if dir_constante_int > 13999:
             print('ERROR: Se excedió el máximo de constantes int')
         aux = dir_constante_int
         dir_constante_int += 1
     elif cte_type == 'float':
-        if dir_constante_float > 13999:
+        if dir_constante_float > 14999:
             print('ERROR: Se excedió el máximo de constantes float')
         aux = dir_constante_float
         dir_constante_float += 1
     elif cte_type == 'char':
-        if dir_constante_char > 14999:
+        if dir_constante_char > 15999:
             print('ERROR: Se excedió el máximo de constantes char')
         aux = dir_constante_char
         dir_constante_char += 1

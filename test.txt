@@ -13,7 +13,7 @@ var
     bool hola;
     int j;
 
-func int suma (int y, int r);
+func void suma (int y, int r);
 var 
    int varF1;
    
@@ -27,6 +27,7 @@ func float resta (int ele1, float ele2);
 var 
    float resultado;
    char chayo;
+   bool toni;
    
 {
    resultado = ele1 + ele2;

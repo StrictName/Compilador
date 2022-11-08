@@ -23,6 +23,14 @@ class funcTable:
         if name in self.table:
             return self.table[name].address
 
+    def find_parameters(self, name):
+        if name in self.table:
+            return self.table[name].parameters
+
+    def find_param(self, name, num):
+        if name in self.table:
+            return self.table[name].parameters[num]
+
     def toString(self):
         for key in self.table:
             print(f"{key}: {self.table[key].type}, {self.table[key].address}, {self.table[key].inicio_cuad}, {self.table[key].tam}")
