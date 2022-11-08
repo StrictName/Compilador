@@ -16,7 +16,7 @@ var
 func void suma (int y, int r);
 var 
    int varF1;
-   
+
 {
    read(varF1);
    write(varF1);
@@ -30,11 +30,10 @@ var
    bool toni;
    
 {
-   resultado = ele1 + ele2;
+   resultado = ele1 + 5;
    return resultado;
    
 }
-
 
 main() {
 
@@ -42,7 +41,7 @@ main() {
         b = i + a;
     }
 
-    write ("Terminafor"); 
+    write ("Terminator"); 
 
     if (a > b) {
         read(a, b);
@@ -61,5 +60,7 @@ main() {
     }
 
     c = d + e + i * a;
+
+    resta(a, c);
 
 }

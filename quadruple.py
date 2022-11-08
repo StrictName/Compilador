@@ -51,9 +51,13 @@ class quadruplesList:
         self.cont += 1
 
     def printQuads(self):
-        count = 1
         for i in self.quadsList:
             i.printQuad()
+
+    def writeQuads(self, f):
+        for i in self.quadsList:
+            i.writeQuad(f)
+            f.write('\n')
     
     def addQuadRead(self, variable):
         cuadruplo = quadruple(self.cont,'READ', '  ', '  ', variable)
@@ -76,3 +80,6 @@ class quadruple:
 
     def printQuad(self):
         print(f"{self.contador}: {self.operador}, {self.left_operand}, {self.right_operand}, {self.result}")
+
+    def writeQuad(self, f):
+        f.write(f"{self.contador}: {self.operador}, {self.left_operand}, {self.right_operand}, {self.result}")

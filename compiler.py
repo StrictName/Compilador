@@ -180,8 +180,8 @@ def p_programa(t):
     t[0] = "Este es un programa"
 
 def p_main(t):
-    '''main : MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER
-            | MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER'''
+    '''main : MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ LLAVEDER endQuad_np
+            | MAIN fillMain_np PARENTESISIZQ PARENTESISDER LLAVEIZQ estatuto LLAVEDER endQuad_np'''
 
 def p_clase(t):
     '''clase : CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
@@ -297,11 +297,11 @@ def p_asignacion(t):
     '''asignacion : variable IGUAL saveOperadorIgual_np exp'''
 
 def p_llamada(t):
-    '''llamada : ID verifyFunc_np PARENTESISIZQ llamadap PARENTESISDER'''
+    '''llamada : ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np'''
 
 def p_llamadap(t):
-    '''llamadap : exp
-                | exp COMA llamadap'''
+    '''llamadap : exp params_np
+                | exp params_np COMA nextParam_np llamadap'''
 
 def p_lee(t):
     '''lee : READ PARENTESISIZQ leep PARENTESISDER'''
@@ -577,8 +577,8 @@ def p_verifyFunc_np(p):
 def p_eraSize_np(p):
     '''eraSize_np : empty'''
     global current_func_id, param_count
-    params = functionsTable.find_parameters(current_func_id)
-    cuadruplo.addQuadruple('ERA', params, ' ', ' ')
+    tam = functionsTable.return_tam(current_func_id)
+    cuadruplo.addQuadruple('ERA', tam, ' ', ' ')
     param_count = 1
 
 def p_params_np(p):
@@ -586,9 +586,27 @@ def p_params_np(p):
     global current_func_id, param_count
     argument = PilaO.pop()
     argument_type = PilaTipos.pop()
-    #if (argument_type == functionsTable.find_param(current_func_id, param_count)):
-        #cuadruplo.addQuadruple('PARAMETER', argument, ' ', )
+    if argument_type == functionsTable.find_param(current_func_id, param_count-1):
+        cuadruplo.addQuadruple('PARAMETER', argument, ' ', param_count)
+    else:
+        print('ERROR: Wrong type of parameter')
 
+def p_nextParam_np(p):
+    '''nextParam_np : empty'''
+    global param_count
+    param_count += 1
+
+def p_verifyNumParam_np(p):
+    '''verifyNumParam_np : empty'''
+    global current_func_id, param_count
+    if len(functionsTable.find_parameters(current_func_id)) != param_count:
+        print('ERROR: Wrong quantity of parameters')
+
+def p_generateGosub_np(p):
+    '''generateGosub_np : empty'''
+    global current_func_id
+    initial_address = functionsTable.find_initial_quad(current_func_id)
+    cuadruplo.addQuadruple('GOSUB', current_func_id, ' ', initial_address)
 
 ############################Cuadruplos############################
 
@@ -872,6 +890,7 @@ def p_whileQuad_np(p):
     '''whileQuad_np : empty'''
     global result_type
     result_type = PilaTipos.pop()
+    print(result_type)
     if (result_type != 'bool'):
         print('Type-mismatch')
     else:
@@ -961,12 +980,23 @@ def p_pushLetrero_np(p):
     PilaO.append(p[-1])
     PilaTipos.append("string")
 
-
 def p_writeQuad_np(p):
     '''writeQuad_np : empty'''
     variable = PilaO.pop()
     PilaTipos.pop()
     cuadruplo.addQuadWrite(variable)
+
+########################## Cuádruplo END y creación de archivo con el mapa de memoria #################################
+def p_endQuad_np(p):
+    '''endQuad_np : empty'''
+    cuadruplo.addQuadruple('END', ' ', ' ', ' ')
+    with open('dataVirtualMachine.txt', 'w') as f:
+        functionsTable.writeFile(f)
+        f.write('##\n')
+        cuadruplo.writeQuads(f)
+        f.write('##\n')
+        constantsTable.writeCtes(f)
+        f.write('##\n')
 
 ########################## Memoria virtual #################################
 def asignar_direccion_memoria():

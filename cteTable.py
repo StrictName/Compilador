@@ -20,3 +20,7 @@ class cteTable:
     def toString(self):
         for key in self.table:
             print(f"{key}: {self.table[key].type}, {self.table[key].direccion}")
+
+    def writeCtes(self, f):
+        for key in self.table:
+            f.write(f"{key}: {self.table[key].type}, {self.table[key].direccion}\n")

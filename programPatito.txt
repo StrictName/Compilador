@@ -1,0 +1,34 @@
+program patito; 
+
+var
+    int a;
+    int b;
+    float f;
+
+func void uno(int a);
+{
+    a= a+b*a;
+    write(a, b, a+b); 
+}
+    
+func void dos(int a, int b, float g); 
+var
+    int i;
+{
+    i = 5;
+    while (i>0) do { 
+        a=a+b*i;
+
+        write(a); 
+        i=i-1;
+    } 
+}
+
+main() {
+    a=3; 
+    b=a+1;
+    write(a, b);
+    f=3.14;
+    dos(a+b*2, b, f*3); 
+    write(a,b,f+2*1);
+}
