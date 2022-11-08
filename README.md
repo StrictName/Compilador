@@ -250,5 +250,7 @@ main() {
 
 <img width="238" alt="Screen Shot 2022-11-04 at 19 08 21" src="https://user-images.githubusercontent.com/62078976/200094343-a9bba9d5-f2f4-498c-9ff2-d39859168882.png">
 
+## Avance 5
+Se realizaron avances en cuanto a las funciones. Ya se guardan los datos completos de la función, como el cuadruplo en donde inicia su ejecución o la cantidad de recursos que ocupa cada función. De igual manera, se generan de los módulos como ENDFunc y RETURN. Ya se conecta la tabla de variables con su respectiva función. 
 
 
