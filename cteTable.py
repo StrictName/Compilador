@@ -5,9 +5,9 @@ class cteTable:
         self.table = {}
 
     def add(self, name, type, direccion):
-        currentCte = Cte(type, direccion)
-        self.table[name] = currentCte
-        print(f"Constant {name} saved successfully, direcion {direccion}")
+        currentCte = Cte(name, type)
+        self.table[direccion] = currentCte
+        print(f"Constant {name} saved successfully, direction {direccion}")
 
     def find_address(self, name):
         if name in self.table:
@@ -19,8 +19,8 @@ class cteTable:
 
     def toString(self):
         for key in self.table:
-            print(f"{key}: {self.table[key].type}, {self.table[key].direccion}")
+            print(f"{key}: {self.table[key].name}, {self.table[key].type}")
 
     def writeCtes(self, f):
         for key in self.table:
-            f.write(f"{key}: {self.table[key].type}, {self.table[key].direccion}\n")
+            f.write(f"{key}: {self.table[key].name}, {self.table[key].type}\n")

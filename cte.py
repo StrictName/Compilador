@@ -1,4 +1,4 @@
 class Cte:
-    def __init__(self, type, direccion):
+    def __init__(self, name, type):
+        self.name = name
         self.type = type
-        self.direccion = direccion

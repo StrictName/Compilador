@@ -48,7 +48,7 @@ class funcTable:
 
     def writeFile(self, f):
         for key in self.table:
-            f.write(f"{key}: {self.table[key].type}, {self.table[key].address}, {self.table[key].inicio_cuad}, {self.table[key].tam}, ")
+            f.write(f"{self.table[key].address}: {key}, {self.table[key].type}, {self.table[key].inicio_cuad}, {self.table[key].tam}, ")
             for parameter in self.table[key].parameters:
                 f.write(f"{parameter}, ")
             f.write('\n')

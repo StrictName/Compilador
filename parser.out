@@ -92,8 +92,8 @@ Rule 86    estatuto -> llamada_metodo PUNTOCOMA estatuto
 Rule 87    estatuto -> llamada_atributo PUNTOCOMA estatuto
 Rule 88    asignacion -> variable IGUAL saveOperadorIgual_np exp
 Rule 89    llamada -> ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np
-Rule 90    llamadap -> exp params_np
-Rule 91    llamadap -> exp params_np COMA nextParam_np llamadap
+Rule 90    llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
+Rule 91    llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
 Rule 92    lee -> READ PARENTESISIZQ leep PARENTESISDER
 Rule 93    leep -> variable readQuad_np
 Rule 94    leep -> variable readQuad_np COMA leep
@@ -101,8 +101,8 @@ Rule 95    variable -> ID saveIDpilaO_np
 Rule 96    variable -> ID CORCHETEIZQ exp CORCHETEDER
 Rule 97    variable -> ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER
 Rule 98    escribe -> WRITE PARENTESISIZQ escribep PARENTESISDER
-Rule 99    escribep -> exp writeQuad_np
-Rule 100   escribep -> exp writeQuad_np COMA escribep
+Rule 99    escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+Rule 100   escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
 Rule 101   escribep -> LETRERO pushLetrero_np writeQuad_np
 Rule 102   escribep -> LETRERO pushLetrero_np writeQuad_np COMA escribep
 Rule 103   condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -255,7 +255,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-and_np               : 63 72 73 103 104 105 106 106 111
+and_np               : 63 72 73 90 91 99 100 103 104 105 106 106 111
 asignacion           : 72 73
 atributo             : 65 67
 bloque_clase         : 11 12 15 16
@@ -306,16 +306,16 @@ llamadap             : 89 91
 m_exp                : 112 113 113 114 114 115 115 116 116 118 119
 main                 : 1 2 3 4 5 6 7 8
 metodo               : 65 69 71
-multiDiv_np          : 63 72 73 103 104 105 106 106 121 122
+multiDiv_np          : 63 72 73 90 91 99 100 103 104 105 106 106 121 122
 nextParam_np         : 91
-or_np                : 63 72 73 103 104 105 106 106 109
+or_np                : 63 72 73 90 91 99 100 103 104 105 106 106 109
 parametros           : 40 41 42 43 44 45 46 47 56 58 60 62 68 69 70 71
 params_np            : 90 91
-plusMinus_np         : 63 72 73 103 104 105 106 106 118 119
+plusMinus_np         : 63 72 73 90 91 99 100 103 104 105 106 106 118 119
 programa             : 0
 pushLetrero_np       : 101 102
 readQuad_np          : 93 94
-relationalOp_np      : 63 72 73 103 104 105 106 106 113 114 115 116
+relationalOp_np      : 63 72 73 90 91 99 100 103 104 105 106 106 113 114 115 116
 saveClass_np         : 11 12 13 14 15 16 17 18
 saveConstantChar_np  : 126
 saveConstantFloat_np : 125
@@ -2284,8 +2284,8 @@ state 129
 state 130
 
     (98) escribe -> WRITE PARENTESISIZQ . escribep PARENTESISDER
-    (99) escribep -> . exp writeQuad_np
-    (100) escribep -> . exp writeQuad_np COMA escribep
+    (99) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
     (101) escribep -> . LETRERO pushLetrero_np writeQuad_np
     (102) escribep -> . LETRERO pushLetrero_np writeQuad_np COMA escribep
     (108) exp -> . t_exp
@@ -2663,6 +2663,8 @@ state 154
     RETURN          reduce using rule 175 (multiDiv_np -> empty .)
     POR             reduce using rule 175 (multiDiv_np -> empty .)
     DIV             reduce using rule 175 (multiDiv_np -> empty .)
+    COMA            reduce using rule 175 (multiDiv_np -> empty .)
+    PARENTESISDER   reduce using rule 175 (multiDiv_np -> empty .)
     LLAVEIZQ        reduce using rule 175 (multiDiv_np -> empty .)
     TO              reduce using rule 175 (multiDiv_np -> empty .)
     DO              reduce using rule 175 (multiDiv_np -> empty .)
@@ -3228,16 +3230,16 @@ state 183
 
 state 184
 
-    (99) escribep -> exp . writeQuad_np
-    (100) escribep -> exp . writeQuad_np COMA escribep
-    (194) writeQuad_np -> . empty
+    (99) escribep -> exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
+    (175) multiDiv_np -> . empty
     (141) empty -> .
 
     COMA            reduce using rule 141 (empty -> .)
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    writeQuad_np                   shift and go to state 232
-    empty                          shift and go to state 233
+    multiDiv_np                    shift and go to state 232
+    empty                          shift and go to state 154
 
 state 185
 
@@ -3249,15 +3251,15 @@ state 185
     COMA            reduce using rule 141 (empty -> .)
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    pushLetrero_np                 shift and go to state 234
-    empty                          shift and go to state 235
+    pushLetrero_np                 shift and go to state 233
+    empty                          shift and go to state 234
 
 state 186
 
     (103) condicion -> IF PARENTESISIZQ exp . PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp . PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
 
-    PARENTESISDER   shift and go to state 236
+    PARENTESISDER   shift and go to state 235
 
 
 state 187
@@ -3299,7 +3301,7 @@ state 187
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    exp                            shift and go to state 237
+    exp                            shift and go to state 236
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -3349,7 +3351,7 @@ state 188
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    exp                            shift and go to state 238
+    exp                            shift and go to state 237
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -3381,7 +3383,7 @@ state 191
     (13) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID . LLAVEIZQ LLAVEDER PUNTOCOMA
     (14) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID . LLAVEIZQ LLAVEDER PUNTOCOMA clase
 
-    LLAVEIZQ        shift and go to state 239
+    LLAVEIZQ        shift and go to state 238
 
 
 state 192
@@ -3389,7 +3391,7 @@ state 192
     (15) clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER . PUNTOCOMA
     (16) clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER . PUNTOCOMA clase
 
-    PUNTOCOMA       shift and go to state 240
+    PUNTOCOMA       shift and go to state 239
 
 
 state 193
@@ -3410,13 +3412,13 @@ state 193
     FUNC            reduce using rule 17 (clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA .)
     CLASS           shift and go to state 18
 
-    clase                          shift and go to state 241
+    clase                          shift and go to state 240
 
 state 194
 
     (65) bloque_clase -> ATTRIBUTE scopeClass_np . DOSPUNTOS atributo METHOD DOSPUNTOS metodo
 
-    DOSPUNTOS       shift and go to state 242
+    DOSPUNTOS       shift and go to state 241
 
 
 state 195
@@ -3441,8 +3443,8 @@ state 197
     (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
     (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
 
-    PUNTOCOMA       shift and go to state 244
-    CORCHETEIZQ     shift and go to state 243
+    PUNTOCOMA       shift and go to state 243
+    CORCHETEIZQ     shift and go to state 242
 
 
 state 198
@@ -3455,11 +3457,11 @@ state 198
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    VAR             shift and go to state 247
-    LLAVEIZQ        shift and go to state 248
+    VAR             shift and go to state 246
+    LLAVEIZQ        shift and go to state 247
 
-    dec_var                        shift and go to state 245
-    cuerpo                         shift and go to state 246
+    dec_var                        shift and go to state 244
+    cuerpo                         shift and go to state 245
 
 state 199
 
@@ -3468,11 +3470,11 @@ state 199
     (158) saveParameter_np -> . empty
     (141) empty -> .
 
-    COMA            shift and go to state 250
+    COMA            shift and go to state 249
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    saveParameter_np               shift and go to state 249
-    empty                          shift and go to state 251
+    saveParameter_np               shift and go to state 248
+    empty                          shift and go to state 250
 
 state 200
 
@@ -3489,11 +3491,11 @@ state 201
     (158) saveParameter_np -> . empty
     (141) empty -> .
 
-    COMA            shift and go to state 253
+    COMA            shift and go to state 252
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    saveParameter_np               shift and go to state 252
-    empty                          shift and go to state 251
+    saveParameter_np               shift and go to state 251
+    empty                          shift and go to state 250
 
 state 202
 
@@ -3502,11 +3504,11 @@ state 202
     (158) saveParameter_np -> . empty
     (141) empty -> .
 
-    COMA            shift and go to state 255
+    COMA            shift and go to state 254
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    saveParameter_np               shift and go to state 254
-    empty                          shift and go to state 251
+    saveParameter_np               shift and go to state 253
+    empty                          shift and go to state 250
 
 state 203
 
@@ -3515,11 +3517,11 @@ state 203
     (158) saveParameter_np -> . empty
     (141) empty -> .
 
-    COMA            shift and go to state 257
+    COMA            shift and go to state 256
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    saveParameter_np               shift and go to state 256
-    empty                          shift and go to state 251
+    saveParameter_np               shift and go to state 255
+    empty                          shift and go to state 250
 
 state 204
 
@@ -3528,7 +3530,7 @@ state 204
     (46) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA cuerpo saveFunc_np
     (47) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER . PUNTOCOMA cuerpo saveFunc_np funcion
 
-    PUNTOCOMA       shift and go to state 258
+    PUNTOCOMA       shift and go to state 257
 
 
 state 205
@@ -3547,7 +3549,7 @@ state 205
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    relationalOp_np                shift and go to state 259
+    relationalOp_np                shift and go to state 258
     empty                          shift and go to state 217
 
 state 206
@@ -3564,6 +3566,8 @@ state 206
     RETURN          reduce using rule 176 (plusMinus_np -> empty .)
     MAS             reduce using rule 176 (plusMinus_np -> empty .)
     MENOS           reduce using rule 176 (plusMinus_np -> empty .)
+    COMA            reduce using rule 176 (plusMinus_np -> empty .)
+    PARENTESISDER   reduce using rule 176 (plusMinus_np -> empty .)
     LLAVEIZQ        reduce using rule 176 (plusMinus_np -> empty .)
     TO              reduce using rule 176 (plusMinus_np -> empty .)
     DO              reduce using rule 176 (plusMinus_np -> empty .)
@@ -3579,8 +3583,8 @@ state 207
 state 208
 
     (89) llamada -> ID verifyFunc_np eraSize_np PARENTESISIZQ . llamadap PARENTESISDER verifyNumParam_np generateGosub_np
-    (90) llamadap -> . exp params_np
-    (91) llamadap -> . exp params_np COMA nextParam_np llamadap
+    (90) llamadap -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
+    (91) llamadap -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
     (108) exp -> . t_exp
     (109) exp -> . t_exp or_np OR saveOperadorOr_np exp
     (110) t_exp -> . g_exp
@@ -3617,8 +3621,8 @@ state 208
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    llamadap                       shift and go to state 260
-    exp                            shift and go to state 261
+    llamadap                       shift and go to state 259
+    exp                            shift and go to state 260
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -3641,12 +3645,12 @@ state 209
     (138) llamada_metodop -> . ID
     (139) llamada_metodop -> . ID COMA llamada_metodop
 
-    CTEI            shift and go to state 264
-    CTEF            shift and go to state 265
-    CTECH           shift and go to state 266
-    ID              shift and go to state 262
+    CTEI            shift and go to state 263
+    CTEF            shift and go to state 264
+    CTECH           shift and go to state 265
+    ID              shift and go to state 261
 
-    llamada_metodop                shift and go to state 263
+    llamada_metodop                shift and go to state 262
 
 state 210
 
@@ -3694,14 +3698,14 @@ state 211
     PUNTOCOMA       reduce using rule 96 (variable -> ID CORCHETEIZQ exp CORCHETEDER .)
     TO              reduce using rule 96 (variable -> ID CORCHETEIZQ exp CORCHETEDER .)
     DO              reduce using rule 96 (variable -> ID CORCHETEIZQ exp CORCHETEDER .)
-    CORCHETEIZQ     shift and go to state 267
+    CORCHETEIZQ     shift and go to state 266
 
 
 state 212
 
     (109) exp -> t_exp or_np . OR saveOperadorOr_np exp
 
-    OR              shift and go to state 268
+    OR              shift and go to state 267
 
 
 state 213
@@ -3717,6 +3721,8 @@ state 213
     FOR             reduce using rule 179 (or_np -> empty .)
     LLAVEDER        reduce using rule 179 (or_np -> empty .)
     RETURN          reduce using rule 179 (or_np -> empty .)
+    COMA            reduce using rule 179 (or_np -> empty .)
+    PARENTESISDER   reduce using rule 179 (or_np -> empty .)
     LLAVEIZQ        reduce using rule 179 (or_np -> empty .)
     TO              reduce using rule 179 (or_np -> empty .)
     DO              reduce using rule 179 (or_np -> empty .)
@@ -3726,7 +3732,7 @@ state 214
 
     (111) t_exp -> g_exp and_np . AND saveOperadorAnd_np t_exp
 
-    AND             shift and go to state 269
+    AND             shift and go to state 268
 
 
 state 215
@@ -3742,6 +3748,8 @@ state 215
     FOR             reduce using rule 178 (and_np -> empty .)
     LLAVEDER        reduce using rule 178 (and_np -> empty .)
     RETURN          reduce using rule 178 (and_np -> empty .)
+    COMA            reduce using rule 178 (and_np -> empty .)
+    PARENTESISDER   reduce using rule 178 (and_np -> empty .)
     LLAVEIZQ        reduce using rule 178 (and_np -> empty .)
     TO              reduce using rule 178 (and_np -> empty .)
     DO              reduce using rule 178 (and_np -> empty .)
@@ -3754,10 +3762,10 @@ state 216
     (115) g_exp -> m_exp relationalOp_np . GREATERTHAN saveOperadorRelacional_np m_exp
     (116) g_exp -> m_exp relationalOp_np . LESSTHAN saveOperadorRelacional_np m_exp
 
-    EQUAL           shift and go to state 270
-    NOT             shift and go to state 271
-    GREATERTHAN     shift and go to state 272
-    LESSTHAN        shift and go to state 273
+    EQUAL           shift and go to state 269
+    NOT             shift and go to state 270
+    GREATERTHAN     shift and go to state 271
+    LESSTHAN        shift and go to state 272
 
 
 state 217
@@ -3776,6 +3784,8 @@ state 217
     FOR             reduce using rule 177 (relationalOp_np -> empty .)
     LLAVEDER        reduce using rule 177 (relationalOp_np -> empty .)
     RETURN          reduce using rule 177 (relationalOp_np -> empty .)
+    COMA            reduce using rule 177 (relationalOp_np -> empty .)
+    PARENTESISDER   reduce using rule 177 (relationalOp_np -> empty .)
     LLAVEIZQ        reduce using rule 177 (relationalOp_np -> empty .)
     TO              reduce using rule 177 (relationalOp_np -> empty .)
     DO              reduce using rule 177 (relationalOp_np -> empty .)
@@ -3786,8 +3796,8 @@ state 218
     (118) m_exp -> t plusMinus_np . MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> t plusMinus_np . MENOS saveOperadorMasMenos_np m_exp
 
-    MAS             shift and go to state 274
-    MENOS           shift and go to state 275
+    MAS             shift and go to state 273
+    MENOS           shift and go to state 274
 
 
 state 219
@@ -3795,15 +3805,15 @@ state 219
     (121) t -> f multiDiv_np . POR saveOperadorMultiDivision_np t
     (122) t -> f multiDiv_np . DIV saveOperadorMultiDivision_np t
 
-    POR             shift and go to state 276
-    DIV             shift and go to state 277
+    POR             shift and go to state 275
+    DIV             shift and go to state 276
 
 
 state 220
 
     (123) f -> PARENTESISIZQ exp . PARENTESISDER
 
-    PARENTESISDER   shift and go to state 278
+    PARENTESISDER   shift and go to state 277
 
 
 state 221
@@ -3951,7 +3961,7 @@ state 228
     (94) leep -> variable readQuad_np . COMA leep
 
     PARENTESISDER   reduce using rule 93 (leep -> variable readQuad_np .)
-    COMA            shift and go to state 279
+    COMA            shift and go to state 278
 
 
 state 229
@@ -3979,22 +3989,18 @@ state 231
 
 state 232
 
-    (99) escribep -> exp writeQuad_np .
-    (100) escribep -> exp writeQuad_np . COMA escribep
+    (99) escribep -> exp multiDiv_np . plusMinus_np relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> exp multiDiv_np . plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
+    (176) plusMinus_np -> . empty
+    (141) empty -> .
 
-    PARENTESISDER   reduce using rule 99 (escribep -> exp writeQuad_np .)
-    COMA            shift and go to state 280
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
 
+    plusMinus_np                   shift and go to state 279
+    empty                          shift and go to state 206
 
 state 233
-
-    (194) writeQuad_np -> empty .
-
-    COMA            reduce using rule 194 (writeQuad_np -> empty .)
-    PARENTESISDER   reduce using rule 194 (writeQuad_np -> empty .)
-
-
-state 234
 
     (101) escribep -> LETRERO pushLetrero_np . writeQuad_np
     (102) escribep -> LETRERO pushLetrero_np . writeQuad_np COMA escribep
@@ -4004,10 +4010,10 @@ state 234
     COMA            reduce using rule 141 (empty -> .)
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    writeQuad_np                   shift and go to state 281
-    empty                          shift and go to state 233
+    writeQuad_np                   shift and go to state 280
+    empty                          shift and go to state 281
 
-state 235
+state 234
 
     (193) pushLetrero_np -> empty .
 
@@ -4015,7 +4021,7 @@ state 235
     PARENTESISDER   reduce using rule 193 (pushLetrero_np -> empty .)
 
 
-state 236
+state 235
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER . multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER . multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -4027,14 +4033,14 @@ state 236
     multiDiv_np                    shift and go to state 282
     empty                          shift and go to state 154
 
-state 237
+state 236
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp . PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
 
     PARENTESISDER   shift and go to state 283
 
 
-state 238
+state 237
 
     (106) ciclo_f -> FOR variable_for IGUAL exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (175) multiDiv_np -> . empty
@@ -4045,7 +4051,7 @@ state 238
     multiDiv_np                    shift and go to state 284
     empty                          shift and go to state 154
 
-state 239
+state 238
 
     (11) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ . bloque_clase LLAVEDER PUNTOCOMA
     (12) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ . bloque_clase LLAVEDER PUNTOCOMA clase
@@ -4058,7 +4064,7 @@ state 239
 
     bloque_clase                   shift and go to state 285
 
-state 240
+state 239
 
     (15) clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA .
     (16) clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA . clase
@@ -4078,7 +4084,7 @@ state 240
 
     clase                          shift and go to state 287
 
-state 241
+state 240
 
     (18) clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA clase .
 
@@ -4087,7 +4093,7 @@ state 241
     FUNC            reduce using rule 18 (clase -> CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA clase .)
 
 
-state 242
+state 241
 
     (65) bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS . atributo METHOD DOSPUNTOS metodo
     (66) atributo -> . tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np
@@ -4103,7 +4109,7 @@ state 242
     atributo                       shift and go to state 288
     tipo_clase                     shift and go to state 289
 
-state 243
+state 242
 
     (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np
     (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
@@ -4111,7 +4117,7 @@ state 243
     CTEI            shift and go to state 290
 
 
-state 244
+state 243
 
     (27) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np
     (28) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np varp
@@ -4129,18 +4135,18 @@ state 244
     saveVar_np                     shift and go to state 291
     empty                          shift and go to state 144
 
-state 245
+state 244
 
     (40) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var . cuerpo saveFunc_np
     (41) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var . cuerpo saveFunc_np funcion
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    LLAVEIZQ        shift and go to state 248
+    LLAVEIZQ        shift and go to state 247
 
     cuerpo                         shift and go to state 292
 
-state 246
+state 245
 
     (42) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo . saveFunc_np
     (43) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo . saveFunc_np funcion
@@ -4153,7 +4159,7 @@ state 246
     saveFunc_np                    shift and go to state 293
     empty                          shift and go to state 10
 
-state 247
+state 246
 
     (48) dec_var -> VAR . scopeFunc_np dec_varp
     (149) scopeFunc_np -> . empty
@@ -4167,7 +4173,7 @@ state 247
     scopeFunc_np                   shift and go to state 294
     empty                          shift and go to state 295
 
-state 248
+state 247
 
     (63) cuerpo -> LLAVEIZQ . estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> LLAVEIZQ . estatuto LLAVEDER
@@ -4220,14 +4226,14 @@ state 248
     llamada_atributo               shift and go to state 92
     variable                       shift and go to state 93
 
-state 249
+state 248
 
     (55) parametros -> INT ID getParameters_np saveParameter_np .
 
     PARENTESISDER   reduce using rule 55 (parametros -> INT ID getParameters_np saveParameter_np .)
 
 
-state 250
+state 249
 
     (56) parametros -> INT ID getParameters_np COMA . saveParameter_np parametros
     (158) saveParameter_np -> . empty
@@ -4239,9 +4245,9 @@ state 250
     BOOL            reduce using rule 141 (empty -> .)
 
     saveParameter_np               shift and go to state 297
-    empty                          shift and go to state 251
+    empty                          shift and go to state 250
 
-state 251
+state 250
 
     (158) saveParameter_np -> empty .
 
@@ -4252,14 +4258,14 @@ state 251
     BOOL            reduce using rule 158 (saveParameter_np -> empty .)
 
 
-state 252
+state 251
 
     (57) parametros -> FLOAT ID getParameters_np saveParameter_np .
 
     PARENTESISDER   reduce using rule 57 (parametros -> FLOAT ID getParameters_np saveParameter_np .)
 
 
-state 253
+state 252
 
     (58) parametros -> FLOAT ID getParameters_np COMA . saveParameter_np parametros
     (158) saveParameter_np -> . empty
@@ -4271,16 +4277,16 @@ state 253
     BOOL            reduce using rule 141 (empty -> .)
 
     saveParameter_np               shift and go to state 298
-    empty                          shift and go to state 251
+    empty                          shift and go to state 250
 
-state 254
+state 253
 
     (59) parametros -> CHAR ID getParameters_np saveParameter_np .
 
     PARENTESISDER   reduce using rule 59 (parametros -> CHAR ID getParameters_np saveParameter_np .)
 
 
-state 255
+state 254
 
     (60) parametros -> CHAR ID getParameters_np COMA . saveParameter_np parametros
     (158) saveParameter_np -> . empty
@@ -4292,16 +4298,16 @@ state 255
     BOOL            reduce using rule 141 (empty -> .)
 
     saveParameter_np               shift and go to state 299
-    empty                          shift and go to state 251
+    empty                          shift and go to state 250
 
-state 256
+state 255
 
     (61) parametros -> BOOL ID getParameters_np saveParameter_np .
 
     PARENTESISDER   reduce using rule 61 (parametros -> BOOL ID getParameters_np saveParameter_np .)
 
 
-state 257
+state 256
 
     (62) parametros -> BOOL ID getParameters_np COMA . saveParameter_np parametros
     (158) saveParameter_np -> . empty
@@ -4313,9 +4319,9 @@ state 257
     BOOL            reduce using rule 141 (empty -> .)
 
     saveParameter_np               shift and go to state 300
-    empty                          shift and go to state 251
+    empty                          shift and go to state 250
 
-state 258
+state 257
 
     (44) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . dec_var cuerpo saveFunc_np
     (45) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA . dec_var cuerpo saveFunc_np funcion
@@ -4325,13 +4331,13 @@ state 258
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    VAR             shift and go to state 247
-    LLAVEIZQ        shift and go to state 248
+    VAR             shift and go to state 246
+    LLAVEIZQ        shift and go to state 247
 
     dec_var                        shift and go to state 301
     cuerpo                         shift and go to state 302
 
-state 259
+state 258
 
     (72) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np . and_np or_np igual_np
     (73) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np . and_np or_np igual_np estatuto
@@ -4350,70 +4356,70 @@ state 259
     and_np                         shift and go to state 303
     empty                          shift and go to state 215
 
-state 260
+state 259
 
     (89) llamada -> ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap . PARENTESISDER verifyNumParam_np generateGosub_np
 
     PARENTESISDER   shift and go to state 304
 
 
-state 261
+state 260
 
-    (90) llamadap -> exp . params_np
-    (91) llamadap -> exp . params_np COMA nextParam_np llamadap
-    (162) params_np -> . empty
+    (90) llamadap -> exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
+    (91) llamadap -> exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
+    (175) multiDiv_np -> . empty
     (141) empty -> .
 
     COMA            reduce using rule 141 (empty -> .)
     PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    params_np                      shift and go to state 305
-    empty                          shift and go to state 306
+    multiDiv_np                    shift and go to state 305
+    empty                          shift and go to state 154
 
-state 262
+state 261
 
     (138) llamada_metodop -> ID .
     (139) llamada_metodop -> ID . COMA llamada_metodop
 
     PARENTESISDER   reduce using rule 138 (llamada_metodop -> ID .)
-    COMA            shift and go to state 307
+    COMA            shift and go to state 306
 
 
-state 263
+state 262
 
     (131) llamada_metodo -> ID PUNTO ID PARENTESISIZQ llamada_metodop . PARENTESISDER
 
-    PARENTESISDER   shift and go to state 308
+    PARENTESISDER   shift and go to state 307
 
 
-state 264
+state 263
 
     (132) llamada_metodop -> CTEI .
     (133) llamada_metodop -> CTEI . COMA llamada_metodop
 
     PARENTESISDER   reduce using rule 132 (llamada_metodop -> CTEI .)
-    COMA            shift and go to state 309
+    COMA            shift and go to state 308
 
 
-state 265
+state 264
 
     (134) llamada_metodop -> CTEF .
     (135) llamada_metodop -> CTEF . COMA llamada_metodop
 
     PARENTESISDER   reduce using rule 134 (llamada_metodop -> CTEF .)
-    COMA            shift and go to state 310
+    COMA            shift and go to state 309
 
 
-state 266
+state 265
 
     (136) llamada_metodop -> CTECH .
     (137) llamada_metodop -> CTECH . COMA llamada_metodop
 
     PARENTESISDER   reduce using rule 136 (llamada_metodop -> CTECH .)
-    COMA            shift and go to state 311
+    COMA            shift and go to state 310
 
 
-state 267
+state 266
 
     (97) variable -> ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ . exp CORCHETEDER
     (108) exp -> . t_exp
@@ -4452,7 +4458,7 @@ state 267
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    exp                            shift and go to state 312
+    exp                            shift and go to state 311
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -4463,7 +4469,7 @@ state 267
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 268
+state 267
 
     (109) exp -> t_exp or_np OR . saveOperadorOr_np exp
     (170) saveOperadorOr_np -> . empty
@@ -4475,10 +4481,10 @@ state 268
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorOr_np              shift and go to state 313
-    empty                          shift and go to state 314
+    saveOperadorOr_np              shift and go to state 312
+    empty                          shift and go to state 313
 
-state 269
+state 268
 
     (111) t_exp -> g_exp and_np AND . saveOperadorAnd_np t_exp
     (171) saveOperadorAnd_np -> . empty
@@ -4490,10 +4496,10 @@ state 269
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorAnd_np             shift and go to state 315
-    empty                          shift and go to state 316
+    saveOperadorAnd_np             shift and go to state 314
+    empty                          shift and go to state 315
 
-state 270
+state 269
 
     (113) g_exp -> m_exp relationalOp_np EQUAL . saveOperadorRelacional_np m_exp
     (169) saveOperadorRelacional_np -> . empty
@@ -4505,10 +4511,10 @@ state 270
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorRelacional_np      shift and go to state 317
-    empty                          shift and go to state 318
+    saveOperadorRelacional_np      shift and go to state 316
+    empty                          shift and go to state 317
 
-state 271
+state 270
 
     (114) g_exp -> m_exp relationalOp_np NOT . saveOperadorRelacional_np m_exp
     (169) saveOperadorRelacional_np -> . empty
@@ -4520,10 +4526,10 @@ state 271
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorRelacional_np      shift and go to state 319
-    empty                          shift and go to state 318
+    saveOperadorRelacional_np      shift and go to state 318
+    empty                          shift and go to state 317
 
-state 272
+state 271
 
     (115) g_exp -> m_exp relationalOp_np GREATERTHAN . saveOperadorRelacional_np m_exp
     (169) saveOperadorRelacional_np -> . empty
@@ -4535,10 +4541,10 @@ state 272
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorRelacional_np      shift and go to state 320
-    empty                          shift and go to state 318
+    saveOperadorRelacional_np      shift and go to state 319
+    empty                          shift and go to state 317
 
-state 273
+state 272
 
     (116) g_exp -> m_exp relationalOp_np LESSTHAN . saveOperadorRelacional_np m_exp
     (169) saveOperadorRelacional_np -> . empty
@@ -4550,10 +4556,10 @@ state 273
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorRelacional_np      shift and go to state 321
-    empty                          shift and go to state 318
+    saveOperadorRelacional_np      shift and go to state 320
+    empty                          shift and go to state 317
 
-state 274
+state 273
 
     (118) m_exp -> t plusMinus_np MAS . saveOperadorMasMenos_np m_exp
     (168) saveOperadorMasMenos_np -> . empty
@@ -4565,10 +4571,10 @@ state 274
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorMasMenos_np        shift and go to state 322
-    empty                          shift and go to state 323
+    saveOperadorMasMenos_np        shift and go to state 321
+    empty                          shift and go to state 322
 
-state 275
+state 274
 
     (119) m_exp -> t plusMinus_np MENOS . saveOperadorMasMenos_np m_exp
     (168) saveOperadorMasMenos_np -> . empty
@@ -4580,10 +4586,10 @@ state 275
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorMasMenos_np        shift and go to state 324
-    empty                          shift and go to state 323
+    saveOperadorMasMenos_np        shift and go to state 323
+    empty                          shift and go to state 322
 
-state 276
+state 275
 
     (121) t -> f multiDiv_np POR . saveOperadorMultiDivision_np t
     (167) saveOperadorMultiDivision_np -> . empty
@@ -4595,10 +4601,10 @@ state 276
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorMultiDivision_np   shift and go to state 325
-    empty                          shift and go to state 326
+    saveOperadorMultiDivision_np   shift and go to state 324
+    empty                          shift and go to state 325
 
-state 277
+state 276
 
     (122) t -> f multiDiv_np DIV . saveOperadorMultiDivision_np t
     (167) saveOperadorMultiDivision_np -> . empty
@@ -4610,10 +4616,10 @@ state 277
     CTECH           reduce using rule 141 (empty -> .)
     ID              reduce using rule 141 (empty -> .)
 
-    saveOperadorMultiDivision_np   shift and go to state 327
-    empty                          shift and go to state 326
+    saveOperadorMultiDivision_np   shift and go to state 326
+    empty                          shift and go to state 325
 
-state 278
+state 277
 
     (123) f -> PARENTESISIZQ exp PARENTESISDER .
 
@@ -4635,7 +4641,7 @@ state 278
     DO              reduce using rule 123 (f -> PARENTESISIZQ exp PARENTESISDER .)
 
 
-state 279
+state 278
 
     (94) leep -> variable readQuad_np COMA . leep
     (93) leep -> . variable readQuad_np
@@ -4647,71 +4653,36 @@ state 279
     ID              shift and go to state 182
 
     variable                       shift and go to state 181
-    leep                           shift and go to state 328
+    leep                           shift and go to state 327
+
+state 279
+
+    (99) escribep -> exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np writeQuad_np COMA escribep
+    (177) relationalOp_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    relationalOp_np                shift and go to state 328
+    empty                          shift and go to state 217
 
 state 280
-
-    (100) escribep -> exp writeQuad_np COMA . escribep
-    (99) escribep -> . exp writeQuad_np
-    (100) escribep -> . exp writeQuad_np COMA escribep
-    (101) escribep -> . LETRERO pushLetrero_np writeQuad_np
-    (102) escribep -> . LETRERO pushLetrero_np writeQuad_np COMA escribep
-    (108) exp -> . t_exp
-    (109) exp -> . t_exp or_np OR saveOperadorOr_np exp
-    (110) t_exp -> . g_exp
-    (111) t_exp -> . g_exp and_np AND saveOperadorAnd_np t_exp
-    (112) g_exp -> . m_exp
-    (113) g_exp -> . m_exp relationalOp_np EQUAL saveOperadorRelacional_np m_exp
-    (114) g_exp -> . m_exp relationalOp_np NOT saveOperadorRelacional_np m_exp
-    (115) g_exp -> . m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np m_exp
-    (116) g_exp -> . m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np m_exp
-    (117) m_exp -> . t
-    (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
-    (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
-    (120) t -> . f
-    (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
-    (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
-    (123) f -> . PARENTESISIZQ exp PARENTESISDER
-    (124) f -> . CTEI saveConstantInt_np
-    (125) f -> . CTEF saveConstantFloat_np
-    (126) f -> . CTECH saveConstantChar_np
-    (127) f -> . variable
-    (128) f -> . llamada
-    (129) f -> . llamada_metodo
-    (130) f -> . llamada_atributo
-    (95) variable -> . ID saveIDpilaO_np
-    (96) variable -> . ID CORCHETEIZQ exp CORCHETEDER
-    (97) variable -> . ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER
-    (89) llamada -> . ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np
-    (131) llamada_metodo -> . ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER
-    (140) llamada_atributo -> . ID PUNTO ID
-
-    LETRERO         shift and go to state 185
-    PARENTESISIZQ   shift and go to state 172
-    CTEI            shift and go to state 173
-    CTEF            shift and go to state 174
-    CTECH           shift and go to state 175
-    ID              shift and go to state 165
-
-    exp                            shift and go to state 184
-    escribep                       shift and go to state 329
-    t_exp                          shift and go to state 167
-    g_exp                          shift and go to state 168
-    m_exp                          shift and go to state 169
-    t                              shift and go to state 170
-    f                              shift and go to state 171
-    variable                       shift and go to state 176
-    llamada                        shift and go to state 177
-    llamada_metodo                 shift and go to state 178
-    llamada_atributo               shift and go to state 179
-
-state 281
 
     (101) escribep -> LETRERO pushLetrero_np writeQuad_np .
     (102) escribep -> LETRERO pushLetrero_np writeQuad_np . COMA escribep
 
     PARENTESISDER   reduce using rule 101 (escribep -> LETRERO pushLetrero_np writeQuad_np .)
-    COMA            shift and go to state 330
+    COMA            shift and go to state 329
+
+
+state 281
+
+    (194) writeQuad_np -> empty .
+
+    COMA            reduce using rule 194 (writeQuad_np -> empty .)
+    PARENTESISDER   reduce using rule 194 (writeQuad_np -> empty .)
 
 
 state 282
@@ -4723,7 +4694,7 @@ state 282
 
     LLAVEIZQ        reduce using rule 141 (empty -> .)
 
-    plusMinus_np                   shift and go to state 331
+    plusMinus_np                   shift and go to state 330
     empty                          shift and go to state 206
 
 state 283
@@ -4734,7 +4705,7 @@ state 283
 
     DO              reduce using rule 141 (empty -> .)
 
-    multiDiv_np                    shift and go to state 332
+    multiDiv_np                    shift and go to state 331
     empty                          shift and go to state 154
 
 state 284
@@ -4745,7 +4716,7 @@ state 284
 
     TO              reduce using rule 141 (empty -> .)
 
-    plusMinus_np                   shift and go to state 333
+    plusMinus_np                   shift and go to state 332
     empty                          shift and go to state 206
 
 state 285
@@ -4753,7 +4724,7 @@ state 285
     (11) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase . LLAVEDER PUNTOCOMA
     (12) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase . LLAVEDER PUNTOCOMA clase
 
-    LLAVEDER        shift and go to state 334
+    LLAVEDER        shift and go to state 333
 
 
 state 286
@@ -4761,7 +4732,7 @@ state 286
     (13) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER . PUNTOCOMA
     (14) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER . PUNTOCOMA clase
 
-    PUNTOCOMA       shift and go to state 335
+    PUNTOCOMA       shift and go to state 334
 
 
 state 287
@@ -4777,7 +4748,7 @@ state 288
 
     (65) bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo . METHOD DOSPUNTOS metodo
 
-    METHOD          shift and go to state 336
+    METHOD          shift and go to state 335
 
 
 state 289
@@ -4794,14 +4765,14 @@ state 289
     CHAR            shift and go to state 51
     BOOL            shift and go to state 52
 
-    tipo_simple                    shift and go to state 337
+    tipo_simple                    shift and go to state 336
 
 state 290
 
     (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np
     (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np varp
 
-    CORCHETEDER     shift and go to state 338
+    CORCHETEDER     shift and go to state 337
 
 
 state 291
@@ -4831,7 +4802,7 @@ state 291
     BOOL            shift and go to state 52
 
     tipo_simple                    shift and go to state 48
-    varp                           shift and go to state 339
+    varp                           shift and go to state 338
     tipo_compuesto                 shift and go to state 46
 
 state 292
@@ -4844,7 +4815,7 @@ state 292
     FUNC            reduce using rule 141 (empty -> .)
     MAIN            reduce using rule 141 (empty -> .)
 
-    saveFunc_np                    shift and go to state 340
+    saveFunc_np                    shift and go to state 339
     empty                          shift and go to state 10
 
 state 293
@@ -4863,7 +4834,7 @@ state 293
     MAIN            reduce using rule 42 (funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np .)
     FUNC            shift and go to state 20
 
-    funcion                        shift and go to state 341
+    funcion                        shift and go to state 340
 
 state 294
 
@@ -4884,8 +4855,8 @@ state 294
     CHAR            shift and go to state 51
     BOOL            shift and go to state 52
 
-    dec_varp                       shift and go to state 342
-    tipo_simple                    shift and go to state 343
+    dec_varp                       shift and go to state 341
+    tipo_simple                    shift and go to state 342
 
 state 295
 
@@ -4902,8 +4873,8 @@ state 296
     (63) cuerpo -> LLAVEIZQ estatuto . RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> LLAVEIZQ estatuto . LLAVEDER
 
-    RETURN          shift and go to state 344
-    LLAVEDER        shift and go to state 345
+    RETURN          shift and go to state 343
+    LLAVEDER        shift and go to state 344
 
 
 state 297
@@ -4923,7 +4894,7 @@ state 297
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 346
+    parametros                     shift and go to state 345
 
 state 298
 
@@ -4942,7 +4913,7 @@ state 298
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 347
+    parametros                     shift and go to state 346
 
 state 299
 
@@ -4961,7 +4932,7 @@ state 299
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 348
+    parametros                     shift and go to state 347
 
 state 300
 
@@ -4980,7 +4951,7 @@ state 300
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 349
+    parametros                     shift and go to state 348
 
 state 301
 
@@ -4989,9 +4960,9 @@ state 301
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    LLAVEIZQ        shift and go to state 248
+    LLAVEIZQ        shift and go to state 247
 
-    cuerpo                         shift and go to state 350
+    cuerpo                         shift and go to state 349
 
 state 302
 
@@ -5003,7 +4974,7 @@ state 302
     FUNC            reduce using rule 141 (empty -> .)
     MAIN            reduce using rule 141 (empty -> .)
 
-    saveFunc_np                    shift and go to state 351
+    saveFunc_np                    shift and go to state 350
     empty                          shift and go to state 10
 
 state 303
@@ -5022,7 +4993,7 @@ state 303
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    or_np                          shift and go to state 352
+    or_np                          shift and go to state 351
     empty                          shift and go to state 213
 
 state 304
@@ -5048,27 +5019,23 @@ state 304
     TO              reduce using rule 141 (empty -> .)
     DO              reduce using rule 141 (empty -> .)
 
-    verifyNumParam_np              shift and go to state 353
-    empty                          shift and go to state 354
+    verifyNumParam_np              shift and go to state 352
+    empty                          shift and go to state 353
 
 state 305
 
-    (90) llamadap -> exp params_np .
-    (91) llamadap -> exp params_np . COMA nextParam_np llamadap
+    (90) llamadap -> exp multiDiv_np . plusMinus_np relationalOp_np and_np or_np params_np
+    (91) llamadap -> exp multiDiv_np . plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
+    (176) plusMinus_np -> . empty
+    (141) empty -> .
 
-    PARENTESISDER   reduce using rule 90 (llamadap -> exp params_np .)
-    COMA            shift and go to state 355
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
 
+    plusMinus_np                   shift and go to state 354
+    empty                          shift and go to state 206
 
 state 306
-
-    (162) params_np -> empty .
-
-    COMA            reduce using rule 162 (params_np -> empty .)
-    PARENTESISDER   reduce using rule 162 (params_np -> empty .)
-
-
-state 307
 
     (139) llamada_metodop -> ID COMA . llamada_metodop
     (132) llamada_metodop -> . CTEI
@@ -5080,14 +5047,14 @@ state 307
     (138) llamada_metodop -> . ID
     (139) llamada_metodop -> . ID COMA llamada_metodop
 
-    CTEI            shift and go to state 264
-    CTEF            shift and go to state 265
-    CTECH           shift and go to state 266
-    ID              shift and go to state 262
+    CTEI            shift and go to state 263
+    CTEF            shift and go to state 264
+    CTECH           shift and go to state 265
+    ID              shift and go to state 261
 
-    llamada_metodop                shift and go to state 356
+    llamada_metodop                shift and go to state 355
 
-state 308
+state 307
 
     (131) llamada_metodo -> ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER .
 
@@ -5109,7 +5076,7 @@ state 308
     DO              reduce using rule 131 (llamada_metodo -> ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER .)
 
 
-state 309
+state 308
 
     (133) llamada_metodop -> CTEI COMA . llamada_metodop
     (132) llamada_metodop -> . CTEI
@@ -5121,14 +5088,14 @@ state 309
     (138) llamada_metodop -> . ID
     (139) llamada_metodop -> . ID COMA llamada_metodop
 
-    CTEI            shift and go to state 264
-    CTEF            shift and go to state 265
-    CTECH           shift and go to state 266
-    ID              shift and go to state 262
+    CTEI            shift and go to state 263
+    CTEF            shift and go to state 264
+    CTECH           shift and go to state 265
+    ID              shift and go to state 261
 
-    llamada_metodop                shift and go to state 357
+    llamada_metodop                shift and go to state 356
 
-state 310
+state 309
 
     (135) llamada_metodop -> CTEF COMA . llamada_metodop
     (132) llamada_metodop -> . CTEI
@@ -5140,14 +5107,14 @@ state 310
     (138) llamada_metodop -> . ID
     (139) llamada_metodop -> . ID COMA llamada_metodop
 
-    CTEI            shift and go to state 264
-    CTEF            shift and go to state 265
-    CTECH           shift and go to state 266
-    ID              shift and go to state 262
+    CTEI            shift and go to state 263
+    CTEF            shift and go to state 264
+    CTECH           shift and go to state 265
+    ID              shift and go to state 261
 
-    llamada_metodop                shift and go to state 358
+    llamada_metodop                shift and go to state 357
 
-state 311
+state 310
 
     (137) llamada_metodop -> CTECH COMA . llamada_metodop
     (132) llamada_metodop -> . CTEI
@@ -5159,21 +5126,21 @@ state 311
     (138) llamada_metodop -> . ID
     (139) llamada_metodop -> . ID COMA llamada_metodop
 
-    CTEI            shift and go to state 264
-    CTEF            shift and go to state 265
-    CTECH           shift and go to state 266
-    ID              shift and go to state 262
+    CTEI            shift and go to state 263
+    CTEF            shift and go to state 264
+    CTECH           shift and go to state 265
+    ID              shift and go to state 261
 
-    llamada_metodop                shift and go to state 359
+    llamada_metodop                shift and go to state 358
 
-state 312
+state 311
 
     (97) variable -> ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp . CORCHETEDER
 
-    CORCHETEDER     shift and go to state 360
+    CORCHETEDER     shift and go to state 359
 
 
-state 313
+state 312
 
     (109) exp -> t_exp or_np OR saveOperadorOr_np . exp
     (108) exp -> . t_exp
@@ -5213,7 +5180,7 @@ state 313
     ID              shift and go to state 165
 
     t_exp                          shift and go to state 167
-    exp                            shift and go to state 361
+    exp                            shift and go to state 360
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
     t                              shift and go to state 170
@@ -5223,7 +5190,7 @@ state 313
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 314
+state 313
 
     (170) saveOperadorOr_np -> empty .
 
@@ -5234,7 +5201,7 @@ state 314
     ID              reduce using rule 170 (saveOperadorOr_np -> empty .)
 
 
-state 315
+state 314
 
     (111) t_exp -> g_exp and_np AND saveOperadorAnd_np . t_exp
     (110) t_exp -> . g_exp
@@ -5272,7 +5239,7 @@ state 315
     ID              shift and go to state 165
 
     g_exp                          shift and go to state 168
-    t_exp                          shift and go to state 362
+    t_exp                          shift and go to state 361
     m_exp                          shift and go to state 169
     t                              shift and go to state 170
     f                              shift and go to state 171
@@ -5281,7 +5248,7 @@ state 315
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 316
+state 315
 
     (171) saveOperadorAnd_np -> empty .
 
@@ -5292,9 +5259,58 @@ state 316
     ID              reduce using rule 171 (saveOperadorAnd_np -> empty .)
 
 
-state 317
+state 316
 
     (113) g_exp -> m_exp relationalOp_np EQUAL saveOperadorRelacional_np . m_exp
+    (117) m_exp -> . t
+    (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
+    (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
+    (120) t -> . f
+    (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
+    (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
+    (123) f -> . PARENTESISIZQ exp PARENTESISDER
+    (124) f -> . CTEI saveConstantInt_np
+    (125) f -> . CTEF saveConstantFloat_np
+    (126) f -> . CTECH saveConstantChar_np
+    (127) f -> . variable
+    (128) f -> . llamada
+    (129) f -> . llamada_metodo
+    (130) f -> . llamada_atributo
+    (95) variable -> . ID saveIDpilaO_np
+    (96) variable -> . ID CORCHETEIZQ exp CORCHETEDER
+    (97) variable -> . ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER
+    (89) llamada -> . ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np
+    (131) llamada_metodo -> . ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER
+    (140) llamada_atributo -> . ID PUNTO ID
+
+    PARENTESISIZQ   shift and go to state 172
+    CTEI            shift and go to state 173
+    CTEF            shift and go to state 174
+    CTECH           shift and go to state 175
+    ID              shift and go to state 165
+
+    m_exp                          shift and go to state 362
+    t                              shift and go to state 170
+    f                              shift and go to state 171
+    variable                       shift and go to state 176
+    llamada                        shift and go to state 177
+    llamada_metodo                 shift and go to state 178
+    llamada_atributo               shift and go to state 179
+
+state 317
+
+    (169) saveOperadorRelacional_np -> empty .
+
+    PARENTESISIZQ   reduce using rule 169 (saveOperadorRelacional_np -> empty .)
+    CTEI            reduce using rule 169 (saveOperadorRelacional_np -> empty .)
+    CTEF            reduce using rule 169 (saveOperadorRelacional_np -> empty .)
+    CTECH           reduce using rule 169 (saveOperadorRelacional_np -> empty .)
+    ID              reduce using rule 169 (saveOperadorRelacional_np -> empty .)
+
+
+state 318
+
+    (114) g_exp -> m_exp relationalOp_np NOT saveOperadorRelacional_np . m_exp
     (117) m_exp -> . t
     (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
@@ -5330,20 +5346,9 @@ state 317
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 318
-
-    (169) saveOperadorRelacional_np -> empty .
-
-    PARENTESISIZQ   reduce using rule 169 (saveOperadorRelacional_np -> empty .)
-    CTEI            reduce using rule 169 (saveOperadorRelacional_np -> empty .)
-    CTEF            reduce using rule 169 (saveOperadorRelacional_np -> empty .)
-    CTECH           reduce using rule 169 (saveOperadorRelacional_np -> empty .)
-    ID              reduce using rule 169 (saveOperadorRelacional_np -> empty .)
-
-
 state 319
 
-    (114) g_exp -> m_exp relationalOp_np NOT saveOperadorRelacional_np . m_exp
+    (115) g_exp -> m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np . m_exp
     (117) m_exp -> . t
     (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
@@ -5381,7 +5386,7 @@ state 319
 
 state 320
 
-    (115) g_exp -> m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np . m_exp
+    (116) g_exp -> m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np . m_exp
     (117) m_exp -> . t
     (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
@@ -5419,7 +5424,7 @@ state 320
 
 state 321
 
-    (116) g_exp -> m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np . m_exp
+    (118) m_exp -> t plusMinus_np MAS saveOperadorMasMenos_np . m_exp
     (117) m_exp -> . t
     (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
@@ -5447,8 +5452,8 @@ state 321
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    m_exp                          shift and go to state 366
     t                              shift and go to state 170
+    m_exp                          shift and go to state 366
     f                              shift and go to state 171
     variable                       shift and go to state 176
     llamada                        shift and go to state 177
@@ -5457,7 +5462,18 @@ state 321
 
 state 322
 
-    (118) m_exp -> t plusMinus_np MAS saveOperadorMasMenos_np . m_exp
+    (168) saveOperadorMasMenos_np -> empty .
+
+    PARENTESISIZQ   reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
+    CTEI            reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
+    CTEF            reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
+    CTECH           reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
+    ID              reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
+
+
+state 323
+
+    (119) m_exp -> t plusMinus_np MENOS saveOperadorMasMenos_np . m_exp
     (117) m_exp -> . t
     (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
     (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
@@ -5493,23 +5509,9 @@ state 322
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 323
-
-    (168) saveOperadorMasMenos_np -> empty .
-
-    PARENTESISIZQ   reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
-    CTEI            reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
-    CTEF            reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
-    CTECH           reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
-    ID              reduce using rule 168 (saveOperadorMasMenos_np -> empty .)
-
-
 state 324
 
-    (119) m_exp -> t plusMinus_np MENOS saveOperadorMasMenos_np . m_exp
-    (117) m_exp -> . t
-    (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
-    (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
+    (121) t -> f multiDiv_np POR saveOperadorMultiDivision_np . t
     (120) t -> . f
     (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
     (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
@@ -5534,9 +5536,8 @@ state 324
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    t                              shift and go to state 170
-    m_exp                          shift and go to state 368
     f                              shift and go to state 171
+    t                              shift and go to state 368
     variable                       shift and go to state 176
     llamada                        shift and go to state 177
     llamada_metodo                 shift and go to state 178
@@ -5544,7 +5545,18 @@ state 324
 
 state 325
 
-    (121) t -> f multiDiv_np POR saveOperadorMultiDivision_np . t
+    (167) saveOperadorMultiDivision_np -> empty .
+
+    PARENTESISIZQ   reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
+    CTEI            reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
+    CTEF            reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
+    CTECH           reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
+    ID              reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
+
+
+state 326
+
+    (122) t -> f multiDiv_np DIV saveOperadorMultiDivision_np . t
     (120) t -> . f
     (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
     (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
@@ -5576,70 +5588,31 @@ state 325
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 326
-
-    (167) saveOperadorMultiDivision_np -> empty .
-
-    PARENTESISIZQ   reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
-    CTEI            reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
-    CTEF            reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
-    CTECH           reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
-    ID              reduce using rule 167 (saveOperadorMultiDivision_np -> empty .)
-
-
 state 327
-
-    (122) t -> f multiDiv_np DIV saveOperadorMultiDivision_np . t
-    (120) t -> . f
-    (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
-    (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
-    (123) f -> . PARENTESISIZQ exp PARENTESISDER
-    (124) f -> . CTEI saveConstantInt_np
-    (125) f -> . CTEF saveConstantFloat_np
-    (126) f -> . CTECH saveConstantChar_np
-    (127) f -> . variable
-    (128) f -> . llamada
-    (129) f -> . llamada_metodo
-    (130) f -> . llamada_atributo
-    (95) variable -> . ID saveIDpilaO_np
-    (96) variable -> . ID CORCHETEIZQ exp CORCHETEDER
-    (97) variable -> . ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER
-    (89) llamada -> . ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np
-    (131) llamada_metodo -> . ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER
-    (140) llamada_atributo -> . ID PUNTO ID
-
-    PARENTESISIZQ   shift and go to state 172
-    CTEI            shift and go to state 173
-    CTEF            shift and go to state 174
-    CTECH           shift and go to state 175
-    ID              shift and go to state 165
-
-    f                              shift and go to state 171
-    t                              shift and go to state 370
-    variable                       shift and go to state 176
-    llamada                        shift and go to state 177
-    llamada_metodo                 shift and go to state 178
-    llamada_atributo               shift and go to state 179
-
-state 328
 
     (94) leep -> variable readQuad_np COMA leep .
 
     PARENTESISDER   reduce using rule 94 (leep -> variable readQuad_np COMA leep .)
 
 
+state 328
+
+    (99) escribep -> exp multiDiv_np plusMinus_np relationalOp_np . and_np or_np writeQuad_np
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np . and_np or_np writeQuad_np COMA escribep
+    (178) and_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    and_np                         shift and go to state 370
+    empty                          shift and go to state 215
+
 state 329
 
-    (100) escribep -> exp writeQuad_np COMA escribep .
-
-    PARENTESISDER   reduce using rule 100 (escribep -> exp writeQuad_np COMA escribep .)
-
-
-state 330
-
     (102) escribep -> LETRERO pushLetrero_np writeQuad_np COMA . escribep
-    (99) escribep -> . exp writeQuad_np
-    (100) escribep -> . exp writeQuad_np COMA escribep
+    (99) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
     (101) escribep -> . LETRERO pushLetrero_np writeQuad_np
     (102) escribep -> . LETRERO pushLetrero_np writeQuad_np COMA escribep
     (108) exp -> . t_exp
@@ -5691,7 +5664,7 @@ state 330
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 331
+state 330
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np . relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np . relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -5703,7 +5676,7 @@ state 331
     relationalOp_np                shift and go to state 372
     empty                          shift and go to state 217
 
-state 332
+state 331
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np . plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
     (176) plusMinus_np -> . empty
@@ -5714,7 +5687,7 @@ state 332
     plusMinus_np                   shift and go to state 373
     empty                          shift and go to state 206
 
-state 333
+state 332
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (177) relationalOp_np -> . empty
@@ -5725,7 +5698,7 @@ state 333
     relationalOp_np                shift and go to state 374
     empty                          shift and go to state 217
 
-state 334
+state 333
 
     (11) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER . PUNTOCOMA
     (12) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER . PUNTOCOMA clase
@@ -5733,7 +5706,7 @@ state 334
     PUNTOCOMA       shift and go to state 375
 
 
-state 335
+state 334
 
     (13) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA .
     (14) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA . clase
@@ -5753,14 +5726,14 @@ state 335
 
     clase                          shift and go to state 376
 
-state 336
+state 335
 
     (65) bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD . DOSPUNTOS metodo
 
     DOSPUNTOS       shift and go to state 377
 
 
-state 337
+state 336
 
     (66) atributo -> tipo_clase tipo_simple . ID getID_np PUNTOCOMA saveVar_np
     (67) atributo -> tipo_clase tipo_simple . ID getID_np PUNTOCOMA saveVar_np atributo
@@ -5768,7 +5741,7 @@ state 337
     ID              shift and go to state 378
 
 
-state 338
+state 337
 
     (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np
     (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np varp
@@ -5776,7 +5749,7 @@ state 338
     PUNTOCOMA       shift and go to state 379
 
 
-state 339
+state 338
 
     (28) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .
 
@@ -5784,7 +5757,7 @@ state 339
     FUNC            reduce using rule 28 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .)
 
 
-state 340
+state 339
 
     (40) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np .
     (41) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np . funcion
@@ -5802,21 +5775,21 @@ state 340
 
     funcion                        shift and go to state 380
 
-state 341
+state 340
 
     (43) funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion .
 
     MAIN            reduce using rule 43 (funcion -> FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion .)
 
 
-state 342
+state 341
 
     (48) dec_var -> VAR scopeFunc_np dec_varp .
 
     LLAVEIZQ        reduce using rule 48 (dec_var -> VAR scopeFunc_np dec_varp .)
 
 
-state 343
+state 342
 
     (49) dec_varp -> tipo_simple . ID getID_np PUNTOCOMA saveVar_np dec_varp
     (50) dec_varp -> tipo_simple . ID getID_np PUNTOCOMA saveVar_np
@@ -5828,7 +5801,7 @@ state 343
     ID              shift and go to state 381
 
 
-state 344
+state 343
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN . exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (108) exp -> . t_exp
@@ -5878,7 +5851,7 @@ state 344
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 345
+state 344
 
     (64) cuerpo -> LLAVEIZQ estatuto LLAVEDER .
 
@@ -5890,35 +5863,35 @@ state 345
     LLAVEDER        reduce using rule 64 (cuerpo -> LLAVEIZQ estatuto LLAVEDER .)
 
 
-state 346
+state 345
 
     (56) parametros -> INT ID getParameters_np COMA saveParameter_np parametros .
 
     PARENTESISDER   reduce using rule 56 (parametros -> INT ID getParameters_np COMA saveParameter_np parametros .)
 
 
-state 347
+state 346
 
     (58) parametros -> FLOAT ID getParameters_np COMA saveParameter_np parametros .
 
     PARENTESISDER   reduce using rule 58 (parametros -> FLOAT ID getParameters_np COMA saveParameter_np parametros .)
 
 
-state 348
+state 347
 
     (60) parametros -> CHAR ID getParameters_np COMA saveParameter_np parametros .
 
     PARENTESISDER   reduce using rule 60 (parametros -> CHAR ID getParameters_np COMA saveParameter_np parametros .)
 
 
-state 349
+state 348
 
     (62) parametros -> BOOL ID getParameters_np COMA saveParameter_np parametros .
 
     PARENTESISDER   reduce using rule 62 (parametros -> BOOL ID getParameters_np COMA saveParameter_np parametros .)
 
 
-state 350
+state 349
 
     (44) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo . saveFunc_np
     (45) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo . saveFunc_np funcion
@@ -5931,7 +5904,7 @@ state 350
     saveFunc_np                    shift and go to state 383
     empty                          shift and go to state 10
 
-state 351
+state 350
 
     (46) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np .
     (47) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np . funcion
@@ -5949,7 +5922,7 @@ state 351
 
     funcion                        shift and go to state 384
 
-state 352
+state 351
 
     (72) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np . igual_np
     (73) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np . igual_np estatuto
@@ -5968,7 +5941,7 @@ state 352
     igual_np                       shift and go to state 385
     empty                          shift and go to state 386
 
-state 353
+state 352
 
     (89) llamada -> ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np . generateGosub_np
     (165) generateGosub_np -> . empty
@@ -5994,7 +5967,7 @@ state 353
     generateGosub_np               shift and go to state 387
     empty                          shift and go to state 388
 
-state 354
+state 353
 
     (164) verifyNumParam_np -> empty .
 
@@ -6016,50 +5989,48 @@ state 354
     DO              reduce using rule 164 (verifyNumParam_np -> empty .)
 
 
-state 355
+state 354
 
-    (91) llamadap -> exp params_np COMA . nextParam_np llamadap
-    (163) nextParam_np -> . empty
+    (90) llamadap -> exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np params_np
+    (91) llamadap -> exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
+    (177) relationalOp_np -> . empty
     (141) empty -> .
 
-    PARENTESISIZQ   reduce using rule 141 (empty -> .)
-    CTEI            reduce using rule 141 (empty -> .)
-    CTEF            reduce using rule 141 (empty -> .)
-    CTECH           reduce using rule 141 (empty -> .)
-    ID              reduce using rule 141 (empty -> .)
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
 
-    nextParam_np                   shift and go to state 389
-    empty                          shift and go to state 390
+    relationalOp_np                shift and go to state 389
+    empty                          shift and go to state 217
 
-state 356
+state 355
 
     (139) llamada_metodop -> ID COMA llamada_metodop .
 
     PARENTESISDER   reduce using rule 139 (llamada_metodop -> ID COMA llamada_metodop .)
 
 
-state 357
+state 356
 
     (133) llamada_metodop -> CTEI COMA llamada_metodop .
 
     PARENTESISDER   reduce using rule 133 (llamada_metodop -> CTEI COMA llamada_metodop .)
 
 
-state 358
+state 357
 
     (135) llamada_metodop -> CTEF COMA llamada_metodop .
 
     PARENTESISDER   reduce using rule 135 (llamada_metodop -> CTEF COMA llamada_metodop .)
 
 
-state 359
+state 358
 
     (137) llamada_metodop -> CTECH COMA llamada_metodop .
 
     PARENTESISDER   reduce using rule 137 (llamada_metodop -> CTECH COMA llamada_metodop .)
 
 
-state 360
+state 359
 
     (97) variable -> ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER .
 
@@ -6082,7 +6053,7 @@ state 360
     DO              reduce using rule 97 (variable -> ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER .)
 
 
-state 361
+state 360
 
     (109) exp -> t_exp or_np OR saveOperadorOr_np exp .
 
@@ -6094,7 +6065,7 @@ state 361
     DO              reduce using rule 109 (exp -> t_exp or_np OR saveOperadorOr_np exp .)
 
 
-state 362
+state 361
 
     (111) t_exp -> g_exp and_np AND saveOperadorAnd_np t_exp .
 
@@ -6107,7 +6078,7 @@ state 362
     DO              reduce using rule 111 (t_exp -> g_exp and_np AND saveOperadorAnd_np t_exp .)
 
 
-state 363
+state 362
 
     (113) g_exp -> m_exp relationalOp_np EQUAL saveOperadorRelacional_np m_exp .
 
@@ -6121,7 +6092,7 @@ state 363
     DO              reduce using rule 113 (g_exp -> m_exp relationalOp_np EQUAL saveOperadorRelacional_np m_exp .)
 
 
-state 364
+state 363
 
     (114) g_exp -> m_exp relationalOp_np NOT saveOperadorRelacional_np m_exp .
 
@@ -6135,7 +6106,7 @@ state 364
     DO              reduce using rule 114 (g_exp -> m_exp relationalOp_np NOT saveOperadorRelacional_np m_exp .)
 
 
-state 365
+state 364
 
     (115) g_exp -> m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np m_exp .
 
@@ -6149,7 +6120,7 @@ state 365
     DO              reduce using rule 115 (g_exp -> m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np m_exp .)
 
 
-state 366
+state 365
 
     (116) g_exp -> m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np m_exp .
 
@@ -6163,7 +6134,7 @@ state 366
     DO              reduce using rule 116 (g_exp -> m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np m_exp .)
 
 
-state 367
+state 366
 
     (118) m_exp -> t plusMinus_np MAS saveOperadorMasMenos_np m_exp .
 
@@ -6181,7 +6152,7 @@ state 367
     DO              reduce using rule 118 (m_exp -> t plusMinus_np MAS saveOperadorMasMenos_np m_exp .)
 
 
-state 368
+state 367
 
     (119) m_exp -> t plusMinus_np MENOS saveOperadorMasMenos_np m_exp .
 
@@ -6199,7 +6170,7 @@ state 368
     DO              reduce using rule 119 (m_exp -> t plusMinus_np MENOS saveOperadorMasMenos_np m_exp .)
 
 
-state 369
+state 368
 
     (121) t -> f multiDiv_np POR saveOperadorMultiDivision_np t .
 
@@ -6219,7 +6190,7 @@ state 369
     DO              reduce using rule 121 (t -> f multiDiv_np POR saveOperadorMultiDivision_np t .)
 
 
-state 370
+state 369
 
     (122) t -> f multiDiv_np DIV saveOperadorMultiDivision_np t .
 
@@ -6238,6 +6209,19 @@ state 370
     TO              reduce using rule 122 (t -> f multiDiv_np DIV saveOperadorMultiDivision_np t .)
     DO              reduce using rule 122 (t -> f multiDiv_np DIV saveOperadorMultiDivision_np t .)
 
+
+state 370
+
+    (99) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np writeQuad_np
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np writeQuad_np COMA escribep
+    (179) or_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    or_np                          shift and go to state 390
+    empty                          shift and go to state 213
 
 state 371
 
@@ -6528,9 +6512,328 @@ state 388
 
 state 389
 
-    (91) llamadap -> exp params_np COMA nextParam_np . llamadap
-    (90) llamadap -> . exp params_np
-    (91) llamadap -> . exp params_np COMA nextParam_np llamadap
+    (90) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np . and_np or_np params_np
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np . and_np or_np params_np COMA nextParam_np llamadap
+    (178) and_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    and_np                         shift and go to state 403
+    empty                          shift and go to state 215
+
+state 390
+
+    (99) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . writeQuad_np
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . writeQuad_np COMA escribep
+    (194) writeQuad_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    writeQuad_np                   shift and go to state 404
+    empty                          shift and go to state 281
+
+state 391
+
+    (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
+    (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
+    (179) or_np -> . empty
+    (141) empty -> .
+
+    LLAVEIZQ        reduce using rule 141 (empty -> .)
+
+    or_np                          shift and go to state 405
+    empty                          shift and go to state 213
+
+state 392
+
+    (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np . and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
+    (178) and_np -> . empty
+    (141) empty -> .
+
+    DO              reduce using rule 141 (empty -> .)
+
+    and_np                         shift and go to state 406
+    empty                          shift and go to state 215
+
+state 393
+
+    (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
+    (179) or_np -> . empty
+    (141) empty -> .
+
+    TO              reduce using rule 141 (empty -> .)
+
+    or_np                          shift and go to state 407
+    empty                          shift and go to state 213
+
+state 394
+
+    (12) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .
+
+    MAIN            reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
+    VAR             reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
+    FUNC            reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
+
+
+state 395
+
+    (65) bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo .
+
+    LLAVEDER        reduce using rule 65 (bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo .)
+
+
+state 396
+
+    (68) metodo -> tipo_clase . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+    (69) metodo -> tipo_clase . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+    (70) metodo -> tipo_clase . VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+    (71) metodo -> tipo_clase . VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+    (31) tipo_simple -> . INT getType_np
+    (32) tipo_simple -> . FLOAT getType_np
+    (33) tipo_simple -> . CHAR getType_np
+    (34) tipo_simple -> . BOOL getType_np
+
+    VOID            shift and go to state 409
+    INT             shift and go to state 49
+    FLOAT           shift and go to state 50
+    CHAR            shift and go to state 51
+    BOOL            shift and go to state 52
+
+    tipo_simple                    shift and go to state 408
+
+state 397
+
+    (66) atributo -> tipo_clase tipo_simple ID getID_np . PUNTOCOMA saveVar_np
+    (67) atributo -> tipo_clase tipo_simple ID getID_np . PUNTOCOMA saveVar_np atributo
+
+    PUNTOCOMA       shift and go to state 410
+
+
+state 398
+
+    (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .
+    (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np . varp
+    (23) varp -> . tipo_compuesto ID PUNTOCOMA
+    (24) varp -> . tipo_compuesto ID PUNTOCOMA varp
+    (25) varp -> . tipo_simple ID getID_np PUNTOCOMA saveVar_np
+    (26) varp -> . tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
+    (27) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+    (28) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
+    (29) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+    (30) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
+    (39) tipo_compuesto -> . ID
+    (31) tipo_simple -> . INT getType_np
+    (32) tipo_simple -> . FLOAT getType_np
+    (33) tipo_simple -> . CHAR getType_np
+    (34) tipo_simple -> . BOOL getType_np
+
+    MAIN            reduce using rule 29 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .)
+    FUNC            reduce using rule 29 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .)
+    ID              shift and go to state 47
+    INT             shift and go to state 49
+    FLOAT           shift and go to state 50
+    CHAR            shift and go to state 51
+    BOOL            shift and go to state 52
+
+    tipo_simple                    shift and go to state 48
+    varp                           shift and go to state 411
+    tipo_compuesto                 shift and go to state 46
+
+state 399
+
+    (49) dec_varp -> tipo_simple ID getID_np . PUNTOCOMA saveVar_np dec_varp
+    (50) dec_varp -> tipo_simple ID getID_np . PUNTOCOMA saveVar_np
+    (51) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+    (52) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+    (53) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+    (54) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+
+    PUNTOCOMA       shift and go to state 412
+    CORCHETEIZQ     shift and go to state 413
+
+
+state 400
+
+    (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA . multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
+    (175) multiDiv_np -> . empty
+    (141) empty -> .
+
+    LLAVEDER        reduce using rule 141 (empty -> .)
+
+    multiDiv_np                    shift and go to state 414
+    empty                          shift and go to state 154
+
+state 401
+
+    (45) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion .
+
+    MAIN            reduce using rule 45 (funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion .)
+
+
+state 402
+
+    (73) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .
+
+    LLAVEDER        reduce using rule 73 (estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .)
+    RETURN          reduce using rule 73 (estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .)
+
+
+state 403
+
+    (90) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np params_np
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np params_np COMA nextParam_np llamadap
+    (179) or_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    or_np                          shift and go to state 415
+    empty                          shift and go to state 213
+
+state 404
+
+    (99) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np .
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np . COMA escribep
+
+    PARENTESISDER   reduce using rule 99 (escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np .)
+    COMA            shift and go to state 416
+
+
+state 405
+
+    (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np . ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
+    (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np . ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
+    (182) ifQuad_np -> . empty
+    (141) empty -> .
+
+    LLAVEIZQ        reduce using rule 141 (empty -> .)
+
+    ifQuad_np                      shift and go to state 417
+    empty                          shift and go to state 418
+
+state 406
+
+    (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
+    (179) or_np -> . empty
+    (141) empty -> .
+
+    DO              reduce using rule 141 (empty -> .)
+
+    or_np                          shift and go to state 419
+    empty                          shift and go to state 213
+
+state 407
+
+    (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
+    (189) forInitialExp_np -> . empty
+    (141) empty -> .
+
+    TO              reduce using rule 141 (empty -> .)
+
+    forInitialExp_np               shift and go to state 420
+    empty                          shift and go to state 421
+
+state 408
+
+    (68) metodo -> tipo_clase tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+    (69) metodo -> tipo_clase tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+
+    ID              shift and go to state 422
+
+
+state 409
+
+    (70) metodo -> tipo_clase VOID . ID PARENTESISIZQ parametros PARENTESISDER cuerpo
+    (71) metodo -> tipo_clase VOID . ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
+
+    ID              shift and go to state 423
+
+
+state 410
+
+    (66) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA . saveVar_np
+    (67) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA . saveVar_np atributo
+    (151) saveVar_np -> . empty
+    (141) empty -> .
+
+    PUBLIC          reduce using rule 141 (empty -> .)
+    PROTECTED       reduce using rule 141 (empty -> .)
+    PRIVATE         reduce using rule 141 (empty -> .)
+    METHOD          reduce using rule 141 (empty -> .)
+
+    saveVar_np                     shift and go to state 424
+    empty                          shift and go to state 144
+
+state 411
+
+    (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .
+
+    MAIN            reduce using rule 30 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .)
+    FUNC            reduce using rule 30 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .)
+
+
+state 412
+
+    (49) dec_varp -> tipo_simple ID getID_np PUNTOCOMA . saveVar_np dec_varp
+    (50) dec_varp -> tipo_simple ID getID_np PUNTOCOMA . saveVar_np
+    (151) saveVar_np -> . empty
+    (141) empty -> .
+
+    INT             reduce using rule 141 (empty -> .)
+    FLOAT           reduce using rule 141 (empty -> .)
+    CHAR            reduce using rule 141 (empty -> .)
+    BOOL            reduce using rule 141 (empty -> .)
+    LLAVEIZQ        reduce using rule 141 (empty -> .)
+
+    saveVar_np                     shift and go to state 425
+    empty                          shift and go to state 144
+
+state 413
+
+    (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+    (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np
+    (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
+    (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+
+    CTEI            shift and go to state 426
+
+
+state 414
+
+    (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np . plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
+    (176) plusMinus_np -> . empty
+    (141) empty -> .
+
+    LLAVEDER        reduce using rule 141 (empty -> .)
+
+    plusMinus_np                   shift and go to state 427
+    empty                          shift and go to state 206
+
+state 415
+
+    (90) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . params_np
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . params_np COMA nextParam_np llamadap
+    (162) params_np -> . empty
+    (141) empty -> .
+
+    COMA            reduce using rule 141 (empty -> .)
+    PARENTESISDER   reduce using rule 141 (empty -> .)
+
+    params_np                      shift and go to state 428
+    empty                          shift and go to state 429
+
+state 416
+
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA . escribep
+    (99) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+    (100) escribep -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
+    (101) escribep -> . LETRERO pushLetrero_np writeQuad_np
+    (102) escribep -> . LETRERO pushLetrero_np writeQuad_np COMA escribep
     (108) exp -> . t_exp
     (109) exp -> . t_exp or_np OR saveOperadorOr_np exp
     (110) t_exp -> . g_exp
@@ -6561,14 +6864,15 @@ state 389
     (131) llamada_metodo -> . ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER
     (140) llamada_atributo -> . ID PUNTO ID
 
+    LETRERO         shift and go to state 185
     PARENTESISIZQ   shift and go to state 172
     CTEI            shift and go to state 173
     CTEF            shift and go to state 174
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    exp                            shift and go to state 261
-    llamadap                       shift and go to state 403
+    exp                            shift and go to state 184
+    escribep                       shift and go to state 430
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -6579,296 +6883,22 @@ state 389
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 390
-
-    (163) nextParam_np -> empty .
-
-    PARENTESISIZQ   reduce using rule 163 (nextParam_np -> empty .)
-    CTEI            reduce using rule 163 (nextParam_np -> empty .)
-    CTEF            reduce using rule 163 (nextParam_np -> empty .)
-    CTECH           reduce using rule 163 (nextParam_np -> empty .)
-    ID              reduce using rule 163 (nextParam_np -> empty .)
-
-
-state 391
-
-    (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
-    (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
-    (179) or_np -> . empty
-    (141) empty -> .
-
-    LLAVEIZQ        reduce using rule 141 (empty -> .)
-
-    or_np                          shift and go to state 404
-    empty                          shift and go to state 213
-
-state 392
-
-    (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np . and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
-    (178) and_np -> . empty
-    (141) empty -> .
-
-    DO              reduce using rule 141 (empty -> .)
-
-    and_np                         shift and go to state 405
-    empty                          shift and go to state 215
-
-state 393
-
-    (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
-    (179) or_np -> . empty
-    (141) empty -> .
-
-    TO              reduce using rule 141 (empty -> .)
-
-    or_np                          shift and go to state 406
-    empty                          shift and go to state 213
-
-state 394
-
-    (12) clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .
-
-    MAIN            reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
-    VAR             reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
-    FUNC            reduce using rule 12 (clase -> CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase .)
-
-
-state 395
-
-    (65) bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo .
-
-    LLAVEDER        reduce using rule 65 (bloque_clase -> ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo .)
-
-
-state 396
-
-    (68) metodo -> tipo_clase . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-    (69) metodo -> tipo_clase . tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-    (70) metodo -> tipo_clase . VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-    (71) metodo -> tipo_clase . VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-    (31) tipo_simple -> . INT getType_np
-    (32) tipo_simple -> . FLOAT getType_np
-    (33) tipo_simple -> . CHAR getType_np
-    (34) tipo_simple -> . BOOL getType_np
-
-    VOID            shift and go to state 408
-    INT             shift and go to state 49
-    FLOAT           shift and go to state 50
-    CHAR            shift and go to state 51
-    BOOL            shift and go to state 52
-
-    tipo_simple                    shift and go to state 407
-
-state 397
-
-    (66) atributo -> tipo_clase tipo_simple ID getID_np . PUNTOCOMA saveVar_np
-    (67) atributo -> tipo_clase tipo_simple ID getID_np . PUNTOCOMA saveVar_np atributo
-
-    PUNTOCOMA       shift and go to state 409
-
-
-state 398
-
-    (29) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .
-    (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np . varp
-    (23) varp -> . tipo_compuesto ID PUNTOCOMA
-    (24) varp -> . tipo_compuesto ID PUNTOCOMA varp
-    (25) varp -> . tipo_simple ID getID_np PUNTOCOMA saveVar_np
-    (26) varp -> . tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
-    (27) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-    (28) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
-    (29) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-    (30) varp -> . tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
-    (39) tipo_compuesto -> . ID
-    (31) tipo_simple -> . INT getType_np
-    (32) tipo_simple -> . FLOAT getType_np
-    (33) tipo_simple -> . CHAR getType_np
-    (34) tipo_simple -> . BOOL getType_np
-
-    MAIN            reduce using rule 29 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .)
-    FUNC            reduce using rule 29 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .)
-    ID              shift and go to state 47
-    INT             shift and go to state 49
-    FLOAT           shift and go to state 50
-    CHAR            shift and go to state 51
-    BOOL            shift and go to state 52
-
-    tipo_simple                    shift and go to state 48
-    varp                           shift and go to state 410
-    tipo_compuesto                 shift and go to state 46
-
-state 399
-
-    (49) dec_varp -> tipo_simple ID getID_np . PUNTOCOMA saveVar_np dec_varp
-    (50) dec_varp -> tipo_simple ID getID_np . PUNTOCOMA saveVar_np
-    (51) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
-    (52) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-    (53) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
-    (54) dec_varp -> tipo_simple ID getID_np . CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-
-    PUNTOCOMA       shift and go to state 411
-    CORCHETEIZQ     shift and go to state 412
-
-
-state 400
-
-    (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA . multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
-    (175) multiDiv_np -> . empty
-    (141) empty -> .
-
-    LLAVEDER        reduce using rule 141 (empty -> .)
-
-    multiDiv_np                    shift and go to state 413
-    empty                          shift and go to state 154
-
-state 401
-
-    (45) funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion .
-
-    MAIN            reduce using rule 45 (funcion -> FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion .)
-
-
-state 402
-
-    (73) estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .
-
-    LLAVEDER        reduce using rule 73 (estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .)
-    RETURN          reduce using rule 73 (estatuto -> asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np estatuto .)
-
-
-state 403
-
-    (91) llamadap -> exp params_np COMA nextParam_np llamadap .
-
-    PARENTESISDER   reduce using rule 91 (llamadap -> exp params_np COMA nextParam_np llamadap .)
-
-
-state 404
-
-    (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np . ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
-    (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np . ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
-    (182) ifQuad_np -> . empty
-    (141) empty -> .
-
-    LLAVEIZQ        reduce using rule 141 (empty -> .)
-
-    ifQuad_np                      shift and go to state 414
-    empty                          shift and go to state 415
-
-state 405
-
-    (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np . or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
-    (179) or_np -> . empty
-    (141) empty -> .
-
-    DO              reduce using rule 141 (empty -> .)
-
-    or_np                          shift and go to state 416
-    empty                          shift and go to state 213
-
-state 406
-
-    (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
-    (189) forInitialExp_np -> . empty
-    (141) empty -> .
-
-    TO              reduce using rule 141 (empty -> .)
-
-    forInitialExp_np               shift and go to state 417
-    empty                          shift and go to state 418
-
-state 407
-
-    (68) metodo -> tipo_clase tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-    (69) metodo -> tipo_clase tipo_simple . ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-
-    ID              shift and go to state 419
-
-
-state 408
-
-    (70) metodo -> tipo_clase VOID . ID PARENTESISIZQ parametros PARENTESISDER cuerpo
-    (71) metodo -> tipo_clase VOID . ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
-
-    ID              shift and go to state 420
-
-
-state 409
-
-    (66) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA . saveVar_np
-    (67) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA . saveVar_np atributo
-    (151) saveVar_np -> . empty
-    (141) empty -> .
-
-    PUBLIC          reduce using rule 141 (empty -> .)
-    PROTECTED       reduce using rule 141 (empty -> .)
-    PRIVATE         reduce using rule 141 (empty -> .)
-    METHOD          reduce using rule 141 (empty -> .)
-
-    saveVar_np                     shift and go to state 421
-    empty                          shift and go to state 144
-
-state 410
-
-    (30) varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .
-
-    MAIN            reduce using rule 30 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .)
-    FUNC            reduce using rule 30 (varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp .)
-
-
-state 411
-
-    (49) dec_varp -> tipo_simple ID getID_np PUNTOCOMA . saveVar_np dec_varp
-    (50) dec_varp -> tipo_simple ID getID_np PUNTOCOMA . saveVar_np
-    (151) saveVar_np -> . empty
-    (141) empty -> .
-
-    INT             reduce using rule 141 (empty -> .)
-    FLOAT           reduce using rule 141 (empty -> .)
-    CHAR            reduce using rule 141 (empty -> .)
-    BOOL            reduce using rule 141 (empty -> .)
-    LLAVEIZQ        reduce using rule 141 (empty -> .)
-
-    saveVar_np                     shift and go to state 422
-    empty                          shift and go to state 144
-
-state 412
-
-    (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
-    (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np
-    (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
-    (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ . CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-
-    CTEI            shift and go to state 423
-
-
-state 413
-
-    (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np . plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
-    (176) plusMinus_np -> . empty
-    (141) empty -> .
-
-    LLAVEDER        reduce using rule 141 (empty -> .)
-
-    plusMinus_np                   shift and go to state 424
-    empty                          shift and go to state 206
-
-state 414
+state 417
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np . LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np . LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
 
-    LLAVEIZQ        shift and go to state 425
+    LLAVEIZQ        shift and go to state 431
 
 
-state 415
+state 418
 
     (182) ifQuad_np -> empty .
 
     LLAVEIZQ        reduce using rule 182 (ifQuad_np -> empty .)
 
 
-state 416
+state 419
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np . whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
     (186) whileQuad_np -> . empty
@@ -6876,40 +6906,40 @@ state 416
 
     DO              reduce using rule 141 (empty -> .)
 
-    whileQuad_np                   shift and go to state 426
-    empty                          shift and go to state 427
+    whileQuad_np                   shift and go to state 432
+    empty                          shift and go to state 433
 
-state 417
+state 420
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np . TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
 
-    TO              shift and go to state 428
+    TO              shift and go to state 434
 
 
-state 418
+state 421
 
     (189) forInitialExp_np -> empty .
 
     TO              reduce using rule 189 (forInitialExp_np -> empty .)
 
 
-state 419
+state 422
 
     (68) metodo -> tipo_clase tipo_simple ID . PARENTESISIZQ parametros PARENTESISDER cuerpo
     (69) metodo -> tipo_clase tipo_simple ID . PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
 
-    PARENTESISIZQ   shift and go to state 429
+    PARENTESISIZQ   shift and go to state 435
 
 
-state 420
+state 423
 
     (70) metodo -> tipo_clase VOID ID . PARENTESISIZQ parametros PARENTESISDER cuerpo
     (71) metodo -> tipo_clase VOID ID . PARENTESISIZQ parametros PARENTESISDER cuerpo metodo
 
-    PARENTESISIZQ   shift and go to state 430
+    PARENTESISIZQ   shift and go to state 436
 
 
-state 421
+state 424
 
     (66) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np .
     (67) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np . atributo
@@ -6925,9 +6955,9 @@ state 421
     PRIVATE         shift and go to state 139
 
     tipo_clase                     shift and go to state 289
-    atributo                       shift and go to state 431
+    atributo                       shift and go to state 437
 
-state 422
+state 425
 
     (49) dec_varp -> tipo_simple ID getID_np PUNTOCOMA saveVar_np . dec_varp
     (50) dec_varp -> tipo_simple ID getID_np PUNTOCOMA saveVar_np .
@@ -6948,20 +6978,20 @@ state 422
     CHAR            shift and go to state 51
     BOOL            shift and go to state 52
 
-    tipo_simple                    shift and go to state 343
-    dec_varp                       shift and go to state 432
+    tipo_simple                    shift and go to state 342
+    dec_varp                       shift and go to state 438
 
-state 423
+state 426
 
     (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np dec_varp
     (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI . CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
 
-    CORCHETEDER     shift and go to state 433
+    CORCHETEDER     shift and go to state 439
 
 
-state 424
+state 427
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np . relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (177) relationalOp_np -> . empty
@@ -6969,10 +6999,34 @@ state 424
 
     LLAVEDER        reduce using rule 141 (empty -> .)
 
-    relationalOp_np                shift and go to state 434
+    relationalOp_np                shift and go to state 440
     empty                          shift and go to state 217
 
-state 425
+state 428
+
+    (90) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np .
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np . COMA nextParam_np llamadap
+
+    PARENTESISDER   reduce using rule 90 (llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np .)
+    COMA            shift and go to state 441
+
+
+state 429
+
+    (162) params_np -> empty .
+
+    COMA            reduce using rule 162 (params_np -> empty .)
+    PARENTESISDER   reduce using rule 162 (params_np -> empty .)
+
+
+state 430
+
+    (100) escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep .
+
+    PARENTESISDER   reduce using rule 100 (escribep -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep .)
+
+
+state 431
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ . estatuto LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ . estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -7013,7 +7067,7 @@ state 425
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    estatuto                       shift and go to state 435
+    estatuto                       shift and go to state 442
     asignacion                     shift and go to state 84
     llamada                        shift and go to state 85
     lee                            shift and go to state 86
@@ -7025,21 +7079,21 @@ state 425
     llamada_atributo               shift and go to state 92
     variable                       shift and go to state 93
 
-state 426
+state 432
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np . DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
 
-    DO              shift and go to state 436
+    DO              shift and go to state 443
 
 
-state 427
+state 433
 
     (186) whileQuad_np -> empty .
 
     DO              reduce using rule 186 (whileQuad_np -> empty .)
 
 
-state 428
+state 434
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (108) exp -> . t_exp
@@ -7078,7 +7132,7 @@ state 428
     CTECH           shift and go to state 175
     ID              shift and go to state 165
 
-    exp                            shift and go to state 437
+    exp                            shift and go to state 444
     t_exp                          shift and go to state 167
     g_exp                          shift and go to state 168
     m_exp                          shift and go to state 169
@@ -7089,7 +7143,7 @@ state 428
     llamada_metodo                 shift and go to state 178
     llamada_atributo               shift and go to state 179
 
-state 429
+state 435
 
     (68) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ . parametros PARENTESISDER cuerpo
     (69) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ . parametros PARENTESISDER cuerpo metodo
@@ -7107,9 +7161,9 @@ state 429
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 438
+    parametros                     shift and go to state 445
 
-state 430
+state 436
 
     (70) metodo -> tipo_clase VOID ID PARENTESISIZQ . parametros PARENTESISDER cuerpo
     (71) metodo -> tipo_clase VOID ID PARENTESISIZQ . parametros PARENTESISDER cuerpo metodo
@@ -7127,34 +7181,34 @@ state 430
     CHAR            shift and go to state 108
     BOOL            shift and go to state 109
 
-    parametros                     shift and go to state 439
+    parametros                     shift and go to state 446
 
-state 431
+state 437
 
     (67) atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np atributo .
 
     METHOD          reduce using rule 67 (atributo -> tipo_clase tipo_simple ID getID_np PUNTOCOMA saveVar_np atributo .)
 
 
-state 432
+state 438
 
     (49) dec_varp -> tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp .
 
     LLAVEIZQ        reduce using rule 49 (dec_varp -> tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp .)
 
 
-state 433
+state 439
 
     (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np dec_varp
     (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER . CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
 
-    PUNTOCOMA       shift and go to state 441
-    CORCHETEIZQ     shift and go to state 440
+    PUNTOCOMA       shift and go to state 448
+    CORCHETEIZQ     shift and go to state 447
 
 
-state 434
+state 440
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np . and_np or_np emptyStackReturn_np LLAVEDER
     (178) and_np -> . empty
@@ -7162,25 +7216,40 @@ state 434
 
     LLAVEDER        reduce using rule 141 (empty -> .)
 
-    and_np                         shift and go to state 442
+    and_np                         shift and go to state 449
     empty                          shift and go to state 215
 
-state 435
+state 441
+
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA . nextParam_np llamadap
+    (163) nextParam_np -> . empty
+    (141) empty -> .
+
+    PARENTESISIZQ   reduce using rule 141 (empty -> .)
+    CTEI            reduce using rule 141 (empty -> .)
+    CTEF            reduce using rule 141 (empty -> .)
+    CTECH           reduce using rule 141 (empty -> .)
+    ID              reduce using rule 141 (empty -> .)
+
+    nextParam_np                   shift and go to state 450
+    empty                          shift and go to state 451
+
+state 442
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto . LLAVEDER fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto . LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
 
-    LLAVEDER        shift and go to state 443
+    LLAVEDER        shift and go to state 452
 
 
-state 436
+state 443
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO . LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np
 
-    LLAVEIZQ        shift and go to state 444
+    LLAVEIZQ        shift and go to state 453
 
 
-state 437
+state 444
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp . multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (175) multiDiv_np -> . empty
@@ -7188,34 +7257,34 @@ state 437
 
     DO              reduce using rule 141 (empty -> .)
 
-    multiDiv_np                    shift and go to state 445
+    multiDiv_np                    shift and go to state 454
     empty                          shift and go to state 154
 
-state 438
+state 445
 
     (68) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros . PARENTESISDER cuerpo
     (69) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros . PARENTESISDER cuerpo metodo
 
-    PARENTESISDER   shift and go to state 446
+    PARENTESISDER   shift and go to state 455
 
 
-state 439
+state 446
 
     (70) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros . PARENTESISDER cuerpo
     (71) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros . PARENTESISDER cuerpo metodo
 
-    PARENTESISDER   shift and go to state 447
+    PARENTESISDER   shift and go to state 456
 
 
-state 440
+state 447
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ . CTEI CORCHETEDER PUNTOCOMA saveVar_np
 
-    CTEI            shift and go to state 448
+    CTEI            shift and go to state 457
 
 
-state 441
+state 448
 
     (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np dec_varp
     (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np
@@ -7228,10 +7297,10 @@ state 441
     BOOL            reduce using rule 141 (empty -> .)
     LLAVEIZQ        reduce using rule 141 (empty -> .)
 
-    saveVar_np                     shift and go to state 449
+    saveVar_np                     shift and go to state 458
     empty                          shift and go to state 144
 
-state 442
+state 449
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np . or_np emptyStackReturn_np LLAVEDER
     (179) or_np -> . empty
@@ -7239,17 +7308,81 @@ state 442
 
     LLAVEDER        reduce using rule 141 (empty -> .)
 
-    or_np                          shift and go to state 450
+    or_np                          shift and go to state 459
     empty                          shift and go to state 213
 
-state 443
+state 450
+
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np . llamadap
+    (90) llamadap -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
+    (91) llamadap -> . exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap
+    (108) exp -> . t_exp
+    (109) exp -> . t_exp or_np OR saveOperadorOr_np exp
+    (110) t_exp -> . g_exp
+    (111) t_exp -> . g_exp and_np AND saveOperadorAnd_np t_exp
+    (112) g_exp -> . m_exp
+    (113) g_exp -> . m_exp relationalOp_np EQUAL saveOperadorRelacional_np m_exp
+    (114) g_exp -> . m_exp relationalOp_np NOT saveOperadorRelacional_np m_exp
+    (115) g_exp -> . m_exp relationalOp_np GREATERTHAN saveOperadorRelacional_np m_exp
+    (116) g_exp -> . m_exp relationalOp_np LESSTHAN saveOperadorRelacional_np m_exp
+    (117) m_exp -> . t
+    (118) m_exp -> . t plusMinus_np MAS saveOperadorMasMenos_np m_exp
+    (119) m_exp -> . t plusMinus_np MENOS saveOperadorMasMenos_np m_exp
+    (120) t -> . f
+    (121) t -> . f multiDiv_np POR saveOperadorMultiDivision_np t
+    (122) t -> . f multiDiv_np DIV saveOperadorMultiDivision_np t
+    (123) f -> . PARENTESISIZQ exp PARENTESISDER
+    (124) f -> . CTEI saveConstantInt_np
+    (125) f -> . CTEF saveConstantFloat_np
+    (126) f -> . CTECH saveConstantChar_np
+    (127) f -> . variable
+    (128) f -> . llamada
+    (129) f -> . llamada_metodo
+    (130) f -> . llamada_atributo
+    (95) variable -> . ID saveIDpilaO_np
+    (96) variable -> . ID CORCHETEIZQ exp CORCHETEDER
+    (97) variable -> . ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER
+    (89) llamada -> . ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np
+    (131) llamada_metodo -> . ID PUNTO ID PARENTESISIZQ llamada_metodop PARENTESISDER
+    (140) llamada_atributo -> . ID PUNTO ID
+
+    PARENTESISIZQ   shift and go to state 172
+    CTEI            shift and go to state 173
+    CTEF            shift and go to state 174
+    CTECH           shift and go to state 175
+    ID              shift and go to state 165
+
+    exp                            shift and go to state 260
+    llamadap                       shift and go to state 460
+    t_exp                          shift and go to state 167
+    g_exp                          shift and go to state 168
+    m_exp                          shift and go to state 169
+    t                              shift and go to state 170
+    f                              shift and go to state 171
+    variable                       shift and go to state 176
+    llamada                        shift and go to state 177
+    llamada_metodo                 shift and go to state 178
+    llamada_atributo               shift and go to state 179
+
+state 451
+
+    (163) nextParam_np -> empty .
+
+    PARENTESISIZQ   reduce using rule 163 (nextParam_np -> empty .)
+    CTEI            reduce using rule 163 (nextParam_np -> empty .)
+    CTEF            reduce using rule 163 (nextParam_np -> empty .)
+    CTECH           reduce using rule 163 (nextParam_np -> empty .)
+    ID              reduce using rule 163 (nextParam_np -> empty .)
+
+
+state 452
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER . fillIfQuad_np
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER . ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (183) fillIfQuad_np -> . empty
     (141) empty -> .
 
-    ELSE            shift and go to state 452
+    ELSE            shift and go to state 462
     ID              reduce using rule 141 (empty -> .)
     READ            reduce using rule 141 (empty -> .)
     WRITE           reduce using rule 141 (empty -> .)
@@ -7259,10 +7392,10 @@ state 443
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    fillIfQuad_np                  shift and go to state 451
-    empty                          shift and go to state 453
+    fillIfQuad_np                  shift and go to state 461
+    empty                          shift and go to state 463
 
-state 444
+state 453
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ . estatuto LLAVEDER fillWhileQuad_np
     (72) estatuto -> . asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np
@@ -7302,7 +7435,7 @@ state 444
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    estatuto                       shift and go to state 454
+    estatuto                       shift and go to state 464
     asignacion                     shift and go to state 84
     llamada                        shift and go to state 85
     lee                            shift and go to state 86
@@ -7314,7 +7447,7 @@ state 444
     llamada_atributo               shift and go to state 92
     variable                       shift and go to state 93
 
-state 445
+state 454
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np . plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (176) plusMinus_np -> . empty
@@ -7322,40 +7455,40 @@ state 445
 
     DO              reduce using rule 141 (empty -> .)
 
-    plusMinus_np                   shift and go to state 455
+    plusMinus_np                   shift and go to state 465
     empty                          shift and go to state 206
 
-state 446
+state 455
 
     (68) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER . cuerpo
     (69) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER . cuerpo metodo
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    LLAVEIZQ        shift and go to state 248
+    LLAVEIZQ        shift and go to state 247
 
-    cuerpo                         shift and go to state 456
+    cuerpo                         shift and go to state 466
 
-state 447
+state 456
 
     (70) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER . cuerpo
     (71) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER . cuerpo metodo
     (63) cuerpo -> . LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
     (64) cuerpo -> . LLAVEIZQ estatuto LLAVEDER
 
-    LLAVEIZQ        shift and go to state 248
+    LLAVEIZQ        shift and go to state 247
 
-    cuerpo                         shift and go to state 457
+    cuerpo                         shift and go to state 467
 
-state 448
+state 457
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI . CORCHETEDER PUNTOCOMA saveVar_np
 
-    CORCHETEDER     shift and go to state 458
+    CORCHETEDER     shift and go to state 468
 
 
-state 449
+state 458
 
     (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np . dec_varp
     (52) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .
@@ -7376,10 +7509,10 @@ state 449
     CHAR            shift and go to state 51
     BOOL            shift and go to state 52
 
-    tipo_simple                    shift and go to state 343
-    dec_varp                       shift and go to state 459
+    tipo_simple                    shift and go to state 342
+    dec_varp                       shift and go to state 469
 
-state 450
+state 459
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np . emptyStackReturn_np LLAVEDER
     (181) emptyStackReturn_np -> . empty
@@ -7387,10 +7520,17 @@ state 450
 
     LLAVEDER        reduce using rule 141 (empty -> .)
 
-    emptyStackReturn_np            shift and go to state 460
-    empty                          shift and go to state 461
+    emptyStackReturn_np            shift and go to state 470
+    empty                          shift and go to state 471
 
-state 451
+state 460
+
+    (91) llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap .
+
+    PARENTESISDER   reduce using rule 91 (llamadap -> exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap .)
+
+
+state 461
 
     (103) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np .
 
@@ -7404,7 +7544,7 @@ state 451
     RETURN          reduce using rule 103 (condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np .)
 
 
-state 452
+state 462
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE . elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
     (184) elseQuad_np -> . empty
@@ -7412,10 +7552,10 @@ state 452
 
     LLAVEIZQ        reduce using rule 141 (empty -> .)
 
-    elseQuad_np                    shift and go to state 462
-    empty                          shift and go to state 463
+    elseQuad_np                    shift and go to state 472
+    empty                          shift and go to state 473
 
-state 453
+state 463
 
     (183) fillIfQuad_np -> empty .
 
@@ -7429,14 +7569,14 @@ state 453
     RETURN          reduce using rule 183 (fillIfQuad_np -> empty .)
 
 
-state 454
+state 464
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto . LLAVEDER fillWhileQuad_np
 
-    LLAVEDER        shift and go to state 464
+    LLAVEDER        shift and go to state 474
 
 
-state 455
+state 465
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np . relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (177) relationalOp_np -> . empty
@@ -7444,10 +7584,10 @@ state 455
 
     DO              reduce using rule 141 (empty -> .)
 
-    relationalOp_np                shift and go to state 465
+    relationalOp_np                shift and go to state 475
     empty                          shift and go to state 217
 
-state 456
+state 466
 
     (68) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo .
     (69) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo . metodo
@@ -7465,9 +7605,9 @@ state 456
     PRIVATE         shift and go to state 139
 
     tipo_clase                     shift and go to state 396
-    metodo                         shift and go to state 466
+    metodo                         shift and go to state 476
 
-state 457
+state 467
 
     (70) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo .
     (71) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo . metodo
@@ -7485,52 +7625,52 @@ state 457
     PRIVATE         shift and go to state 139
 
     tipo_clase                     shift and go to state 396
-    metodo                         shift and go to state 467
+    metodo                         shift and go to state 477
 
-state 458
+state 468
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER . PUNTOCOMA saveVar_np
 
-    PUNTOCOMA       shift and go to state 468
+    PUNTOCOMA       shift and go to state 478
 
 
-state 459
+state 469
 
     (51) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp .
 
     LLAVEIZQ        reduce using rule 51 (dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp .)
 
 
-state 460
+state 470
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np . LLAVEDER
 
-    LLAVEDER        shift and go to state 469
+    LLAVEDER        shift and go to state 479
 
 
-state 461
+state 471
 
     (181) emptyStackReturn_np -> empty .
 
     LLAVEDER        reduce using rule 181 (emptyStackReturn_np -> empty .)
 
 
-state 462
+state 472
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np . LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
 
-    LLAVEIZQ        shift and go to state 470
+    LLAVEIZQ        shift and go to state 480
 
 
-state 463
+state 473
 
     (184) elseQuad_np -> empty .
 
     LLAVEIZQ        reduce using rule 184 (elseQuad_np -> empty .)
 
 
-state 464
+state 474
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER . fillWhileQuad_np
     (187) fillWhileQuad_np -> . empty
@@ -7545,10 +7685,10 @@ state 464
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    fillWhileQuad_np               shift and go to state 471
-    empty                          shift and go to state 472
+    fillWhileQuad_np               shift and go to state 481
+    empty                          shift and go to state 482
 
-state 465
+state 475
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np . and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (178) and_np -> . empty
@@ -7556,24 +7696,24 @@ state 465
 
     DO              reduce using rule 141 (empty -> .)
 
-    and_np                         shift and go to state 473
+    and_np                         shift and go to state 483
     empty                          shift and go to state 215
 
-state 466
+state 476
 
     (69) metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo .
 
     LLAVEDER        reduce using rule 69 (metodo -> tipo_clase tipo_simple ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo .)
 
 
-state 467
+state 477
 
     (71) metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo .
 
     LLAVEDER        reduce using rule 71 (metodo -> tipo_clase VOID ID PARENTESISIZQ parametros PARENTESISDER cuerpo metodo .)
 
 
-state 468
+state 478
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA . saveVar_np
@@ -7586,10 +7726,10 @@ state 468
     BOOL            reduce using rule 141 (empty -> .)
     LLAVEIZQ        reduce using rule 141 (empty -> .)
 
-    saveVar_np                     shift and go to state 474
+    saveVar_np                     shift and go to state 484
     empty                          shift and go to state 144
 
-state 469
+state 479
 
     (63) cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER .
 
@@ -7601,7 +7741,7 @@ state 469
     LLAVEDER        reduce using rule 63 (cuerpo -> LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER .)
 
 
-state 470
+state 480
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ . estatuto LLAVEDER fillIfQuad_np
     (72) estatuto -> . asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np
@@ -7641,7 +7781,7 @@ state 470
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    estatuto                       shift and go to state 475
+    estatuto                       shift and go to state 485
     asignacion                     shift and go to state 84
     llamada                        shift and go to state 85
     lee                            shift and go to state 86
@@ -7653,7 +7793,7 @@ state 470
     llamada_atributo               shift and go to state 92
     variable                       shift and go to state 93
 
-state 471
+state 481
 
     (105) ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np .
 
@@ -7667,7 +7807,7 @@ state 471
     RETURN          reduce using rule 105 (ciclo_w -> WHILE whileQuadSaltos_np PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np whileQuad_np DO LLAVEIZQ estatuto LLAVEDER fillWhileQuad_np .)
 
 
-state 472
+state 482
 
     (187) fillWhileQuad_np -> empty .
 
@@ -7681,7 +7821,7 @@ state 472
     RETURN          reduce using rule 187 (fillWhileQuad_np -> empty .)
 
 
-state 473
+state 483
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np . or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (179) or_np -> . empty
@@ -7689,10 +7829,10 @@ state 473
 
     DO              reduce using rule 141 (empty -> .)
 
-    or_np                          shift and go to state 476
+    or_np                          shift and go to state 486
     empty                          shift and go to state 213
 
-state 474
+state 484
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np . dec_varp
     (54) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np .
@@ -7713,17 +7853,17 @@ state 474
     CHAR            shift and go to state 51
     BOOL            shift and go to state 52
 
-    tipo_simple                    shift and go to state 343
-    dec_varp                       shift and go to state 477
+    tipo_simple                    shift and go to state 342
+    dec_varp                       shift and go to state 487
 
-state 475
+state 485
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto . LLAVEDER fillIfQuad_np
 
-    LLAVEDER        shift and go to state 478
+    LLAVEDER        shift and go to state 488
 
 
-state 476
+state 486
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np . forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np
     (190) forResultExp_np -> . empty
@@ -7731,17 +7871,17 @@ state 476
 
     DO              reduce using rule 141 (empty -> .)
 
-    forResultExp_np                shift and go to state 479
-    empty                          shift and go to state 480
+    forResultExp_np                shift and go to state 489
+    empty                          shift and go to state 490
 
-state 477
+state 487
 
     (53) dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp .
 
     LLAVEIZQ        reduce using rule 53 (dec_varp -> tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp .)
 
 
-state 478
+state 488
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER . fillIfQuad_np
     (183) fillIfQuad_np -> . empty
@@ -7756,24 +7896,24 @@ state 478
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    fillIfQuad_np                  shift and go to state 481
-    empty                          shift and go to state 453
+    fillIfQuad_np                  shift and go to state 491
+    empty                          shift and go to state 463
 
-state 479
+state 489
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np . DO LLAVEIZQ estatuto LLAVEDER endFor_np
 
-    DO              shift and go to state 482
+    DO              shift and go to state 492
 
 
-state 480
+state 490
 
     (190) forResultExp_np -> empty .
 
     DO              reduce using rule 190 (forResultExp_np -> empty .)
 
 
-state 481
+state 491
 
     (104) condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np .
 
@@ -7787,14 +7927,14 @@ state 481
     RETURN          reduce using rule 104 (condicion -> IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER ELSE elseQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np .)
 
 
-state 482
+state 492
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO . LLAVEIZQ estatuto LLAVEDER endFor_np
 
-    LLAVEIZQ        shift and go to state 483
+    LLAVEIZQ        shift and go to state 493
 
 
-state 483
+state 493
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ . estatuto LLAVEDER endFor_np
     (72) estatuto -> . asignacion PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np
@@ -7834,7 +7974,7 @@ state 483
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    estatuto                       shift and go to state 484
+    estatuto                       shift and go to state 494
     asignacion                     shift and go to state 84
     llamada                        shift and go to state 85
     lee                            shift and go to state 86
@@ -7846,14 +7986,14 @@ state 483
     llamada_atributo               shift and go to state 92
     variable                       shift and go to state 93
 
-state 484
+state 494
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto . LLAVEDER endFor_np
 
-    LLAVEDER        shift and go to state 485
+    LLAVEDER        shift and go to state 495
 
 
-state 485
+state 495
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER . endFor_np
     (191) endFor_np -> . empty
@@ -7868,10 +8008,10 @@ state 485
     LLAVEDER        reduce using rule 141 (empty -> .)
     RETURN          reduce using rule 141 (empty -> .)
 
-    endFor_np                      shift and go to state 486
-    empty                          shift and go to state 487
+    endFor_np                      shift and go to state 496
+    empty                          shift and go to state 497
 
-state 486
+state 496
 
     (106) ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np .
 
@@ -7885,7 +8025,7 @@ state 486
     RETURN          reduce using rule 106 (ciclo_f -> FOR variable_for IGUAL exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forInitialExp_np TO exp multiDiv_np plusMinus_np relationalOp_np and_np or_np forResultExp_np DO LLAVEIZQ estatuto LLAVEDER endFor_np .)
 
 
-state 487
+state 497
 
     (191) endFor_np -> empty .
 

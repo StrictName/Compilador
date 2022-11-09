@@ -300,8 +300,8 @@ def p_llamada(t):
     '''llamada : ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np'''
 
 def p_llamadap(t):
-    '''llamadap : exp params_np
-                | exp params_np COMA nextParam_np llamadap'''
+    '''llamadap : exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
+                | exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np COMA nextParam_np llamadap'''
 
 def p_lee(t):
     '''lee : READ PARENTESISIZQ leep PARENTESISDER'''
@@ -319,10 +319,11 @@ def p_escribe(t):
     '''escribe : WRITE PARENTESISIZQ escribep PARENTESISDER'''
 
 def p_escribep(t):
-    '''escribep : exp writeQuad_np
-                | exp writeQuad_np COMA escribep
+    '''escribep : exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np
+                | exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
                 | LETRERO pushLetrero_np writeQuad_np
                 | LETRERO pushLetrero_np writeQuad_np COMA escribep'''
+                # ARRELGAR ??
 
 def p_condicion(t):
     '''condicion : IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -569,24 +570,24 @@ def p_saveFunc_np(p):
 
 def p_verifyFunc_np(p):
     '''verifyFunc_np : empty'''
-    global current_func_id
-    current_func_id = p[-1]
-    if functionsTable.search(current_func_id) == "Function undeclared":
+    global current_func_id_call
+    current_func_id_call = p[-1]
+    if functionsTable.search(current_func_id_call) == "Function undeclared":
         print("ERROR: Function undeclared")
 
 def p_eraSize_np(p):
     '''eraSize_np : empty'''
-    global current_func_id, param_count
-    tam = functionsTable.return_tam(current_func_id)
+    global current_func_id_call, param_count
+    tam = functionsTable.return_tam(current_func_id_call)
     cuadruplo.addQuadruple('ERA', tam, ' ', ' ')
     param_count = 1
 
 def p_params_np(p):
     '''params_np : empty'''
-    global current_func_id, param_count
+    global current_func_id_call, param_count
     argument = PilaO.pop()
     argument_type = PilaTipos.pop()
-    if argument_type == functionsTable.find_param(current_func_id, param_count-1):
+    if argument_type == functionsTable.find_param(current_func_id_call, param_count-1):
         cuadruplo.addQuadruple('PARAMETER', argument, ' ', param_count)
     else:
         print('ERROR: Wrong type of parameter')
@@ -598,15 +599,15 @@ def p_nextParam_np(p):
 
 def p_verifyNumParam_np(p):
     '''verifyNumParam_np : empty'''
-    global current_func_id, param_count
-    if len(functionsTable.find_parameters(current_func_id)) != param_count:
+    global current_func_id_call, param_count
+    if len(functionsTable.find_parameters(current_func_id_call)) != param_count:
         print('ERROR: Wrong quantity of parameters')
 
 def p_generateGosub_np(p):
     '''generateGosub_np : empty'''
-    global current_func_id
-    initial_address = functionsTable.find_initial_quad(current_func_id)
-    cuadruplo.addQuadruple('GOSUB', current_func_id, ' ', initial_address)
+    global current_func_id_call
+    initial_address = functionsTable.find_initial_quad(current_func_id_call)
+    cuadruplo.addQuadruple('GOSUB', current_func_id_call, ' ', initial_address)
 
 ############################Cuadruplos############################
 
@@ -890,7 +891,6 @@ def p_whileQuad_np(p):
     '''whileQuad_np : empty'''
     global result_type
     result_type = PilaTipos.pop()
-    print(result_type)
     if (result_type != 'bool'):
         print('Type-mismatch')
     else:
@@ -950,8 +950,6 @@ def p_forResultExp_np(p):
 
 def p_endFor_np(p):
     '''endFor_np : empty'''
-    print(PilaO)
-    print(PilaTipos)
     global result_type, current_var_scope, current_var_type, result
     current_var_type = 'int'
     current_var_scope = 'funcion'
@@ -960,7 +958,6 @@ def p_endFor_np(p):
     cuadruplo.addQuadrupleIgual('=', 'VControl', result)
     cuadruplo.addQuadrupleIgual('=', PilaO[-1], result)
     FIN = PSaltos.pop()
-    print(FIN)
     RET = PSaltos.pop()
     cuadruplo.addQuadruple('GOTO', ' ', ' ', RET)
     cuadruplo.fill(FIN-1)
