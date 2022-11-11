@@ -564,7 +564,7 @@ def p_saveFunc_np(p):
     #    if varsTable.table[key].direccion_funcion == address_func:
     #        varsTable.delete_var(key)
     if address_func != 0:
-        cuadruplo.addQuadruple('ENDFunc', ' ', ' ', ' ')
+        cuadruplo.addQuadruple('ENDFunc', -1, -1, -1)
     parameters_list = []
     tam_func = []
 
@@ -579,7 +579,7 @@ def p_eraSize_np(p):
     '''eraSize_np : empty'''
     global current_func_id_call, param_count
     tam = functionsTable.return_tam(current_func_id_call)
-    cuadruplo.addQuadruple('ERA', tam, ' ', ' ')
+    cuadruplo.addQuadruple('ERA', tam, -1, -1)
     param_count = 1
 
 def p_params_np(p):
@@ -588,7 +588,7 @@ def p_params_np(p):
     argument = PilaO.pop()
     argument_type = PilaTipos.pop()
     if argument_type == functionsTable.find_param(current_func_id_call, param_count-1):
-        cuadruplo.addQuadruple('PARAMETER', argument, ' ', param_count)
+        cuadruplo.addQuadruple('PARAMETER', argument, -1, param_count)
     else:
         print('ERROR: Wrong type of parameter')
 
@@ -607,7 +607,7 @@ def p_generateGosub_np(p):
     '''generateGosub_np : empty'''
     global current_func_id_call
     initial_address = functionsTable.find_initial_quad(current_func_id_call)
-    cuadruplo.addQuadruple('GOSUB', current_func_id_call, ' ', initial_address)
+    cuadruplo.addQuadruple('GOSUB', current_func_id_call, -1, initial_address)
 
 ############################Cuadruplos############################
 
@@ -854,7 +854,7 @@ def p_emptyStackReturn_np(p):
     if len(POper) == 0:
         ret_value = PilaO.pop()
         PilaTipos.pop()
-        cuadruplo.addQuadruple('RETURN', ' ', ' ', ret_value)
+        cuadruplo.addQuadruple('RETURN', -1, -1, ret_value)
 
 
 ######################### IF #####################
@@ -959,7 +959,7 @@ def p_endFor_np(p):
     cuadruplo.addQuadrupleIgual('=', PilaO[-1], result)
     FIN = PSaltos.pop()
     RET = PSaltos.pop()
-    cuadruplo.addQuadruple('GOTO', ' ', ' ', RET)
+    cuadruplo.addQuadruple('GOTO', -1, -1, RET)
     cuadruplo.fill(FIN-1)
     PilaO.pop()
     PilaTipos.pop()
@@ -986,14 +986,14 @@ def p_writeQuad_np(p):
 ########################## Cuádruplo END y creación de archivo con el mapa de memoria #################################
 def p_endQuad_np(p):
     '''endQuad_np : empty'''
-    cuadruplo.addQuadruple('END', ' ', ' ', ' ')
+    cuadruplo.addQuadruple('END', -1, -1, -1)
     with open('dataVirtualMachine.txt', 'w') as f:
         functionsTable.writeFile(f)
-        f.write('##\n')
+        f.write('#\n')
         cuadruplo.writeQuads(f)
-        f.write('##\n')
+        f.write('#\n')
         constantsTable.writeCtes(f)
-        f.write('##\n')
+        f.write('#\n')
 
 ########################## Memoria virtual #################################
 def asignar_direccion_memoria():

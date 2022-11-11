@@ -12,25 +12,25 @@ class quadruplesList:
             
 
     def addQuadrupleIgual(self, operador, left_operand, right_operand):
-        cuadruplo = quadruple(self.cont, operador, right_operand, '', left_operand)
+        cuadruplo = quadruple(self.cont, operador, right_operand, -1, left_operand)
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
 
     def addGotoMain(self):
-        cuadruplo = quadruple(self.cont, 'Goto', 'main', ' ', ' ')
+        cuadruplo = quadruple(self.cont, 'Goto', 'main', -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
 
     def addQuadIf(self, result):
-        cuadruplo = quadruple(self.cont,'GotoF', result, ' ', ' ')
+        cuadruplo = quadruple(self.cont,'GotoF', result, -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
 
     def addQuadGOTO(self):
-        cuadruplo = quadruple(self.cont, 'GOTO', ' ', ' ', ' ')
+        cuadruplo = quadruple(self.cont, 'GOTO', -1, -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
 
@@ -41,12 +41,12 @@ class quadruplesList:
         self.quadsList[end].left_operand = self.cont
     
     def addQuadGotoF(self, result):
-        cuadruplo = quadruple(self.cont, 'GotoF', result, ' ', ' ')
+        cuadruplo = quadruple(self.cont, 'GotoF', result, -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
     
     def addQuadWhile(self, retorno):
-        cuadruplo = quadruple(self.cont, 'GOTO', ' ', ' ', retorno)
+        cuadruplo = quadruple(self.cont, 'GOTO', -1, -1, retorno)
         self.quadsList.append(cuadruplo)
         self.cont += 1
 
@@ -60,12 +60,12 @@ class quadruplesList:
             f.write('\n')
     
     def addQuadRead(self, variable):
-        cuadruplo = quadruple(self.cont,'READ', '  ', '  ', variable)
+        cuadruplo = quadruple(self.cont,'READ', -1, -1, variable)
         self.quadsList.append(cuadruplo)
         self.cont += 1
 
     def addQuadWrite(self, variable):
-        cuadruplo = quadruple(self.cont,'WRITE', ' ', ' ', variable)
+        cuadruplo = quadruple(self.cont,'WRITE', -1, -1, variable)
         self.quadsList.append(cuadruplo)
         self.cont += 1
 
@@ -79,7 +79,7 @@ class quadruple:
         self.result = result
 
     def printQuad(self):
-        print(f"{self.contador}: {self.operador}, {self.left_operand}, {self.right_operand}, {self.result}")
+        print(f"{self.contador}:{self.operador},{self.left_operand}, {self.right_operand}, {self.result}")
 
     def writeQuad(self, f):
-        f.write(f"{self.contador}: {self.operador}, {self.left_operand}, {self.right_operand}, {self.result}")
+        f.write(f"{self.contador}:{self.operador},{self.left_operand},{self.right_operand},{self.result}")
