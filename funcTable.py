@@ -13,6 +13,10 @@ class funcTable:
             self.table[name] = currentFunc
             print(f"Function {name} saved successfully")
 
+    def fillTam(self, name, tam):
+        if name in self.table:
+            self.table[name].tam = tam
+
     def search(self, name):
         if name in self.table:
             return self.table[name]
@@ -39,6 +43,10 @@ class funcTable:
         if name in self.table:
             return self.table[name].inicio_cuad
 
+    def find_type(self, name):
+        if name in self.table:
+            return self.table[name].type
+
     def toString(self):
         for key in self.table:
             print(f"{key}: {self.table[key].type}, {self.table[key].address}, {self.table[key].inicio_cuad}, {self.table[key].tam}")
@@ -48,5 +56,9 @@ class funcTable:
 
     def writeFile(self, f):
         for key in self.table:
-            f.write(f"{self.table[key].address}:{key},{self.table[key].type},{self.table[key].inicio_cuad},{self.table[key].tam},{self.table[key].parameters}")
+            f.write(f"{self.table[key].address},{key},{self.table[key].type},{self.table[key].inicio_cuad},")
+            for varia in self.table[key].tam:
+                f.write(f"{varia},")
+            for parameter in self.table[key].parameters:
+                f.write(f"{parameter},")
             f.write('\n')

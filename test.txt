@@ -31,6 +31,7 @@ var
    
 {
    resultado = ele1 + 5;
+   resta(a+b+a, c);
    return resultado;
    
 }
@@ -61,6 +62,7 @@ main() {
 
     c = d + e + i * a;
 
-    resta(a, c);
+    suma (i, a);
+    resta(a+b+a, c);
 
 }

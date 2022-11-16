@@ -33,6 +33,7 @@ cont_int = 0
 cont_float = 0
 cont_char = 0
 cont_bool = 0
+main = False
 
 reserved = {
     'program' : 'PROGRAM',
@@ -227,14 +228,14 @@ def p_tipo_compuesto(t):
     '''tipo_compuesto : ID'''
 
 def p_funcion(t):
-    '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np
-                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA dec_var cuerpo saveFunc_np funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA cuerpo saveFunc_np funcion'''
+    '''funcion : FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np funcion
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np
+                | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np funcion'''
 
 def p_dec_var(t):
     '''dec_var : VAR  scopeFunc_np dec_varp'''
@@ -297,7 +298,7 @@ def p_asignacion(t):
     '''asignacion : variable IGUAL saveOperadorIgual_np exp'''
 
 def p_llamada(t):
-    '''llamada : ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np'''
+    '''llamada : ID verifyFunc_np eraSize_np PARENTESISIZQ llamadap PARENTESISDER verifyNumParam_np generateGosub_np parcheGuadalupano_np'''
 
 def p_llamadap(t):
     '''llamadap : exp multiDiv_np plusMinus_np relationalOp_np and_np or_np params_np
@@ -547,6 +548,16 @@ def p_saveParameter_np(p):
     address = asignar_direccion_memoria()
     varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func)
 
+def p_saveFuncSign_np(p):
+    '''saveFuncSign_np : empty'''
+    global parameters_list, current_func_type, current_func_id, tam_func, current_var_type
+    functionsTable.add(current_func_id, current_func_type, address_func, inicio_cuadruplo, tam_func, parameters_list)
+    if current_func_type != 'void':
+        current_var_type = current_func_type
+        current_var_scope = 'global'
+        address_var = asignar_direccion_memoria()
+        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, address_func)
+
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
     global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool
@@ -554,12 +565,8 @@ def p_saveFunc_np(p):
     tam_func.append(cont_float)
     tam_func.append(cont_char)
     tam_func.append(cont_bool)
-    functionsTable.add(current_func_id, current_func_type, address_func, inicio_cuadruplo, tam_func, parameters_list)
-    if current_func_type != 'void':
-        current_var_type = current_func_type
-        current_var_scope = 'global'
-        address_var = asignar_direccion_memoria()
-        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, address_func)
+    functionsTable.fillTam(current_func_id, tam_func)
+
     #for key in varsTable.table:
     #    if varsTable.table[key].direccion_funcion == address_func:
     #        varsTable.delete_var(key)
@@ -578,8 +585,8 @@ def p_verifyFunc_np(p):
 def p_eraSize_np(p):
     '''eraSize_np : empty'''
     global current_func_id_call, param_count
-    tam = functionsTable.return_tam(current_func_id_call)
-    cuadruplo.addQuadruple('ERA', tam, -1, -1)
+    #tam = functionsTable.return_tam(current_func_id_call)
+    cuadruplo.addQuadruple('ERA', current_func_id_call, -1, -1)
     param_count = 1
 
 def p_params_np(p):
@@ -608,6 +615,27 @@ def p_generateGosub_np(p):
     global current_func_id_call
     initial_address = functionsTable.find_initial_quad(current_func_id_call)
     cuadruplo.addQuadruple('GOSUB', current_func_id_call, -1, initial_address)
+
+def p_parcheGuadalupano_np(p):
+    '''parcheGuadalupano_np : empty'''
+    global current_func_id_call, current_var_scope, current_var_type, cont_int, cont_float, cont_char, cont_bool
+    print(current_func_id_call)
+    if functionsTable.find_type(current_func_id_call) != 'void':
+        print('HOLA')
+        address_var = varsTable.find_address(current_func_id_call)
+        print(address_var)
+        current_var_scope = 'funcion'
+        current_var_type = varsTable.find_type(current_func_id_call)
+        new_temp = asignar_direccion_memoria()
+        if (current_var_type == 'int'):
+            cont_int += 1
+        elif (current_var_type == 'float'):
+            cont_float += 1
+        elif (current_var_type == 'char'):
+            cont_char += 1
+        elif (current_var_type == 'bool'):
+            cont_bool += 1
+        cuadruplo.addQuadrupleIgual('=', new_temp, address_var)
 
 ############################Cuadruplos############################
 
@@ -689,7 +717,10 @@ def p_gotoMain_np(p):
 
 def p_fillMain_np(p):
     '''fillMain_np : empty'''
+    global main
+    main = True
     cuadruplo.fillMain(0)
+
 
 #def p_mainJump_np(p):
 #    '''mainJump_np : empty'''
@@ -707,7 +738,10 @@ def p_multiDiv_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -735,7 +769,10 @@ def p_plusMinus_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -763,7 +800,10 @@ def p_relationalOp_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -791,7 +831,10 @@ def p_and_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -819,7 +862,10 @@ def p_or_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -941,7 +987,10 @@ def p_forResultExp_np(p):
         exp = PilaO.pop()
         cuadruplo.addQuadrupleIgual('=', 'VFinal', exp)
         current_var_type = 'bool'
-        current_var_scope = 'funcion'
+        if main == False:
+            current_var_scope = 'funcion'
+        else:
+            current_var_scope = 'global'
         result = asignar_direccion_memoria()
         cuadruplo.addQuadruple('<', 'VControl', 'VFinal', result)
         PSaltos.append(cuadruplo.cont-1)
@@ -952,7 +1001,10 @@ def p_endFor_np(p):
     '''endFor_np : empty'''
     global result_type, current_var_scope, current_var_type, result
     current_var_type = 'int'
-    current_var_scope = 'funcion'
+    if main == False:
+        current_var_scope = 'funcion'
+    else:
+        current_var_scope = 'global'
     result = asignar_direccion_memoria()
     cuadruplo.addQuadruple('+', 'VControl', 1, result)
     cuadruplo.addQuadrupleIgual('=', 'VControl', result)
@@ -990,9 +1042,9 @@ def p_endQuad_np(p):
     with open('dataVirtualMachine.txt', 'w') as f:
         functionsTable.writeFile(f)
         f.write('#\n')
-        cuadruplo.writeQuads(f)
-        f.write('#\n')
         constantsTable.writeCtes(f)
+        f.write('#\n')
+        cuadruplo.writeQuads(f)
         f.write('#\n')
 
 ########################## Memoria virtual #################################

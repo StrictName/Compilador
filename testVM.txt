@@ -1,0 +1,11 @@
+program testVm;
+
+var
+    int b;
+    int a;
+
+main() {
+    b = 5;
+    a = b * 4;
+    write(a+b);
+}

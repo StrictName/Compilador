@@ -23,4 +23,4 @@ class cteTable:
 
     def writeCtes(self, f):
         for key in self.table:
-            f.write(f"{key}:{self.table[key].name},{self.table[key].type}\n")
+            f.write(f"{key},{self.table[key].name},{self.table[key].type}\n")

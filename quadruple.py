@@ -79,7 +79,7 @@ class quadruple:
         self.result = result
 
     def printQuad(self):
-        print(f"{self.contador}:{self.operador},{self.left_operand}, {self.right_operand}, {self.result}")
+        print(f"{self.contador},{self.operador},{self.left_operand}, {self.right_operand}, {self.result}")
 
     def writeQuad(self, f):
-        f.write(f"{self.contador}:{self.operador},{self.left_operand},{self.right_operand},{self.result}")
+        f.write(f"{self.contador},{self.operador},{self.left_operand},{self.right_operand},{self.result}")
