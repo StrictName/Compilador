@@ -5,6 +5,7 @@ cont = 1
 ctes = {}
 global_mem = {}
 temp_mem = {}
+VControl = 0
 
 def convert_type(address, valor):
     val = None
@@ -113,8 +114,13 @@ while True:
         if cont == 3:
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
-                value = convert_type(int(quad[4]), value_dict)
-                add_value(int(quad[4]), value)
+                if str(quad[4]) == 'VControl\n' or str(quad[4]) == 'VFinal\n':
+                    temp_mem[quad[4]] = value_dict
+                    print(temp_mem[quad[4]])
+                else:
+                    value = convert_type(int(quad[4]), value_dict)
+                    add_value(int(quad[4]), value)
+
 
             elif quad[1] == '-':
                 value_oper1 = search_dict(int(quad[2]))
@@ -188,7 +194,24 @@ while True:
                 newval = convert_type(int(quad[4]), value)
                 add_value(int(quad[4]), newval)
 
+            elif quad[1] == 'GOTO':
+                if int(quad[4]) > int(quad[0]):
+                    salto_linea = int(quad[4]) - int(quad[0]) + i - 1
+                    i = salto_linea
+
+                else:
+                    salto_linea = i - int(quad[0]) + int(quad[4]) - 1
+                    i = salto_linea
+
+            elif quad[1] == 'GOTOF':
+                buleano = search_dict(int(quad[2]))
+                if buleano == 0:
+                    salto_linea = int(quad[4]) - int(quad[0]) + i - 1
+                    i = salto_linea
+
             
+
+
 
 
             

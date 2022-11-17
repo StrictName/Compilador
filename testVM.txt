@@ -3,6 +3,8 @@ program testVm;
 var
     int b;
     int a;
+    int j;
+    int i;
     float c;
     float d;
     float e;
@@ -12,13 +14,22 @@ main() {
     b = 5;
     a = b * 4;
     c = 3.14;
-    write(a+b);
-    write("TERMINATOR");
     read(d);
     e = 2 + d;
-    while (5 < a) do
+    while (b < 10) do
     {
         c = 10;
+        b = b + 1;
+    }
+    if (b > a) {
+        write("Terminator");
+    }
+    else {
+        write("Terminator2");
+    }
+
+    for j = 1 to i + a * b do {
+        b = i + a;
     }
 
 

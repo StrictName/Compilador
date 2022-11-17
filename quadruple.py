@@ -24,7 +24,7 @@ class quadruplesList:
         #print(cuadruplo.printQuad())
 
     def addQuadIf(self, result):
-        cuadruplo = quadruple(self.cont,'GotoF', result, -1, -1)
+        cuadruplo = quadruple(self.cont,'GOTOF', result, -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
