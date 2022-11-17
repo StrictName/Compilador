@@ -52,10 +52,16 @@ def operaciones_arit(oper, valueIzq, valueDer):
     elif oper == '=':
         valueDer = valueIzq
         result = valueDer
-    
-        
-    
+
     return result
+
+def search_dict(address):
+    if address in ctes:
+        return ctes[address]
+    elif address in global_mem:
+        return global_mem[address]
+    elif address in temp_mem:
+        return temp_mem[address]
 
 
 while True:
@@ -73,30 +79,20 @@ while True:
 
         if cont == 3:
             if quad[1] == '=':
-                
                 if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    if int(quad[2]) in ctes:
-                        value = convert_type(int(quad[4]), ctes[int(quad[2])])
-                        global_mem[int(quad[4])] = value
-                    elif int(quad[2]) in global_mem:
-                        value = convert_type(int(quad[4]), global_mem[int(quad[2])])
-                        global_mem[int(quad[4])] = value
-                    elif int(quad[2]) in temp_mem:
-                        value = convert_type(int(quad[4]), temp_mem[int(quad[2])])
-                        global_mem[int(quad[4])] = value
+                    value_dict = search_dict(int(quad[2]))
+                    value = convert_type(int(quad[4]), value_dict)
+                    global_mem[int(quad[4])] = value
+
                 elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    if int(quad[2]) in ctes:
-                        value = convert_type(int(quad[4]), ctes[int(quad[2])])
-                        temp_mem[int(quad[4])] = value
-                    elif int(quad[2]) in global_mem:
-                        value = convert_type(int(quad[4]), global_mem[int(quad[2])])
-                        temp_mem[int(quad[4])] = value
-                    elif int(quad[2]) in temp_mem:
-                        value = convert_type(int(quad[4]), temp_mem[int(quad[2])])
-                        temp_mem[int(quad[4])] = value
+                    value_dict = search_dict(int(quad[2]))
+                    value = convert_type(int(quad[4]), value_dict)
+                    temp_mem[int(quad[4])] = value
 
             elif quad[1] == '+':
                 if int(quad[4]) > 0 and int(quad[4]) < 4000:
+                    
+
                     if int(quad[2]) in ctes:
                         oper1 = ctes[int(quad[2])]
                         if int(quad[3]) in ctes:
@@ -119,6 +115,7 @@ while True:
                     value = convert_type(int(quad[4]), operaciones_arit('+', oper1, oper2))
                     global_mem[int(quad[4])] = value
                 
+            
 
 
                 '''
