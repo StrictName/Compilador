@@ -18,7 +18,7 @@ class quadruplesList:
         #print(cuadruplo.printQuad())
 
     def addGotoMain(self):
-        cuadruplo = quadruple(self.cont, 'Goto', 'main', -1, -1)
+        cuadruplo = quadruple(self.cont, 'GOTO', -1, -1, 'main')
         self.quadsList.append(cuadruplo)
         self.cont += 1
         #print(cuadruplo.printQuad())
@@ -38,10 +38,10 @@ class quadruplesList:
         self.quadsList[end].result = self.cont
 
     def fillMain(self, end):
-        self.quadsList[end].left_operand = self.cont
+        self.quadsList[end].result = self.cont
     
     def addQuadGotoF(self, result):
-        cuadruplo = quadruple(self.cont, 'GotoF', result, -1, -1)
+        cuadruplo = quadruple(self.cont, 'GOTOF', result, -1, -1)
         self.quadsList.append(cuadruplo)
         self.cont += 1
     

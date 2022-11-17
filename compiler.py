@@ -324,7 +324,7 @@ def p_escribep(t):
                 | exp multiDiv_np plusMinus_np relationalOp_np and_np or_np writeQuad_np COMA escribep
                 | LETRERO pushLetrero_np writeQuad_np
                 | LETRERO pushLetrero_np writeQuad_np COMA escribep'''
-                # ARRELGAR ??
+                # ARREGLAR ??
 
 def p_condicion(t):
     '''condicion : IF PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np ifQuad_np LLAVEIZQ estatuto LLAVEDER fillIfQuad_np
@@ -878,6 +878,9 @@ def p_igual_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != False:
                 cuadruplo.addQuadrupleIgual(operador, left_operand, right_operand)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_emptyStackReturn_np(p):

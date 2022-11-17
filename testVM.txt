@@ -5,6 +5,7 @@ var
     int a;
     float c;
     float d;
+    float e;
 
 
 main() {
@@ -12,4 +13,13 @@ main() {
     a = b * 4;
     c = 3.14;
     write(a+b);
+    write("TERMINATOR");
+    read(d);
+    e = 2 + d;
+    while (5 < a) do
+    {
+        c = 10;
+    }
+
+
 }

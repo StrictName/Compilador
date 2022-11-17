@@ -8,7 +8,6 @@ temp_mem = {}
 
 def convert_type(address, valor):
     val = None
-
     #Globales
     if address >= 1 and address < 1000:
         val = int(valor)
@@ -29,7 +28,7 @@ def convert_type(address, valor):
     elif address >= 7000 and address < 8000:
         val = int(valor)
     
-    #Constante
+    #Constantes
     elif address >= 13000 and address < 14000:
         val = int(valor)
     elif address >= 14000 and address < 15000:
@@ -49,9 +48,37 @@ def operaciones_arit(oper, valueIzq, valueDer):
         result = valueIzq * valueDer
     elif oper == '/':
         result = valueIzq / valueDer
-    elif oper == '=':
-        valueDer = valueIzq
-        result = valueDer
+
+    elif oper == '>':
+        if valueIzq > valueDer:
+            return 1
+        else:
+            return 0
+    elif oper == '<':
+        if valueIzq < valueDer:
+            return 1
+        else:
+            return 0
+    elif oper == 'igual':
+        if valueIzq == valueDer:
+            return 1
+        else:
+            return 0
+    elif oper == 'not':
+        if valueIzq != valueDer:
+            return 1
+        else:
+            return 0
+    elif oper == 'and':
+        if valueIzq == 1 and valueDer == 1:
+            return 1
+        else:
+            return 0
+    elif oper == 'or':
+        if valueIzq == 1 or valueDer == 1:
+            return 1
+        else:
+            return 0
 
     return result
 
@@ -62,6 +89,12 @@ def search_dict(address):
         return global_mem[address]
     elif address in temp_mem:
         return temp_mem[address]
+
+def add_value(address, val):
+    if address > 0 and address < 4000:
+        global_mem[address] = val
+    elif address > 3999 and address < 8000:
+        temp_mem[address] = val
 
 
 while True:
@@ -79,53 +112,86 @@ while True:
 
         if cont == 3:
             if quad[1] == '=':
-                if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    value_dict = search_dict(int(quad[2]))
-                    value = convert_type(int(quad[4]), value_dict)
-                    global_mem[int(quad[4])] = value
+                value_dict = search_dict(int(quad[2]))
+                value = convert_type(int(quad[4]), value_dict)
+                add_value(int(quad[4]), value)
 
-                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    value_dict = search_dict(int(quad[2]))
-                    value = convert_type(int(quad[4]), value_dict)
-                    temp_mem[int(quad[4])] = value
+            elif quad[1] == '-':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('-', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
 
             elif quad[1] == '+':
-                if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
-                    global_mem[int(quad[4])] = value
-                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
-                    temp_mem[int(quad[4])] = value
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
 
             elif quad[1] == '*':
-                if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('*', value_oper1, value_oper2))
-                    global_mem[int(quad[4])] = value
-                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('*', value_oper1, value_oper2))
-                    temp_mem[int(quad[4])] = value
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('*', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
 
             elif quad[1] == '/':
-                if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('/', value_oper1, value_oper2))
-                    global_mem[int(quad[4])] = value
-                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    value_oper1 = search_dict(int(quad[2]))
-                    value_oper2 = search_dict(int(quad[3]))
-                    value = convert_type(int(quad[4]), operaciones_arit('/', value_oper1, value_oper2))
-                    temp_mem[int(quad[4])] = value
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('/', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
                 
+            elif quad[1] == '>':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('>', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
 
+            elif quad[1] == '<':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('<', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
+
+            elif quad[1] == 'igual':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('igual', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
+
+            elif quad[1] == 'not':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('not', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
+
+            elif quad[1] == 'and':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('and', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
+            
+            elif quad[1] == 'or':
+                value_oper1 = search_dict(int(quad[2]))
+                value_oper2 = search_dict(int(quad[3]))
+                value = convert_type(int(quad[4]), operaciones_arit('or', value_oper1, value_oper2))
+                add_value(int(quad[4]), value)
+            
+            elif quad[1] == 'WRITE':
+                if quad[4][0] == '"':
+                    print(quad[4])
+                else:
+                    value = convert_type(int(quad[4]), search_dict(int(quad[4])))
+                    print(value)
+
+            elif quad[1] == 'READ':
+                value = input()
+                newval = convert_type(int(quad[4]), value)
+                add_value(int(quad[4]), newval)
+
+            
+
+
+            
     else:
         cont += 1
 
