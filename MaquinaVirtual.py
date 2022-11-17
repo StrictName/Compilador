@@ -91,322 +91,39 @@ while True:
 
             elif quad[1] == '+':
                 if int(quad[4]) > 0 and int(quad[4]) < 4000:
-                    
-
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        elif int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        elif int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                    value = convert_type(int(quad[4]), operaciones_arit('+', oper1, oper2))
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
                     global_mem[int(quad[4])] = value
                 elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        elif int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        elif int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                    value = convert_type(int(quad[4]), operaciones_arit('+', oper1, oper2))
-                    global_mem[int(quad[4])] = value
-                
-            
-
-
-                '''
-                if int(quad[4]) > 0 and int(quad[4]) < 3999:
-                    if int(quad[2]) in ctes:
-                        if int(quad[4]) > 0 and int(quad[4]) < 1000:
-                            oper1 = int(ctes[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = int(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = int(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = int(temp_mem[int(quad[3])])
-                        else:
-                            oper1 = float(ctes[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = float(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = float(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = float(temp_mem[int(quad[3])])
-                        resul = oper1 + oper2
-                        global_mem[int(quad[4])] = resul
-
-                    elif int(quad[2]) in global_mem:
-                        if int(quad[4]) > 0 and int(quad[4]) < 1000:
-                            oper1 = int(global_mem[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = int(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = int(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = int(temp_mem[int(quad[3])])
-                        else:
-                            oper1 = float(global_mem[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = float(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = float(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = float(temp_mem[int(quad[3])])
-                        resul = oper1 + oper2
-                        global_mem[int(quad[4])] = resul
-
-                    elif int(quad[2]) in temp_mem:
-                        if int(quad[4]) > 0 and int(quad[4]) < 1000:
-                            oper1 = int(temp_mem[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = int(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = int(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = int(temp_mem[int(quad[3])])
-
-                        else:
-                            oper1 = float(temp_mem[int(quad[2])])
-                            if int(quad[3]) in ctes:
-                                oper2 = float(ctes[int(quad[3])])
-                            if int(quad[3]) in global_mem:
-                                oper2 = float(global_mem[int(quad[3])])
-                            if int(quad[3]) in temp_mem:
-                                oper2 = float(temp_mem[int(quad[3])])
-
-                        resul = oper1 + oper2
-                        global_mem[int(quad[4])] = resul
-
-                elif int(quad[4]) > 3999 and int(quad[4]) < 13000:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) + float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) + float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) + float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                        
-
-            elif quad[1] == '-':
-                if int(quad[4]) > 0 and int(quad[4]) < 3999:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        global_mem[int(quad[4])] = resul
-                elif int(quad[4]) > 3999 and int(quad[4]) < 13000:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) - float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                        '''
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
+                    temp_mem[int(quad[4])] = value
 
             elif quad[1] == '*':
-                if int(quad[4]) > 0 and int(quad[4]) < 3999:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2])in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        global_mem[int(quad[4])] = resul
-                elif int(quad[4]) > 3999 and int(quad[4]) < 13000:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2])in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = float(oper1) * float(oper2)
-                        temp_mem[int(quad[4])] = resul
+                if int(quad[4]) > 0 and int(quad[4]) < 4000:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('*', value_oper1, value_oper2))
+                    global_mem[int(quad[4])] = value
+                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('*', value_oper1, value_oper2))
+                    temp_mem[int(quad[4])] = value
 
             elif quad[1] == '/':
-                if int(quad[4]) > 0 and int(quad[4]) < 3999:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2])in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        global_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        global_mem[int(quad[4])] = resul
-                elif int(quad[4]) > 3999 and int(quad[4]) < 13000:
-                    if int(quad[2]) in ctes:
-                        oper1 = ctes[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2])in global_mem:
-                        oper1 = global_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        temp_mem[int(quad[4])] = resul
-                    elif int(quad[2]) in temp_mem:
-                        oper1 = temp_mem[int(quad[2])]
-                        if int(quad[3]) in ctes:
-                            oper2 = ctes[int(quad[3])]
-                        if int(quad[3]) in global_mem:
-                            oper2 = global_mem[int(quad[3])]
-                        if int(quad[3]) in temp_mem:
-                            oper2 = temp_mem[int(quad[3])]
-                        resul = int(oper1) / int(oper2)
-                        temp_mem[int(quad[4])] = resul
+                if int(quad[4]) > 0 and int(quad[4]) < 4000:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('/', value_oper1, value_oper2))
+                    global_mem[int(quad[4])] = value
+                elif int(quad[4]) > 3999 and int(quad[4]) < 8000:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
+                    value = convert_type(int(quad[4]), operaciones_arit('/', value_oper1, value_oper2))
+                    temp_mem[int(quad[4])] = value
                 
 
     else:
