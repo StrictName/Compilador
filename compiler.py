@@ -738,10 +738,7 @@ def p_multiDiv_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                if main == False:
-                    current_var_scope = 'funcion'
-                else:
-                    current_var_scope = 'global'
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -769,10 +766,7 @@ def p_plusMinus_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                if main == False:
-                    current_var_scope = 'funcion'
-                else:
-                    current_var_scope = 'global'
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -800,10 +794,7 @@ def p_relationalOp_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                if main == False:
-                    current_var_scope = 'funcion'
-                else:
-                    current_var_scope = 'global'
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -831,10 +822,7 @@ def p_and_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                if main == False:
-                    current_var_scope = 'funcion'
-                else:
-                    current_var_scope = 'global'
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -862,10 +850,7 @@ def p_or_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                if main == False:
-                    current_var_scope = 'funcion'
-                else:
-                    current_var_scope = 'global'
+                current_var_scope = 'funcion'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
