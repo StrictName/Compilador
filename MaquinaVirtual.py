@@ -215,6 +215,9 @@ while True:
                     salto_linea = int(quad[4]) - int(quad[0]) + i - 1
                     i = salto_linea
 
+            elif quad[1] == 'ERA':
+                global_mem.update({})
+
             
     else:
         cont += 1

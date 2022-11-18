@@ -37,29 +37,6 @@ var
 }
 
 main() {
-
-    for j = 1 to i + a * b do {
-        b = i + a;
-    }
-
-    write ("Terminator"); 
-
-    if (a > b) {
-        read(a, b);
-    } else {
-        a = e + f;
-        write(e, "Hola", a);
-    }
-
-    if (c < d) {
-        g = c + d;
-    }
-    
-    while (c < d) do 
-    {
-        g = d;
-    }
-
     c = d + e + i * a;
 
     suma (i, a);

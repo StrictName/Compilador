@@ -160,7 +160,7 @@ dir_local_funcion_int = 4000
 dir_local_funcion_float = 5000
 dir_local_funcion_char = 6000
 dir_local_funcion_bool = 7000
-dir_local_funcion_void = 8000
+dir_funcion_void = 8000
 dir_local_clase_int = 9000
 dir_local_clase_float = 10000
 dir_local_clase_char = 11000
@@ -168,6 +168,10 @@ dir_local_clase_bool = 12000
 dir_constante_int = 13000
 dir_constante_float = 14000
 dir_constante_char = 15000
+dir_funcion_int = 16000
+dir_funcion_float = 17000
+dir_funcion_char = 18000
+dir_funcion_bool = 19000
 
 def p_programa(t):
     '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np main
@@ -524,7 +528,7 @@ def p_getTypeFunc_np(p):
     current_func_type = str(p[-1])
     current_var_type = current_func_type
     current_var_scope = 'funcion'
-    address_func = asignar_direccion_memoria()
+    address_func = asignar_direccion_funciones()
 
 def p_getParameters_np(p):
     '''getParameters_np : empty'''
@@ -550,7 +554,7 @@ def p_saveParameter_np(p):
 
 def p_saveFuncSign_np(p):
     '''saveFuncSign_np : empty'''
-    global parameters_list, current_func_type, current_func_id, tam_func, current_var_type
+    global parameters_list, current_func_type, current_func_id, tam_func, current_var_type, current_var_scope
     functionsTable.add(current_func_id, current_func_type, address_func, inicio_cuadruplo, tam_func, parameters_list)
     if current_func_type != 'void':
         current_var_type = current_func_type
@@ -560,7 +564,7 @@ def p_saveFuncSign_np(p):
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
-    global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool
+    global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool, dir_local_funcion_int, dir_local_funcion_float, dir_local_funcion_char, dir_local_funcion_bool
     tam_func.append(cont_int)
     tam_func.append(cont_float)
     tam_func.append(cont_char)
@@ -570,6 +574,12 @@ def p_saveFunc_np(p):
     #for key in varsTable.table:
     #    if varsTable.table[key].direccion_funcion == address_func:
     #        varsTable.delete_var(key)
+
+    dir_local_funcion_int = 4000
+    dir_local_funcion_float = 5000
+    dir_local_funcion_char = 6000
+    dir_local_funcion_bool = 7000
+
     if address_func != 0:
         cuadruplo.addQuadruple('ENDFunc', -1, -1, -1)
     parameters_list = []
@@ -626,7 +636,7 @@ def p_parcheGuadalupano_np(p):
         print('HOLA')
         address_var = varsTable.find_address(current_func_id_call)
         print(address_var)
-        current_var_scope = 'funcion'
+        current_var_scope = 'global'
         current_var_type = varsTable.find_type(current_func_id_call)
         new_temp = asignar_direccion_memoria()
         if (current_var_type == 'int'):
@@ -739,7 +749,10 @@ def p_multiDiv_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -770,7 +783,10 @@ def p_plusMinus_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -801,7 +817,10 @@ def p_relationalOp_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -832,7 +851,10 @@ def p_and_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -863,7 +885,10 @@ def p_or_np(p):
             result_type = cuboS.type_cube(left_type, right_type, operador)
             if result_type != 'err':
                 current_var_type = result_type
-                current_var_scope = 'funcion'
+                if main == False:
+                    current_var_scope = 'funcion'
+                else:
+                    current_var_scope = 'global'
                 result = asignar_direccion_memoria()
                 if (result_type == 'int'):
                     cont_int += 1
@@ -1116,12 +1141,6 @@ def asignar_direccion_memoria():
                 exit()
             aux = dir_local_funcion_bool
             dir_local_funcion_bool += 1
-        elif current_var_type == 'void':
-            if dir_local_funcion_void > 8999:
-                print('ERROR: Se excedió el máximo de funciones void')
-                exit()
-            aux = dir_local_funcion_void
-            dir_local_funcion_void += 1
 
     else:
         if current_var_type == 'int':
@@ -1171,6 +1190,41 @@ def asignar_direccion_memoriaCtes():
             exit()
         aux = dir_constante_char
         dir_constante_char += 1
+    return aux
+
+def asignar_direccion_funciones():
+    global current_var_type, dir_funcion_int, dir_funcion_float, dir_funcion_char, dir_funcion_bool, dir_funcion_void
+    aux = 0
+    if current_var_type == 'int':
+        if dir_funcion_int > 16999:
+            print('ERROR: Se excedió el máximo de funciones int')
+            exit()
+        aux = dir_funcion_int
+        dir_funcion_int += 1
+    elif current_var_type == 'float':
+        if dir_funcion_float > 17999:
+            print('ERROR: Se excedió el máximo de funciones float')
+            exit()
+        aux = dir_funcion_float
+        dir_funcion_float += 1
+    elif current_var_type == 'char':
+        if dir_funcion_char > 18999:
+            print('ERROR: Se excedió el máximo de funciones char')
+            exit()
+        aux = dir_funcion_char
+        dir_funcion_char += 1
+    elif current_var_type == 'bool':
+        if dir_funcion_bool > 19999:
+            print('ERROR: Se excedió el máximo de funciones bool')
+            exit()
+        aux = dir_funcion_bool
+        dir_funcion_bool += 1
+    elif current_var_type == 'void':
+            if dir_funcion_void > 8999:
+                print('ERROR: Se excedió el máximo de funciones void')
+                exit()
+            aux = dir_funcion_void
+            dir_funcion_void += 1 
     return aux
 
 yacc.yacc()
