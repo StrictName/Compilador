@@ -114,9 +114,10 @@ while True:
         if cont == 3:
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
-                if str(quad[4]) == 'VControl\n' or str(quad[4]) == 'VFinal\n':
-                    temp_mem[quad[4]] = value_dict
-                    print(temp_mem[quad[4]])
+                if str(quad[4]) == 'VControl\n':
+                    temp_mem['VControl'] = value_dict
+                elif str(quad[4]) == 'VFinal\n':
+                    temp_mem['VFinal'] = value_dict
                 else:
                     value = convert_type(int(quad[4]), value_dict)
                     add_value(int(quad[4]), value)
@@ -129,8 +130,12 @@ while True:
                 add_value(int(quad[4]), value)
 
             elif quad[1] == '+':
-                value_oper1 = search_dict(int(quad[2]))
-                value_oper2 = search_dict(int(quad[3]))
+                if quad[2] == 'VControl':
+                    value_oper1 = search_dict(quad[2])
+                    value_oper2 = int(1)
+                else:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
                 value = convert_type(int(quad[4]), operaciones_arit('+', value_oper1, value_oper2))
                 add_value(int(quad[4]), value)
 
@@ -153,8 +158,12 @@ while True:
                 add_value(int(quad[4]), value)
 
             elif quad[1] == '<':
-                value_oper1 = search_dict(int(quad[2]))
-                value_oper2 = search_dict(int(quad[3]))
+                if quad[2] == 'VControl' and quad[3] == 'VFinal':
+                    value_oper1 = search_dict(quad[2])
+                    value_oper2 = search_dict(quad[3])
+                else:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = search_dict(int(quad[3]))
                 value = convert_type(int(quad[4]), operaciones_arit('<', value_oper1, value_oper2))
                 add_value(int(quad[4]), value)
 
