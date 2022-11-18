@@ -97,7 +97,6 @@ def add_value(address, val):
     elif address > 3999 and address < 8000:
         temp_mem[address] = val
 
-
 while True:
     if linecache.getline("dataVirtualMachine.txt", i) != '#\n':
         linea = linecache.getline("dataVirtualMachine.txt", i)
@@ -121,7 +120,6 @@ while True:
                 else:
                     value = convert_type(int(quad[4]), value_dict)
                     add_value(int(quad[4]), value)
-
 
             elif quad[1] == '-':
                 value_oper1 = search_dict(int(quad[2]))
@@ -207,7 +205,6 @@ while True:
                 if int(quad[4]) > int(quad[0]):
                     salto_linea = int(quad[4]) - int(quad[0]) + i - 1
                     i = salto_linea
-
                 else:
                     salto_linea = i - int(quad[0]) + int(quad[4]) - 1
                     i = salto_linea
@@ -217,11 +214,6 @@ while True:
                 if buleano == 0:
                     salto_linea = int(quad[4]) - int(quad[0]) + i - 1
                     i = salto_linea
-
-            
-
-
-
 
             
     else:

@@ -365,7 +365,7 @@ def p_t(t):
         | f multiDiv_np DIV saveOperadorMultiDivision_np t'''
 
 def p_f(t):
-    '''f : PARENTESISIZQ exp PARENTESISDER
+    '''f : PARENTESISIZQ exp PARENTESISDER multiDiv_np plusMinus_np relationalOp_np and_np or_np
         | CTEI saveConstantInt_np
         | CTEF saveConstantFloat_np
         | CTECH saveConstantChar_np
@@ -598,6 +598,7 @@ def p_params_np(p):
         cuadruplo.addQuadruple('PARAMETER', argument, -1, param_count)
     else:
         print('ERROR: Wrong type of parameter')
+        exit()
 
 def p_nextParam_np(p):
     '''nextParam_np : empty'''
@@ -609,6 +610,7 @@ def p_verifyNumParam_np(p):
     global current_func_id_call, param_count
     if len(functionsTable.find_parameters(current_func_id_call)) != param_count:
         print('ERROR: Wrong quantity of parameters')
+        exit()
 
 def p_generateGosub_np(p):
     '''generateGosub_np : empty'''
@@ -651,6 +653,7 @@ def search_address(id):
         return varsTable.find_address(id)
     else:
         error('No se encontró la dirección de la variable')
+        exit()
 
 def search_type(id):
     global varsTable
@@ -658,6 +661,7 @@ def search_type(id):
         return varsTable.find_type(id)
     else:
         error('No se encontró el type de la variable')
+        exit()
 
 def p_saveIDpilaO_np(p):
     '''saveIDpilaO_np : empty'''
@@ -700,16 +704,17 @@ def p_saveOperadorIgual_np(p):
     current_oper_cuadruplo = p[-1]
     POper.append(current_oper_cuadruplo)
 
-#def p_pushFondoFalso_np(p):
-#    '''pushFondoFalso_np : empty'''
-#    POper.append('(')
+def p_pushFondoFalso_np(p):
+    '''pushFondoFalso_np : empty'''
+    POper.append('(')
 
-#def p_popFondoFalso_np(p):
-#    '''popFondoFalso_np : empty'''
-#    global POper
-#    top = POper.pop()
-#    if top != '(':
-#        print("ERROR Fondo Falso")
+def p_popFondoFalso_np(p):
+    '''popFondoFalso_np : empty'''
+    global POper
+    top = POper.pop()
+    if top != '(':
+        print("ERROR Fondo Falso")
+        exit()
 
 def p_gotoMain_np(p):
     '''gotoMain_np : empty'''
@@ -720,10 +725,6 @@ def p_fillMain_np(p):
     global main
     main = True
     cuadruplo.fillMain(0)
-
-
-#def p_mainJump_np(p):
-#    '''mainJump_np : empty'''
 
 def p_multiDiv_np(p):
     '''multiDiv_np : empty'''
@@ -751,6 +752,9 @@ def p_multiDiv_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_plusMinus_np(p):
@@ -779,6 +783,9 @@ def p_plusMinus_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_relationalOp_np(p):
@@ -807,6 +814,9 @@ def p_relationalOp_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_and_np(p):
@@ -835,6 +845,9 @@ def p_and_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_or_np(p):
@@ -863,6 +876,9 @@ def p_or_np(p):
                 cuadruplo.addQuadruple(operador, left_operand, right_operand, result)
                 PilaTipos.append(result_type)
                 PilaO.append(result)
+            else:
+                print("ERROR: Type mismatch")
+                exit()
             #print(left_operand, left_type, right_operand, right_type, operador)
 
 def p_igual_np(p):
@@ -944,6 +960,7 @@ def p_validarIdFor_np(p):
     '''validarIdFor_np : empty'''
     if (varsTable.find_type(p[-1]) != 'int'):
         print("ERROR: Type mismatch")
+        exit()
     else:
         PilaO.append(varsTable.find_address(p[-1]))
         PilaTipos.append(varsTable.find_type(p[-1]))
@@ -954,6 +971,7 @@ def p_forInitialExp_np(p):
     exp_type = PilaTipos.pop()
     if (exp_type != 'int'):
         print("ERROR: Type mismatch")
+        exit()
     else:
         exp = PilaO.pop()
         vControl = PilaO[-1]
@@ -961,6 +979,7 @@ def p_forInitialExp_np(p):
         tipo_res = cuboS.type_cube(control_type, exp_type, '=')
         if (tipo_res != True):
             print("ERROR: Type mismatch")
+            exit()
         else:
             cuadruplo.addQuadrupleIgual('=', vControl, exp)
             cuadruplo.addQuadrupleIgual('=', 'VControl', vControl)
@@ -971,6 +990,7 @@ def p_forResultExp_np(p):
     exp_type = PilaTipos.pop()
     if (exp_type != 'int'):
         print("ERROR: Type mismatch")
+        exit()
     else:
         exp = PilaO.pop()
         cuadruplo.addQuadrupleIgual('=', 'VFinal', exp)
@@ -1043,26 +1063,31 @@ def asignar_direccion_memoria():
         if current_var_type == 'program':
             if dir_global_program > 0:
                 print('ERROR: exceso de programas')
+                exit()
             aux = dir_global_program
             dir_global_program += 1
         elif current_var_type == 'int':
             if dir_global_int > 999:
                 print('ERROR: Se excedió el máximo de variables enteras globales')
+                exit()
             aux = dir_global_int
             dir_global_int += 1
         elif current_var_type == 'float':
             if dir_global_float > 1999:
                 print('ERROR: Se excedió el máximo de variables float globales')
+                exit()
             aux = dir_global_float
             dir_global_float += 1
         elif current_var_type == 'char':
             if dir_global_char > 2999:
                 print('ERROR: Se excedió el máximo de variables char globales')
+                exit()
             aux = dir_global_char
             dir_global_char += 1
         elif current_var_type == 'bool':
             if dir_global_bool > 3999:
                 print('ERROR: Se excedió el máximo de variables bool globales')
+                exit()
             aux = dir_global_bool
             dir_global_bool += 1
 
@@ -1070,26 +1095,31 @@ def asignar_direccion_memoria():
         if current_var_type == 'int':
             if dir_local_funcion_int > 4999:
                 print('ERROR: Se excedió el máximo de variables/funciones enteras locales')
+                exit()
             aux = dir_local_funcion_int
             dir_local_funcion_int += 1
         elif current_var_type == 'float':
             if dir_local_funcion_float > 5999:
                 print('ERROR: Se excedió el máximo de variables/funciones float locales')
+                exit()
             aux = dir_local_funcion_float
             dir_local_funcion_float += 1
         elif current_var_type == 'char':
             if dir_local_funcion_char > 6999:
                 print('ERROR: Se excedió el máximo de variables/funciones char locales')
+                exit()
             aux = dir_local_funcion_char
             dir_local_funcion_char += 1
         elif current_var_type == 'bool':
             if dir_local_funcion_bool > 7999:
                 print('ERROR: Se excedió el máximo de variables/funciones bool locales')
+                exit()
             aux = dir_local_funcion_bool
             dir_local_funcion_bool += 1
         elif current_var_type == 'void':
             if dir_local_funcion_void > 8999:
                 print('ERROR: Se excedió el máximo de funciones void')
+                exit()
             aux = dir_local_funcion_void
             dir_local_funcion_void += 1
 
@@ -1097,21 +1127,25 @@ def asignar_direccion_memoria():
         if current_var_type == 'int':
             if dir_local_clase_int > 9999:
                 print('ERROR: Se excedió el máximo de variables/clases enteras locales')
+                exit()
             aux = dir_local_clase_int
             dir_local_clase_int += 1
         elif current_var_type == 'float':
             if dir_local_clase_float > 10999:
                 print('ERROR: Se excedió el máximo de variables/clases enteras locales')
+                exit()
             aux = dir_local_clase_float
             dir_local_clase_float += 1
         elif current_var_type == 'char':
             if dir_local_clase_char > 11999:
                 print('ERROR: Se excedió el máximo de variables/clases enteras locales')
+                exit()
             aux = dir_local_clase_char
             dir_local_clase_char += 1
         elif current_var_type == 'bool':
             if dir_local_clase_bool > 12999:
                 print('ERROR: Se excedió el máximo de variables/clases enteras locales')
+                exit()
             aux = dir_local_clase_bool
             dir_local_clase_bool += 1
     return aux
@@ -1122,16 +1156,19 @@ def asignar_direccion_memoriaCtes():
     if cte_type == 'int':
         if dir_constante_int > 13999:
             print('ERROR: Se excedió el máximo de constantes int')
+            exit()
         aux = dir_constante_int
         dir_constante_int += 1
     elif cte_type == 'float':
         if dir_constante_float > 14999:
             print('ERROR: Se excedió el máximo de constantes float')
+            exit()
         aux = dir_constante_float
         dir_constante_float += 1
     elif cte_type == 'char':
         if dir_constante_char > 15999:
             print('ERROR: Se excedió el máximo de constantes char')
+            exit()
         aux = dir_constante_char
         dir_constante_char += 1
     return aux
