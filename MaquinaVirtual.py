@@ -3,9 +3,17 @@ import linecache
 i = 1
 cont = 1
 ctes = {}
+dict_func = {}
 global_mem = {}
-temp_mem = {}
+local_mem = {}
 VControl = 0
+cont_params = 0
+cont_params_int = 0
+cont_params_float = 0
+cont_params_char = 0
+cont_params_bool = 0
+pile_funcs = []
+pile_returns = []
 
 def convert_type(address, valor):
     val = None
@@ -88,24 +96,32 @@ def search_dict(address):
         return ctes[address]
     elif address in global_mem:
         return global_mem[address]
-    elif address in temp_mem:
-        return temp_mem[address]
+    elif address in local_mem:
+        return local_mem[address]
+    elif address in local_mem[pile_funcs[-1]]:
+        return local_mem[pile_funcs[-1]][address]
 
 def add_value(address, val):
     if address > 0 and address < 4000:
         global_mem[address] = val
     elif address > 3999 and address < 8000:
-        temp_mem[address] = val
+        if address in local_mem:
+            local_mem[address] = val
+        else:
+            local_mem[pile_funcs[-1]][address] = val
 
 while True:
     if linecache.getline("dataVirtualMachine.txt", i) != '#\n':
         linea = linecache.getline("dataVirtualMachine.txt", i)
         if linea == "":
-            print(ctes, global_mem, temp_mem)
+            #print(ctes, global_mem, local_mem)
             exit()
 
         quad = linea.split(",")
 
+        if cont == 1:
+            dict_func[quad[1]] = quad
+        
         if cont == 2:
             value = convert_type(int(quad[0]), quad[1])
             ctes[int(quad[0])] = value
@@ -114,9 +130,9 @@ while True:
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
                 if str(quad[4]) == 'VControl\n':
-                    temp_mem['VControl'] = value_dict
+                    local_mem['VControl'] = value_dict
                 elif str(quad[4]) == 'VFinal\n':
-                    temp_mem['VFinal'] = value_dict
+                    local_mem['VFinal'] = value_dict
                 else:
                     value = convert_type(int(quad[4]), value_dict)
                     add_value(int(quad[4]), value)
@@ -214,11 +230,70 @@ while True:
                 if buleano == 0:
                     salto_linea = int(quad[4]) - int(quad[0]) + i - 1
                     i = salto_linea
-
-            elif quad[1] == 'ERA':
-                global_mem.update({})
-
             
+            elif quad[1] == 'ERA':
+                pile_funcs.append(quad[2])
+                cont_params = 0
+                cont_params_int = 0
+                cont_params_float = 0
+                cont_params_char = 0
+                cont_params_bool = 0
+                cant_int = dict_func[quad[2]][4]
+                cant_float = dict_func[quad[2]][5]
+                cant_char = dict_func[quad[2]][6]
+                cant_bool = dict_func[quad[2]][7]
+                
+                local_mem[quad[2]] = {}
+                for s in range(int(cant_int)):
+                    local_mem[quad[2]][4000 + s] = ''
+                for s in range(int(cant_float)):
+                    local_mem[quad[2]][5000 + s] = ''
+                for s in range(int(cant_char)):
+                    local_mem[quad[2]][6000 + s] = ''
+                for s in range(int(cant_bool)):
+                    local_mem[quad[2]][7000 + s] = ''
+
+                print(pile_funcs)
+
+            elif quad[1] == 'PARAMETER':
+                current_func = pile_funcs[-1]
+                val_param = search_dict(int(quad[2]))
+                type_param = dict_func[current_func][8 + cont_params]
+                if type_param == 'int':
+                    local_mem[current_func][4000 + cont_params_int] = val_param
+                    cont_params_int += 1
+                elif type_param == 'float':
+                    local_mem[current_func][5000 + cont_params_float] = val_param
+                    cont_params_float += 1
+                elif type_param == 'char':
+                    local_mem[current_func][6000 + cont_params_char] = val_param
+                    cont_params_char += 1
+                elif type_param == 'bool':
+                    local_mem[current_func][7000 + cont_params_bool] = val_param
+                    cont_params_bool += 1
+
+                cont_params += 1
+
+            elif quad[1] == 'GOSUB':
+                pile_returns.append(i)
+                if int(quad[4]) > int(quad[0]):
+                    salto_linea = int(quad[4]) - int(quad[0]) + i - 1
+                    i = salto_linea
+                else:
+                    salto_linea = i - int(quad[0]) + int(quad[4]) - 1
+                    i = salto_linea
+                #MANDAR A DORMIR A LA MEMORIA EXISTENTE
+
+            elif quad[1] == 'ENDFunc':
+                i = pile_returns[-1]
+                #pile_funcs.pop()
+
+                
+            print(ctes, global_mem, local_mem)
+            print(quad)
+
+        #print(ctes, global_mem, local_mem)
+
     else:
         cont += 1
 

@@ -9,6 +9,14 @@ var
     float d;
     float e;
 
+func void suma (int y, int r);
+var 
+   int varF1;
+{
+   read(varF1);
+   write(varF1);
+   
+}
 
 main() {
     b = 5;

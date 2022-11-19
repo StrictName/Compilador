@@ -37,9 +37,9 @@ var
 }
 
 main() {
-    c = d + e + i * a;
-
-    suma (i, a);
-    resta(a+b+a, c);
+    a = 3;
+    b = 9;
+    suma (a, 6);
+    resta(12, 7.2);
 
 }

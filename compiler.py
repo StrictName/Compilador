@@ -633,7 +633,6 @@ def p_parcheGuadalupano_np(p):
     global current_func_id_call, current_var_scope, current_var_type, cont_int, cont_float, cont_char, cont_bool
     print(current_func_id_call)
     if functionsTable.find_type(current_func_id_call) != 'void':
-        print('HOLA')
         address_var = varsTable.find_address(current_func_id_call)
         print(address_var)
         current_var_scope = 'global'
