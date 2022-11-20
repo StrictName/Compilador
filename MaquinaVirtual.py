@@ -5,7 +5,7 @@ cont = 1
 ctes = {}
 dict_func = {}
 global_mem = {}
-local_mem = {}
+local_mem = []
 VControl = 0
 cont_params = 0
 cont_params_int = 0
@@ -15,6 +15,8 @@ cont_params_bool = 0
 pile_funcs = []
 pile_returns = []
 return_value = 0
+dict_local = {}
+contador = 1
 
 def convert_type(address, valor):
     val = None
@@ -99,8 +101,12 @@ def search_dict(address):
         return global_mem[address]
     elif address in local_mem:
         return local_mem[address]
-    elif address in local_mem[pile_funcs[-1]]:
-        return local_mem[pile_funcs[-1]][address]
+    elif contador == 2:
+        return local_mem[-1][address]
+    elif (contador-1) == local_mem[len(local_mem)-1][pile_funcs[-1]]:
+        print('FOK')
+        print(local_mem[len(local_mem)-1][address])
+        return local_mem[len(local_mem)-1][address]
 
 def add_value(address, val):
     if address > 0 and address < 4000:
@@ -109,7 +115,7 @@ def add_value(address, val):
         if address in local_mem:
             local_mem[address] = val
         else:
-            local_mem[pile_funcs[-1]][address] = val
+            local_mem[-1][address] = val
 
 while True:
     if linecache.getline("dataVirtualMachine.txt", i) != '#\n':
@@ -134,9 +140,9 @@ while True:
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
                 if str(quad[4]) == 'VControl\n':
-                    local_mem['VControl'] = value_dict
+                    global_mem['VControl'] = value_dict
                 elif str(quad[4]) == 'VFinal\n':
-                    local_mem['VFinal'] = value_dict
+                    global_mem['VFinal'] = value_dict
                 else:
                     value = convert_type(int(quad[4]), value_dict)
                     add_value(int(quad[4]), value)
@@ -185,7 +191,7 @@ while True:
                 value = convert_type(int(quad[4]), operaciones_arit('<', value_oper1, value_oper2))
                 add_value(int(quad[4]), value)
 
-            elif quad[1] == 'igual':
+            elif quad[1] == 'equal':
                 value_oper1 = search_dict(int(quad[2]))
                 value_oper2 = search_dict(int(quad[3]))
                 value = convert_type(int(quad[4]), operaciones_arit('igual', value_oper1, value_oper2))
@@ -247,16 +253,19 @@ while True:
                 cant_char = dict_func[quad[2]][6]
                 cant_bool = dict_func[quad[2]][7]
                 
-                local_mem[quad[2]] = {}
+                dict_local = {}
+                dict_local[quad[2]] = contador
                 for s in range(int(cant_int)):
-                    local_mem[quad[2]][4000 + s] = ''
+                    dict_local[4000 + s] = ''
                 for s in range(int(cant_float)):
-                    local_mem[quad[2]][5000 + s] = ''
+                    dict_local[5000 + s] = ''
                 for s in range(int(cant_char)):
-                    local_mem[quad[2]][6000 + s] = ''
+                    dict_local[6000 + s] = ''
                 for s in range(int(cant_bool)):
-                    local_mem[quad[2]][7000 + s] = ''
+                    dict_local[7000 + s] = ''
 
+                local_mem.append(dict_local)
+                contador += 1
                 print(pile_funcs)
 
             elif quad[1] == 'PARAMETER':
@@ -264,16 +273,16 @@ while True:
                 val_param = search_dict(int(quad[2]))
                 type_param = dict_func[current_func][8 + cont_params]
                 if type_param == 'int':
-                    local_mem[current_func][4000 + cont_params_int] = val_param
+                    dict_local[4000 + cont_params_int] = val_param
                     cont_params_int += 1
                 elif type_param == 'float':
-                    local_mem[current_func][5000 + cont_params_float] = val_param
+                    dict_local[5000 + cont_params_float] = val_param
                     cont_params_float += 1
                 elif type_param == 'char':
-                    local_mem[current_func][6000 + cont_params_char] = val_param
+                    dict_local[6000 + cont_params_char] = val_param
                     cont_params_char += 1
                 elif type_param == 'bool':
-                    local_mem[current_func][7000 + cont_params_bool] = val_param
+                    dict_local[7000 + cont_params_bool] = val_param
                     cont_params_bool += 1
 
                 cont_params += 1
@@ -298,7 +307,8 @@ while True:
 
             elif quad[1] == 'ENDFunc':
                 i = pile_returns.pop()
-                del local_mem[pile_funcs.pop()]
+                local_mem.pop()
+                contador = 1
 
         #print(ctes, global_mem, local_mem)
 

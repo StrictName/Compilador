@@ -23,12 +23,12 @@ var
    
 }
 
-func float resta (int ele1, float ele2);
+func float resta (int y, float r);
 var 
    float resultado;
    float res;
 {
-   resultado = ele1 - ele2;
+   resultado = y - r;
    if (resultado < 5)
    {
         res = resta(20, 1.0);
@@ -39,10 +39,30 @@ var
     return res;
 }
 
+func int factorial (int n);
+var 
+    int resultado;
+{
+    if (n equal 1)
+    {
+        resultado = 1;
+    }
+
+    else 
+    {
+        resultado = n * factorial(n - 1);
+    }
+
+    return resultado;
+}
+
 main() {
     a = 3;
     b = 9;
     suma (a, 6);
     c = resta(12, 7.2);
     write(c);
+    read(i);
+    f = factorial(i);
+    write(f);
 }
