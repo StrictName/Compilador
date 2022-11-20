@@ -13,6 +13,10 @@ class funcTable:
             self.table[name] = currentFunc
             print(f"Function {name} saved successfully")
 
+    def fill_address(self, name, address):
+        if name in self.table:
+            self.table[name].type = address
+
     def fillTam(self, name, tam):
         if name in self.table:
             self.table[name].tam = tam
@@ -46,6 +50,7 @@ class funcTable:
     def find_type(self, name):
         if name in self.table:
             return self.table[name].type
+
 
     def toString(self):
         for key in self.table:

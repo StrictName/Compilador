@@ -14,6 +14,7 @@ cont_params_char = 0
 cont_params_bool = 0
 pile_funcs = []
 pile_returns = []
+return_value = 0
 
 def convert_type(address, valor):
     val = None
@@ -127,6 +128,9 @@ while True:
             ctes[int(quad[0])] = value
 
         if cont == 3:
+            print(ctes, global_mem, local_mem)
+            print(quad)
+
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
                 if str(quad[4]) == 'VControl\n':
@@ -284,13 +288,17 @@ while True:
                     i = salto_linea
                 #MANDAR A DORMIR A LA MEMORIA EXISTENTE
 
-            elif quad[1] == 'ENDFunc':
-                i = pile_returns[-1]
-                #pile_funcs.pop()
+                if dict_func[quad[2]][2] != 'void':
+                    global_mem[int(dict_func[quad[2]][2])] = ''
 
-                
-            print(ctes, global_mem, local_mem)
-            print(quad)
+            elif quad[1] == 'RETURN':
+                return_value = search_dict(int(quad[4]))
+                last_key = list(global_mem)[-1]
+                global_mem[last_key] = return_value
+
+            elif quad[1] == 'ENDFunc':
+                i = pile_returns.pop()
+                del local_mem[pile_funcs.pop()]
 
         #print(ctes, global_mem, local_mem)
 

@@ -15,31 +15,34 @@ var
 
 func void suma (int y, int r);
 var 
-   int varF1;
+   int resultado;
 
 {
-   read(varF1);
-   write(varF1);
+   resultado = y + r;
+   write(resultado);
    
 }
 
 func float resta (int ele1, float ele2);
 var 
    float resultado;
-   char chayo;
-   bool toni;
-   
+   float res;
 {
-   resultado = ele1 + 5;
-   resta(a+b+a, c);
-   return resultado;
-   
+   resultado = ele1 - ele2;
+   if (resultado < 5)
+   {
+        res = resta(20, 1.0);
+   }
+
+   else 
+    { res = resultado; }
+    return res;
 }
 
 main() {
     a = 3;
     b = 9;
     suma (a, 6);
-    resta(12, 7.2);
-
+    c = resta(12, 7.2);
+    write(c);
 }

@@ -23,6 +23,9 @@ class varTable:
         if name in self.table:
             return self.table[name].direccion
 
+    def deleteKey(self, name):
+        del self.table[name]
+
     def find_type(self, name):
         if name in self.table:
             return self.table[name].type

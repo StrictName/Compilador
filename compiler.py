@@ -560,7 +560,8 @@ def p_saveFuncSign_np(p):
         current_var_type = current_func_type
         current_var_scope = 'global'
         address_var = asignar_direccion_memoria()
-        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, address_func)
+        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, 0)
+        functionsTable.fill_address(current_func_id, address_var)
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
@@ -571,10 +572,16 @@ def p_saveFunc_np(p):
     tam_func.append(cont_bool)
     functionsTable.fillTam(current_func_id, tam_func)
 
-    #for key in varsTable.table:
-    #    if varsTable.table[key].direccion_funcion == address_func:
-    #        varsTable.delete_var(key)
-
+    # Delete Variables asociadas a la función
+    names=[]
+    for key in varsTable.table:
+        if varsTable.table[key].direccion_funcion == address_func:
+            names.append(key)
+    i = len(names)
+    for s in range(i):
+        if varsTable.table[names[s]].direccion_funcion == address_func:
+            varsTable.deleteKey(names[s])
+    
     dir_local_funcion_int = 4000
     dir_local_funcion_float = 5000
     dir_local_funcion_char = 6000
@@ -638,6 +645,8 @@ def p_parcheGuadalupano_np(p):
         current_var_scope = 'global'
         current_var_type = varsTable.find_type(current_func_id_call)
         new_temp = asignar_direccion_memoria()
+        PilaO.append(new_temp)
+        PilaTipos.append(current_var_type)
         if (current_var_type == 'int'):
             cont_int += 1
         elif (current_var_type == 'float'):
