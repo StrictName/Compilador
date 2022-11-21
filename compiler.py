@@ -34,6 +34,9 @@ cont_float = 0
 cont_char = 0
 cont_bool = 0
 main = False
+is_array = False
+tam_array = 0
+pile_dim = []
 
 reserved = {
     'program' : 'PROGRAM',
@@ -211,8 +214,8 @@ def p_varp(t):
             | tipo_compuesto ID PUNTOCOMA varp
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np
             | tipo_simple ID getID_np PUNTOCOMA saveVar_np varp
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
-            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA isArray_np saveVar_np
+            | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA isArray_np saveVar_np varp
             | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
             | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np varp'''
 
@@ -236,10 +239,10 @@ def p_funcion(t):
                 | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np funcion
                 | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np
                 | FUNC tipo_simple_func ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo saveFunc_np funcion
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np
-                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo saveFunc_np funcion'''
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo_void saveFunc_np
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np dec_var cuerpo_void saveFunc_np funcion
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo_void saveFunc_np
+                | FUNC VOID getTypeFunc_np ID getIDFunc_np PARENTESISIZQ parametros PARENTESISDER PUNTOCOMA saveFuncSign_np cuerpo_void saveFunc_np funcion'''
 
 def p_dec_var(t):
     '''dec_var : VAR  scopeFunc_np dec_varp'''
@@ -247,8 +250,8 @@ def p_dec_var(t):
 def p_dec_varp(t):
     '''dec_varp : tipo_simple ID getID_np PUNTOCOMA saveVar_np dec_varp
                 | tipo_simple ID getID_np PUNTOCOMA saveVar_np
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
-                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA isArray_np saveVar_np dec_varp
+                | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA isArray_np saveVar_np
                 | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np dec_varp
                 | tipo_simple ID getID_np CORCHETEIZQ CTEI CORCHETEDER CORCHETEIZQ CTEI CORCHETEDER PUNTOCOMA saveVar_np'''
 
@@ -265,6 +268,9 @@ def p_parametros(t):
 def p_cuerpo(t):
     '''cuerpo : LLAVEIZQ estatuto RETURN exp PUNTOCOMA multiDiv_np plusMinus_np relationalOp_np and_np or_np emptyStackReturn_np LLAVEDER
                 | LLAVEIZQ estatuto LLAVEDER'''
+
+def p_cuerpo_void(t):
+    '''cuerpo_void : LLAVEIZQ estatuto LLAVEDER'''
 
 def p_bloque_clase(t):
     '''bloque_clase : ATTRIBUTE scopeClass_np DOSPUNTOS atributo METHOD DOSPUNTOS metodo'''
@@ -317,7 +323,7 @@ def p_leep(t):
 
 def p_variable(t):
     '''variable : ID saveIDpilaO_np
-                | ID CORCHETEIZQ exp CORCHETEDER
+                | ID CORCHETEIZQ exp CORCHETEDER multiDiv_np plusMinus_np relationalOp_np and_np or_np igual_np quadsArray_np
                 | ID CORCHETEIZQ exp CORCHETEDER CORCHETEIZQ exp CORCHETEDER'''
 
 def p_escribe(t):
@@ -400,6 +406,7 @@ def p_empty(p):
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
+    exit()
 
 
 ######################
@@ -447,11 +454,16 @@ def p_getType_np(p):
 
 ####Arreglo####
 
-
 #def p_getArray_np(p):
 #    '''getArray_np : empty'''
 #    global current_var_type
 #    current_var_type += '[' + str(p[-2])+']'
+
+def p_isArray_np(p):
+    '''isArray_np : empty'''
+    global is_array, tam_array
+    is_array = True
+    tam_array = p[-3]
 
 ####Matriz####
 
@@ -479,9 +491,32 @@ def p_scopeGlobal_np(p):
 
 def p_saveVar_np(p):
     '''saveVar_np : empty'''
-    global address_func
+    global address_func, is_array, tam_array, dir_global_int, dir_funcion_int, dir_global_float, dir_funcion_float, dir_global_char, dir_funcion_char, current_var_type, current_var_scope, pile_dim
     address = asignar_direccion_memoria()
-    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func)
+    if is_array == True:
+        if current_var_type == 'int':
+            if current_var_scope == 'global':
+                dir_global_int += tam_array - 1
+            elif current_var_scope == 'funcion':
+                dir_funcion_int += tam_array - 1
+        if current_var_type == 'float':
+            if current_var_scope == 'global':
+                dir_global_float += tam_array - 1
+            elif current_var_scope == 'funcion':
+                dir_funcion_float += tam_array - 1
+        if current_var_type == 'char':
+            if current_var_scope == 'global':
+                dir_global_char += tam_array - 1
+            elif current_var_scope == 'funcion':
+                dir_funcion_char += tam_array - 1
+        pile_dim.append(tam_array)
+    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func, pile_dim)
+    pile_dim = []
+    is_array = False
+
+def p_quadsArray_np(p):
+    '''quadsArray_np : empty'''
+    
 
 def p_saveConstantInt_np(p):
     '''saveConstantInt_np : empty'''
@@ -598,6 +633,7 @@ def p_verifyFunc_np(p):
     current_func_id_call = p[-1]
     if functionsTable.search(current_func_id_call) == "Function undeclared":
         print("ERROR: Function undeclared")
+        exit()
 
 def p_eraSize_np(p):
     '''eraSize_np : empty'''

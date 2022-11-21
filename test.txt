@@ -9,9 +9,11 @@ var
     int e;
     int f;
     float g;
-    char x;
-    bool hola;
     int j;
+    int x1;
+    int y1;
+    int total;
+    int fact;
 
 func void suma (int y, int r);
 var 
@@ -20,7 +22,6 @@ var
 {
    resultado = y + r;
    write(resultado);
-   
 }
 
 func float resta (int y, float r);
@@ -35,7 +36,10 @@ var
    }
 
    else 
-    { res = resultado; }
+    { 
+        res = resultado; 
+    
+    }
     return res;
 }
 
@@ -56,6 +60,23 @@ var
     return resultado;
 }
 
+func int fibo (int n);
+var
+    int resultado;
+    int res1;
+    int res2;
+{
+    if (n < 2) {
+        resultado = n;
+    } 
+    else {
+        res1 = fibo(n - 1);
+        res2 = fibo(n - 2);
+        resultado = res1 + res2;
+    }
+    return resultado;
+}
+
 main() {
     a = 3;
     b = 9;
@@ -65,4 +86,40 @@ main() {
     read(i);
     f = factorial(i);
     write(f);
+
+    if (i equal 0) {
+        write(1);
+    }
+    else {
+        fact = 1;
+        while (i > 1) do {
+            fact = fact * i;
+            i = i - 1;
+        }
+        write(fact);
+    }
+
+    read(a);
+    for j = 0 to a + 1 do {
+        write(fibo(j));
+    }
+
+    x1 = 1;
+    y1 = 1;
+    
+
+    if (a > 2)
+    {
+        write(0);
+        write(x1);
+        write(y1);
+        for i = 0 to a-2 do 
+        {
+            total = x1 + y1;
+            y1 = x1;
+            x1 = total;
+            write(total);
+        }
+
+    }
 }

@@ -104,9 +104,10 @@ def search_dict(address):
     elif contador == 2:
         return local_mem[-1][address]
     elif (contador-1) == local_mem[len(local_mem)-1][pile_funcs[-1]]:
-        print('FOK')
-        print(local_mem[len(local_mem)-1][address])
-        return local_mem[len(local_mem)-1][address]
+        if local_mem[len(local_mem)-1][address] == '':
+            return local_mem[len(local_mem)-2][address]
+        else:
+            return local_mem[len(local_mem)-1][address]
 
 def add_value(address, val):
     if address > 0 and address < 4000:
@@ -134,8 +135,9 @@ while True:
             ctes[int(quad[0])] = value
 
         if cont == 3:
-            print(ctes, global_mem, local_mem)
-            print(quad)
+            #print(quad)
+            #print(ctes, global_mem, local_mem)
+            #print(pile_funcs)
 
             if quad[1] == '=':
                 value_dict = search_dict(int(quad[2]))
@@ -266,7 +268,6 @@ while True:
 
                 local_mem.append(dict_local)
                 contador += 1
-                print(pile_funcs)
 
             elif quad[1] == 'PARAMETER':
                 current_func = pile_funcs[-1]
@@ -302,13 +303,14 @@ while True:
 
             elif quad[1] == 'RETURN':
                 return_value = search_dict(int(quad[4]))
-                last_key = list(global_mem)[-1]
-                global_mem[last_key] = return_value
+                global_var = dict_func[pile_funcs[-1]][2]
+                global_mem[int(global_var)] = return_value
 
             elif quad[1] == 'ENDFunc':
                 i = pile_returns.pop()
                 local_mem.pop()
-                contador = 1
+                pile_funcs.pop()
+                contador -= 1
 
         #print(ctes, global_mem, local_mem)
 
