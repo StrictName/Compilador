@@ -13,7 +13,6 @@ from semanticCube import SemanticCube
 from classTable import classTable
 import quadruple as quadruple
 
-
 varsTable = varTable()
 functionsTable = funcTable()
 arraysTable = arrayTable()
@@ -175,6 +174,8 @@ dir_funcion_int = 16000
 dir_funcion_float = 17000
 dir_funcion_char = 18000
 dir_funcion_bool = 19000
+dir_temp_pointers_global = 20000
+dir_temp_pointers_local = 21000
 
 def p_programa(t):
     '''programa : PROGRAM getTypeFunc_np ID getIDFunc_np PUNTOCOMA saveFunc_np gotoMain_np main
@@ -461,7 +462,10 @@ def p_getType_np(p):
 
 def p_isArray_np(p):
     '''isArray_np : empty'''
-    global is_array, tam_array
+    global is_array, tam_array, current_var_type
+    if current_var_type != 'int':
+        print('ERROR: solo se pueden declarar arreglos de tipo int')
+        exit()
     is_array = True
     tam_array = p[-3]
 
@@ -516,7 +520,24 @@ def p_saveVar_np(p):
 
 def p_quadsArray_np(p):
     '''quadsArray_np : empty'''
-    
+    global current_var_scope
+    id_array = p[-10]
+    limit = varsTable.size_array(id_array)
+    print(limit)
+    print('FOK')
+    cuadruplo.addQuadruple('VER', PilaO[-1], -1, limit)
+    temp = asignar_direccion_memoria()
+    cuadruplo.addQuadruple('+', PilaO[-1], -1, temp)
+    PilaO.pop()
+    PilaTipos.pop()
+    if main == False:
+        current_var_scope = 'funcion'
+    else:
+        current_var_scope = 'global'
+    temp_pointer = asignar_direccion_temp_pointers()
+    cuadruplo.addQuadruple('+', temp, varsTable.find_address(id_array), temp_pointer)
+    PilaO.append(temp_pointer)
+    PilaTipos.append('int')
 
 def p_saveConstantInt_np(p):
     '''saveConstantInt_np : empty'''
@@ -585,7 +606,7 @@ def p_saveParameter_np(p):
     '''saveParameter_np : empty'''
     global parameters_list, address_func
     address = asignar_direccion_memoria()
-    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func)
+    varsTable.add(current_var_id, current_var_type, current_var_scope, address, address_func, [])
 
 def p_saveFuncSign_np(p):
     '''saveFuncSign_np : empty'''
@@ -595,12 +616,12 @@ def p_saveFuncSign_np(p):
         current_var_type = current_func_type
         current_var_scope = 'global'
         address_var = asignar_direccion_memoria()
-        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, 0)
+        varsTable.add(current_func_id, current_func_type, current_var_scope, address_var, 0, [])
         functionsTable.fill_address(current_func_id, address_var)
 
 def p_saveFunc_np(p):
     '''saveFunc_np : empty'''
-    global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool, dir_local_funcion_int, dir_local_funcion_float, dir_local_funcion_char, dir_local_funcion_bool
+    global parameters_list, current_var_type, current_var_scope, address_func, inicio_cuadruplo, cont_int, cont_float, cont_char, tam_func, cont_bool, dir_local_funcion_int, dir_local_funcion_float, dir_local_funcion_char, dir_local_funcion_bool, dir_temp_pointers_local
     tam_func.append(cont_int)
     tam_func.append(cont_float)
     tam_func.append(cont_char)
@@ -621,6 +642,7 @@ def p_saveFunc_np(p):
     dir_local_funcion_float = 5000
     dir_local_funcion_char = 6000
     dir_local_funcion_bool = 7000
+    dir_temp_pointers_local = 21000
 
     if address_func != 0:
         cuadruplo.addQuadruple('ENDFunc', -1, -1, -1)
@@ -1270,6 +1292,23 @@ def asignar_direccion_funciones():
             aux = dir_funcion_void
             dir_funcion_void += 1 
     return aux
+
+def asignar_direccion_temp_pointers():
+    global current_var_scope, dir_temp_pointers_global, dir_temp_pointers_local
+    if current_var_scope == 'global': 
+        if dir_temp_pointers_global > 20999:
+            print('ERROR: Se excedió el máximo de apuntadores globales')
+            exit()
+        aux = dir_temp_pointers_global
+        dir_temp_pointers_global += 1
+    if current_var_scope == 'local':
+        if dir_temp_pointers_local > 21999:
+            print('ERROR: Se excedió el máximo de apuntadores locales')
+            exit()
+        aux = dir_temp_pointers_local
+        dir_temp_pointers_local += 1
+    return aux
+
 
 yacc.yacc()
 if __name__ == '__main__':

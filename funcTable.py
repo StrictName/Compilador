@@ -51,7 +51,6 @@ class funcTable:
         if name in self.table:
             return self.table[name].type
 
-
     def toString(self):
         for key in self.table:
             print(f"{key}: {self.table[key].type}, {self.table[key].address}, {self.table[key].inicio_cuad}, {self.table[key].tam}")

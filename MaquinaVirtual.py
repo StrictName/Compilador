@@ -48,6 +48,9 @@ def convert_type(address, valor):
     elif address >= 15000 and address < 16000:
         val = str(valor)
 
+    elif address >= 20000 and address < 22000:
+        val = int(valor)
+
     return val
 
 def operaciones_arit(oper, valueIzq, valueDer):
@@ -101,6 +104,9 @@ def search_dict(address):
         return global_mem[address]
     elif address in local_mem:
         return local_mem[address]
+    elif contador == 1:
+        print(f'ERROR: no se encontró el valor de la posicion {address}')
+        exit()
     elif contador == 2:
         return local_mem[-1][address]
     elif (contador-1) == local_mem[len(local_mem)-1][pile_funcs[-1]]:
@@ -117,6 +123,14 @@ def add_value(address, val):
             local_mem[address] = val
         else:
             local_mem[-1][address] = val
+    elif address > 19999 and address < 21000:
+        global_mem[address] = val
+    elif address > 20999 and address < 22000:
+        if address in local_mem:
+            local_mem[address] = val
+        else:
+            local_mem[-1][address] = val
+
 
 while True:
     if linecache.getline("dataVirtualMachine.txt", i) != '#\n':
@@ -145,6 +159,9 @@ while True:
                     global_mem['VControl'] = value_dict
                 elif str(quad[4]) == 'VFinal\n':
                     global_mem['VFinal'] = value_dict
+                elif int(quad[4]) > 19999 and int(quad[4]) < 21000:
+                    value_pointer = search_dict(int(quad[4]))
+                    add_value(value_pointer, value_dict)
                 else:
                     value = convert_type(int(quad[4]), value_dict)
                     add_value(int(quad[4]), value)
@@ -159,6 +176,12 @@ while True:
                 if quad[2] == 'VControl':
                     value_oper1 = search_dict(quad[2])
                     value_oper2 = int(1)
+                elif int(quad[4]) > 19999 and int(quad[4]) < 21000:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = int(quad[3])
+                elif int(quad[3]) == -1:
+                    value_oper1 = search_dict(int(quad[2]))
+                    value_oper2 = int(-1)
                 else:
                     value_oper1 = search_dict(int(quad[2]))
                     value_oper2 = search_dict(int(quad[3]))
@@ -220,6 +243,10 @@ while True:
             elif quad[1] == 'WRITE':
                 if quad[4][0] == '"':
                     print(quad[4])
+                elif int(quad[4]) > 19999 and int(quad[4]) < 21000:
+                    value_array = search_dict(int(quad[4]))
+                    value = search_dict(int(value_array))
+                    print(value)
                 else:
                     value = convert_type(int(quad[4]), search_dict(int(quad[4])))
                     print(value)
@@ -305,6 +332,12 @@ while True:
                 return_value = search_dict(int(quad[4]))
                 global_var = dict_func[pile_funcs[-1]][2]
                 global_mem[int(global_var)] = return_value
+
+            elif quad[1] == 'VER':
+                value_param = search_dict(int(quad[2]))
+                if value_param < 1 or value_param > int(quad[4]):
+                    print(f'ERROR: out of bounds ({value_param} is out of range 1...{int(quad[4])})')
+                    exit()
 
             elif quad[1] == 'ENDFunc':
                 i = pile_returns.pop()

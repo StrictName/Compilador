@@ -30,6 +30,11 @@ class varTable:
         if name in self.table:
             return self.table[name].type
 
+    def size_array(self, name):
+        if name in self.table:
+            print(self.table[name].dim_nonatomics)
+            return self.table[name].dim_nonatomics[-1]
+
     def delete_var(self, name):
         self.table.pop(name)
 
