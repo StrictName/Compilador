@@ -195,12 +195,8 @@ def p_main(t):
 def p_clase(t):
     '''clase : CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
             | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
-            | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA
-            | CLASS ID getnameClass_np getSonClass_np saveClass_np DOSPUNTOS tipo_clase ID LLAVEIZQ LLAVEDER PUNTOCOMA clase
             | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA
-            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase
-            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA
-            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ LLAVEDER PUNTOCOMA clase'''
+            | CLASS ID getnameClass_np getFatherClass_np saveClass_np LLAVEIZQ bloque_clase LLAVEDER PUNTOCOMA clase'''
 
 def p_tipo_clase(t):
     '''tipo_clase : PUBLIC
