@@ -260,3 +260,6 @@ Corrección de los cuadruplos de las funciones. Agregamos el "parche guadalupano
 Compilación genera cuadruplos de arreglos.
 Máquina virtual ejecuta expresiones aritméticas, estatutos secuenciales y condicionales, módulos y parte de arreglos. Pruebas de fibonacci y factorial se corrieron y funcionan. 
 
+
+## LINK del VIDEO-DEMO del lenguaje
+https://youtu.be/WjUwp4MKVcw
