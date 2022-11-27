@@ -1,0 +1,67 @@
+program Compilador;
+
+var
+    int arra[2];
+    int arrab[5];
+    int i;
+    int a;
+    int b;
+    float c;
+    float d;
+    int e;
+    int f;
+    float g;
+    int arrac[10];
+    int j;
+    int x1;
+    int y1;
+    int total;
+    int fact;
+
+func int fibo (int n);
+var
+    int resultado;
+    int res1;
+    int res2;
+{
+    if (n < 2) {
+        resultado = n;
+    } 
+    else {
+        res1 = fibo(n - 1);
+        res2 = fibo(n - 2);
+        resultado = res1 + res2;
+    }
+    return resultado;
+}
+
+main() 
+{
+    a = 2;
+    b = 3;
+    arrab[2+3] = 4 + a * b;
+    arrab[2] = 9;
+
+    read(a);
+    x1 = 1;
+    y1 = 1;
+    if (a > 2)
+    {
+        write(0);
+        write(x1);
+        write(y1);
+        for i = 0 to a-2 do 
+        {
+            total = x1 + y1;
+            y1 = x1;
+            x1 = total;
+            write(total);
+        }
+    }
+    write(arra[3]);
+
+    read(a);
+    for j = 0 to a + 1 do {
+        write(fibo(j));
+    }
+}

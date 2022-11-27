@@ -1,0 +1,5 @@
+program writeDemo;
+
+main() {
+    write("Holamundo");
+}

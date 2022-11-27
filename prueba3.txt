@@ -1,0 +1,7 @@
+program proyectocompilador;
+
+
+main()
+{
+     X = A * B * C + D / E - F + G * H * I > B * D / E + F - G;
+}

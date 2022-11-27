@@ -1,0 +1,38 @@
+program proyectocompilador;
+
+class Animal 
+{
+   attribute:
+   public int x;
+   private float s;
+
+   method:
+   private void prueba (int ys) 
+   {
+      x = 5;
+      y[3] = x;
+      
+   }
+
+};
+
+var 
+   int edad;
+   int edad2;
+   float peso;
+   char caracter;
+
+
+func int suma (int y);
+var 
+   int edad3;
+{
+    p.come(x);  
+}
+
+
+main()
+{
+
+   
+}

@@ -1,0 +1,21 @@
+program test;
+
+func int pelos(int b); 
+var
+    int result;
+{
+    result = b * 2 + 2;
+    return result;
+}
+
+func int patito (int a);
+var
+    int res;
+{
+    res = pelos(a * 2) + 3;
+    return res;
+}
+
+main() {
+    write(patito(4));
+}

@@ -254,4 +254,12 @@ main() {
 Se realizaron avances en cuanto a las funciones. Ya se guardan los datos completos de la función, como el cuadruplo en donde inicia su ejecución o la cantidad de recursos que ocupa cada función. De igual manera, se generan de los módulos como ENDFunc y RETURN. Ya se conecta la tabla de variables con su respectiva función. 
 
 ## Avance 6
-Correción de los cuadruplos de las funciones. Agregamos el "parche guadalupano", creación de los cuadruplos para una llamada recursiva. Creación de la máquina virtual: creación de la memoria de las constantes y almacenar valores, creación de la memoria global y local.  
+Corrección de los cuadruplos de las funciones. Agregamos el "parche guadalupano", creación de los cuadruplos para una llamada recursiva. Creación de la máquina virtual: creación de la memoria de las constantes y almacenar valores, creación de la memoria global y local.  
+
+## Avance 7
+Compilación genera cuadruplos de arreglos.
+Máquina virtual ejecuta expresiones aritméticas, estatutos secuenciales y condicionales, módulos y parte de arreglos. Pruebas de fibonacci y factorial se corrieron y funcionan. 
+
+
+## LINK del VIDEO-DEMO del lenguaje
+https://youtu.be/WjUwp4MKVcw

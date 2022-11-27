@@ -1,0 +1,45 @@
+program testVm;
+
+var
+    int b;
+    int a;
+    int j;
+    int i;
+    float c;
+    float d;
+    float e;
+
+func void suma (int y, int r);
+var 
+   int varF1;
+{
+   read(varF1);
+   write(varF1);
+   
+}
+
+main() {
+    b = 5;
+    a = 5 - 2 + 12 * (2 + 6 * 4);
+    write(a);
+    c = 3.14;
+    i = 1;
+    read(d);
+    e = 2 + d;
+    while (b < 10) do
+    {
+        c = 10;
+        b = b + 1;
+    }
+    if (b > a) {
+        write("Terminator");
+    }
+    else {
+        write("Terminator2");
+    }
+
+    for j = 1 to 5 do {
+        write("for");
+    }
+    write("SERCH", a);
+}
