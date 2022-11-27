@@ -1,0 +1,24 @@
+program multiArray;
+
+var
+    int a;
+    int index;
+    int aux;
+    int arrayA[5];
+    int arrayB[5];
+    int arrayC[5];
+
+main() {
+    a = 1;
+    index = 5;
+    aux = 5;
+
+    while (a < index + 1) do {
+        arrayA[a] = 9 - a;
+        arrayB[a] = aux;
+        arrayC[a] = arrayA[a] * arrayB[a]; 
+        write(arrayC[a]);
+
+        a = a + 1;
+    }
+}

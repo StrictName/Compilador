@@ -1,0 +1,26 @@
+program fillArray;
+
+var
+    int a;
+    int b;
+    int arr[10];
+    int index;
+    int aux;
+
+main() {
+    a = 1;
+    index = 11;
+    aux = 45;
+
+    while (a < index) do {
+        aux = aux - 1;
+        arr[a] = aux;
+        a = a + 1;
+    }
+
+    a = 1;
+    while (a < index) do {
+        write(arr[a]);
+        a = a + 1;
+    }
+}

@@ -1,0 +1,53 @@
+program Compilador;
+
+var
+    int i;
+    int a;
+    int j;
+    int x1;
+    int y1;
+    int total;
+
+
+func int fibo (int n);
+var
+    int resultado;
+    int res1;
+    int res2;
+{
+    if (n < 2) {
+        resultado = n;
+    } 
+    else {
+        res1 = fibo(n - 1);
+        res2 = fibo(n - 2);
+        resultado = res1 + res2;
+    }
+    return resultado;
+}
+
+
+main() {
+    write("Fibonacci");
+    read(a);
+    for j = 0 to a + 1 do {
+        write(fibo(j));
+    }
+
+    x1 = 1;
+    y1 = 1;
+    
+    if (a > 2)
+    {
+        write(0);
+        write(x1);
+        write(y1);
+        for i = 0 to a-2 do 
+        {
+            total = x1 + y1;
+            y1 = x1;
+            x1 = total;
+            write(total);
+        }
+    }
+}

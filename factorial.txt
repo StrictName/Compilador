@@ -1,0 +1,44 @@
+program Compilador;
+
+var
+    int i;
+    int f;
+    int fact;
+
+func int factorial (int n);
+var 
+    int resultado;
+    int aux1;
+{
+    if (n equal 1)
+    {
+        resultado = 1;
+    }
+
+    else 
+    {
+        aux1 = factorial(n - 1);
+        resultado = n * aux1;
+    }
+
+    return resultado;
+}
+
+main() {    
+    write("Factorial");
+    read(i);
+    f = factorial(i);
+    write(factorial(i));
+
+    if (i equal 0) {
+        write(1);
+    }
+    else {
+        fact = 1;
+        while (i > 1) do {
+            fact = fact * i;
+            i = i - 1;
+        }
+        write(fact);
+    }
+}
