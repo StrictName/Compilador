@@ -1,0 +1,24 @@
+program find;
+var
+    int array[5];
+    int j;
+    int len;
+    int findnum;
+
+
+main() {
+    len = 5;
+    array[1] = 5;
+    array[2] = 4;
+    array[3] = 3;
+    array[4] = 27;
+    array[5] = 21;
+
+    read(findnum);
+
+    for j = 1 to len + 1 do {
+        if (array[j] equal findnum) {
+            write("Encontrado", j);
+        } 
+    }
+}

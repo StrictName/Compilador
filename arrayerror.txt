@@ -1,0 +1,18 @@
+program Compilador;
+
+var
+    int i;
+    int a;
+    int b;
+    float c;
+    float d;
+    int arrab[12];
+
+main() {
+    a = 2;
+    b = 3;
+    arrab[a+b] = 4 + a * b;
+    arrab[2] = 9;
+
+    write(arrab[1]);
+}

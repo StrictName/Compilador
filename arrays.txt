@@ -1,0 +1,44 @@
+program Compilador;
+
+var
+    int i;
+    int a;
+    int b;
+    float c;
+    float d;
+    int arrab[12];
+    int e;
+    int f;
+    float g;
+    int j;
+    int x1;
+    int arrc[5];
+    int arrd[5];
+    int y1;
+    int total;
+    int fact;
+    int aux;
+
+main() {
+    a = 2;
+    b = 3;
+    arrab[a+b] = 4 + a * b;
+    
+    arrab[2] = 9;
+
+    read(e);
+    for j = 1 to 6 do {
+        arrc[j] = j * 2;
+    }
+
+
+    for j = 1 to 6 do {
+        if (arrc[j] equal e) {
+            write("ENCONTRADO", j);
+        }
+        else {
+            write("NOENCONTRADO");
+        }
+    }
+
+}
